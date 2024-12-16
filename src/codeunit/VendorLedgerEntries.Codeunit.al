@@ -44,38 +44,42 @@ codeunit 51001 "Vendor Ledger Entries"
                     if PaymentLedgerEntry.Count() > 1 then
                         Error('More than one Payment entry found.');
                     BankLedgerEntry := GetBankLedgerEntry(PaymentLedgerEntry);
-                    if BankLedgerEntry.IsEmpty then begin
-                        BankLedgerEntry.Init();
-                        BankLedgerEntry."Posting Date" := Rec."Posting Date";
-                        BankLedgerEntry."Document No." := Rec."Document No.";
-                    end;
                 end;
-                DetailedVendLedgerEntry.SetRange("Applied Vend. Ledger Entry No.", Rec."Applied Vend. Ledger Entry No.");
-                DetailedVendLedgerEntry.SetFilter("Vendor Ledger Entry No.", '<>%1', Rec."Applied Vend. Ledger Entry No.");
-                if DetailedVendLedgerEntry.FindSet() then
-                    repeat
-                        InvoiceLedgerEntry.Get(DetailedVendLedgerEntry."Vendor Ledger Entry No.");
-                        GetAndSetGLEntriesPaid(BankLedgerEntry, InvoiceLedgerEntry);
-                    until DetailedVendLedgerEntry.Next() = 0;
-                // VendorLedgerEntry.Get(DetailedVendLedgerEntry."Vendor Ledger Entry No.");
-                // InvoiceLedgerEntry := GetInvoiceLedgerEntry(Rec);
-            end else if Rec.Unapplied = true then begin
-                DetailedVendLedgerEntry.SetRange("Applied Vend. Ledger Entry No.", Rec."Applied Vend. Ledger Entry No.");
-                DetailedVendLedgerEntry.SetFilter("Vendor Ledger Entry No.", '<>%1', Rec."Applied Vend. Ledger Entry No.");
-                if DetailedVendLedgerEntry.FindSet() then
-                    repeat
-                        InvoiceLedgerEntry.Get(DetailedVendLedgerEntry."Vendor Ledger Entry No.");
-                        GetAndSetGLEntriesUnPaid(InvoiceLedgerEntry);
-                    until DetailedVendLedgerEntry.Next() = 0;
             end;
+            if BankLedgerEntry.IsEmpty then begin
+                BankLedgerEntry.Init();
+                if not Rec.Unapplied = true then begin
+                    // If payment is has not been posted through bank account, we'll use the vendor's payment ledger entry data.
+                    // If posting is an un-application, these fields will remain empty.
+                    BankLedgerEntry."Posting Date" := Rec."Posting Date";
+                    BankLedgerEntry."Document No." := Rec."Document No.";
+                end;
+            end;
+            SetApplicationData(DetailedVendLedgerEntry, InvoiceLedgerEntry, BankLedgerEntry, Rec);
         end;
+    end;
+
+    local procedure SetApplicationData(var DetailedVendLedgerEntry: Record "Detailed Vendor Ledg. Entry"; var InvoiceLedgerEntry: Record "Vendor Ledger Entry"; var BankLedgerEntry: Record "Bank Account Ledger Entry"; var Rec: Record "Detailed Vendor Ledg. Entry")
+    begin
+        DetailedVendLedgerEntry.SetRange("Applied Vend. Ledger Entry No.", Rec."Applied Vend. Ledger Entry No.");
+        DetailedVendLedgerEntry.SetFilter("Vendor Ledger Entry No.", '<>%1', Rec."Applied Vend. Ledger Entry No.");
+        if DetailedVendLedgerEntry.FindSet() then
+            repeat
+                InvoiceLedgerEntry.Get(DetailedVendLedgerEntry."Vendor Ledger Entry No.");
+                GetAndSetGLEntriesPaid(BankLedgerEntry, InvoiceLedgerEntry);
+            until DetailedVendLedgerEntry.Next() = 0;
     end;
 
     local procedure GetAndSetGLEntriesPaid(var BankLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry")
     var
         GLEntries: Record "G/L Entry";
     begin
-        VendorLedgerEntry.Paid := true;
+        if BankLedgerEntry."Posting Date" <> 0D then
+            VendorLedgerEntry.Paid := true
+        else begin
+            VendorLedgerEntry.Paid := false;
+            VendorLedgerEntry."Pmt Cancelled" := true;
+        end;
         VendorLedgerEntry."Bank Posting Date" := BankLedgerEntry."Posting Date";
         VendorLedgerEntry."Bank Document No." := BankLedgerEntry."Document No.";
         VendorLedgerEntry.Modify();
@@ -85,31 +89,38 @@ codeunit 51001 "Vendor Ledger Entries"
             GLEntries.ModifyAll(Paid, true);
             GLEntries.ModifyAll("Bank Posting Date", BankLedgerEntry."Posting Date");
             GLEntries.ModifyAll("Bank Document No.", BankLedgerEntry."Document No.");
-            GLEntries.ModifyAll("Vend./Cust. Doc. No.", VendorLedgerEntry."Document No.");
-            GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", VendorLedgerEntry."Due Date");
+            if BankLedgerEntry."Posting Date" <> 0D then begin
+                GLEntries.ModifyAll("Vend./Cust. Doc. No.", VendorLedgerEntry."Document No.");
+                GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", VendorLedgerEntry."Due Date");
+            end else begin
+                GLEntries.ModifyAll("Vend./Cust. Doc. No.", '');
+                GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
+                GLEntries.ModifyAll(Paid, false);
+                GLEntries.ModifyAll("Pmt Cancelled", true);
+            end;
         end;
     end;
 
-    local procedure GetAndSetGLEntriesUnPaid(var VendorLedgerEntry: Record "Vendor Ledger Entry")
-    var
-        GLEntries: Record "G/L Entry";
-    begin
-        VendorLedgerEntry.Paid := false;
-        VendorLedgerEntry."Pmt Cancelled" := true;
-        VendorLedgerEntry."Bank Posting Date" := 0D;
-        VendorLedgerEntry."Bank Document No." := '';
-        VendorLedgerEntry.Modify();
-        GLEntries.SetRange("Document No.", VendorLedgerEntry."Document No.");
-        GLEntries.SetRange("Posting Date", VendorLedgerEntry."Posting Date");
-        if not GLEntries.IsEmpty then begin
-            GLEntries.ModifyAll(Paid, false);
-            GLEntries.ModifyAll("Pmt Cancelled", true);
-            GLEntries.ModifyAll("Bank Posting Date", 0D);
-            GLEntries.ModifyAll("Bank Document No.", '');
-            GLEntries.ModifyAll("Vend./Cust. Doc. No.", '');
-            GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
-        end;
-    end;
+    // local procedure GetAndSetGLEntriesPaid(var VendorLedgerEntry: Record "Vendor Ledger Entry")
+    // var
+    //     GLEntries: Record "G/L Entry";
+    // begin
+    //     VendorLedgerEntry.Paid := false;
+    //     VendorLedgerEntry."Pmt Cancelled" := true;
+    //     VendorLedgerEntry."Bank Posting Date" := 0D;
+    //     VendorLedgerEntry."Bank Document No." := '';
+    //     VendorLedgerEntry.Modify();
+    //     GLEntries.SetRange("Document No.", VendorLedgerEntry."Document No.");
+    //     GLEntries.SetRange("Posting Date", VendorLedgerEntry."Posting Date");
+    //     if not GLEntries.IsEmpty then begin
+    //         GLEntries.ModifyAll(Paid, false);
+    //         GLEntries.ModifyAll("Pmt Cancelled", true);
+    //         GLEntries.ModifyAll("Bank Posting Date", 0D);
+    //         GLEntries.ModifyAll("Bank Document No.", '');
+    //         GLEntries.ModifyAll("Vend./Cust. Doc. No.", '');
+    //         GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
+    //     end;
+    // end;
 
     // Helper methods
 
