@@ -6,7 +6,13 @@ codeunit 51000 "Event Subscriber"
     begin
         if not RunTrigger then
             Message('Attention! Insert has taken place without run trigger!');
-        Codeunit.Run(Codeunit::"Vendor Ledger Entries");
+        Codeunit.Run(Codeunit::"Vendor Ledger Entries", Rec);
         // exit;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"VendEntry-Apply Posted Entries", 'OnAfterPostApplyVendLedgEntry', '', false, false)]
+    local procedure OnAfterPostApplyVendLedgEntryEditEntries(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line")
+    begin
+        Message('Pause!');
     end;
 }
