@@ -9,17 +9,12 @@ codeunit 51000 "Event Subscriber"
         Codeunit.Run(Codeunit::"Vendor Ledger Entries", Rec);
     end;
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"VendEntry-Apply Posted Entries", 'OnAfterPostApplyVendLedgEntry', '', false, false)]
-    // local procedure SetBankDataToVendorLedgerEntryBeforePosting(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry")
-    // var
-    //     ProcessVendorEntry: Codeunit "Vendor Ledger Entries";
-    // begin
-    //     ProcessVendorEntry.RunFromVendorLedgerEntry(VendorLedgerEntry, GenJournalLine);
-    // end;
-
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"VendEntry-Apply Posted Entries", 'OnAfterPostApplyVendLedgEntry', '', false, false)]
-    // local procedure OnAfterPostApplyVendLedgEntryEditEntries(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line")
-    // begin
-    //     Message('Pause!');
-    // end;
+    [EventSubscriber(ObjectType::Table, Database::"Detailed Cust. Ledg. Entry", 'OnAfterInsertEvent', '', false, false)]
+    local procedure OnAfterInsertDetailedCustomerLedgerEntry(var Rec: Record "Detailed Cust. Ledg. Entry"; RunTrigger: Boolean)
+    var
+    begin
+        if not RunTrigger then
+            exit;
+        Codeunit.Run(Codeunit::"Customer Ledger Entries", Rec);
+    end;
 }
