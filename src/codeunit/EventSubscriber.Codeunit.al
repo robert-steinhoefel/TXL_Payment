@@ -10,6 +10,14 @@ codeunit 51000 "Event Subscriber"
     end;
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"VendEntry-Apply Posted Entries", 'OnAfterPostApplyVendLedgEntry', '', false, false)]
+    // local procedure SetBankDataToVendorLedgerEntryBeforePosting(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry")
+    // var
+    //     ProcessVendorEntry: Codeunit "Vendor Ledger Entries";
+    // begin
+    //     ProcessVendorEntry.RunFromVendorLedgerEntry(VendorLedgerEntry, GenJournalLine);
+    // end;
+
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"VendEntry-Apply Posted Entries", 'OnAfterPostApplyVendLedgEntry', '', false, false)]
     // local procedure OnAfterPostApplyVendLedgEntryEditEntries(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line")
     // begin
     //     Message('Pause!');
