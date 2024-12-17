@@ -10,11 +10,13 @@ codeunit 51001 "Vendor Ledger Entries"
 
     TableNo = "Detailed Vendor Ledg. Entry";
     Permissions = tabledata "G/L Entry" = rm,
-    tabledata "Vendor Ledger Entry" = rm;
+                    tabledata "Vendor Ledger Entry" = rm;
 
     trigger OnRun()
     begin
         if not (Rec."Entry Type" = "Detailed CV Ledger Entry Type"::Application) then
+            exit;
+        if not ((Rec."Initial Document Type" = "Gen. Journal Document Type"::Invoice) or (Rec."Initial Document Type" = "Gen. Journal Document Type"::"Credit Memo")) then
             exit;
         ProcessLedgerEntries(Rec);
     end;
@@ -22,38 +24,21 @@ codeunit 51001 "Vendor Ledger Entries"
     local procedure ProcessLedgerEntries(var Rec: Record "Detailed Vendor Ledg. Entry")
     var
         DetailedVendLedgerEntry, PmtDLEHelperEntry : Record "Detailed Vendor Ledg. Entry";
-        InvoiceLedgerEntry: Record "Vendor Ledger Entry";
-        PaymentLedgerEntry, PmtLEHelperEntry : Record "Vendor Ledger Entry";
+        InvoiceLedgerEntry, PaymentLedgerEntry, PmtLEHelperEntry : Record "Vendor Ledger Entry";
         BankLedgerEntry: Record "Bank Account Ledger Entry";
     begin
-        if (Rec."Initial Document Type" = "Gen. Journal Document Type"::Invoice) or (Rec."Initial Document Type" = "Gen. Journal Document Type"::"Credit Memo") then begin
-            // We don't know if we come from payment or invoice entry.
-            PmtDLEHelperEntry.SetRange("Applied Vend. Ledger Entry No.", Rec."Applied Vend. Ledger Entry No.");
-            PmtDLEHelperEntry.SetFilter("Vendor Ledger Entry No.", '<>%1', Rec."Vendor Ledger Entry No.");
-            PmtDLEHelperEntry.SetRange(Unapplied, false);
-            // When multiple invoice/credit memo ledger entries are applied to one payment entry, it does not matter, which ledger entry we follow to get the payment details.
-            // ISSUE: What if multiple payment entries are applied to the same invoice / credit memo entry.
-            if PmtDLEHelperEntry.FindFirst() then begin
-                PaymentLedgerEntry.SetRange("Entry No.", PmtDLEHelperEntry."Vendor Ledger Entry No.");
-                PaymentLedgerEntry.SetRange("Document Type", "Gen. Journal Document Type"::Payment);
-                if PaymentLedgerEntry.FindSet() then begin
-                    if PaymentLedgerEntry.Count() > 1 then
-                        Error('More than one Payment entry found.');
-                    BankLedgerEntry := GetBankLedgerEntry(PaymentLedgerEntry);
-                end;
+        PaymentLedgerEntry.Get(Rec."Applied Vend. Ledger Entry No.");
+        BankLedgerEntry := GetBankLedgerEntry(PaymentLedgerEntry);
+        if (BankLedgerEntry."Entry No." = 0) then begin
+            if not Rec.Unapplied = true then begin
+                // If payment is has not been posted through bank account, we'll use the vendor's payment ledger entry data.
+                // If posting is an un-application, these fields will remain empty - on purpose.
+                BankLedgerEntry."Posting Date" := PaymentLedgerEntry."Posting Date";
+                BankLedgerEntry."Document No." := PaymentLedgerEntry."Document No.";
             end;
-            if BankLedgerEntry.IsEmpty then begin
-                BankLedgerEntry.Init();
-                if not Rec.Unapplied = true then begin
-                    // If payment is has not been posted through bank account, we'll use the vendor's payment ledger entry data.
-                    // If posting is an un-application, these fields will remain empty - on purpose.
-                    BankLedgerEntry."Posting Date" := Rec."Posting Date";
-                    BankLedgerEntry."Document No." := Rec."Document No.";
-                end;
-            end;
-            InvoiceLedgerEntry.Get(Rec."Vendor Ledger Entry No.");
-            GetAndSetGLEntriesPaid(BankLedgerEntry, InvoiceLedgerEntry);
         end;
+        InvoiceLedgerEntry.Get(Rec."Vendor Ledger Entry No.");
+        GetAndSetGLEntriesPaid(BankLedgerEntry, InvoiceLedgerEntry);
     end;
 
     local procedure GetAndSetGLEntriesPaid(var BankLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry")
@@ -70,7 +55,7 @@ codeunit 51001 "Vendor Ledger Entries"
         end;
         VendorLedgerEntry."Bank Posting Date" := BankLedgerEntry."Posting Date";
         VendorLedgerEntry."Bank Document No." := BankLedgerEntry."Document No.";
-        if not (VendorLedgerEntry."Document Type" = "Gen. Journal Document Type"::Payment) then
+        if not ((VendorLedgerEntry."Document Type" = "Gen. Journal Document Type"::Payment) or (VendorLedgerEntry."Document Type" = "Gen. Journal Document Type"::Refund)) then
             VendorLedgerEntry.Modify();
         GLEntries.SetRange("Document No.", VendorLedgerEntry."Document No.");
         GLEntries.SetRange("Posting Date", VendorLedgerEntry."Posting Date");
@@ -105,6 +90,10 @@ codeunit 51001 "Vendor Ledger Entries"
         if BankLedgerEntry.Count > 1 then
             Error('Found more than 1 Bank Ledger Entry.');
         if BankLedgerEntry.FindFirst() then
+            exit(BankLedgerEntry)
+        else begin
+            Clear(BankLedgerEntry);
             exit(BankLedgerEntry);
+        end;
     end;
 }
