@@ -2,7 +2,7 @@ namespace ALExtensions.ALExtensions;
 
 using Microsoft.Sales.Receivables;
 
-pageextension 51002 "CustomerLedgerEntries PageExt" extends "Customer Ledger Entries"
+pageextension 51102 "CustomerLedgerEntries PageExt" extends "Customer Ledger Entries"
 {
     layout
     {

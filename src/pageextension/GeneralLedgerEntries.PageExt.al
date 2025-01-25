@@ -2,7 +2,7 @@ namespace ALExtensions.ALExtensions;
 
 using Microsoft.Finance.GeneralLedger.Ledger;
 
-pageextension 51000 "GeneralLedgerEntries PageExt" extends "General Ledger Entries"
+pageextension 51100 "GeneralLedgerEntries PageExt" extends "General Ledger Entries"
 {
     layout
     {

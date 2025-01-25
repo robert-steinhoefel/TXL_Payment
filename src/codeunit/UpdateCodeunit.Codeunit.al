@@ -4,7 +4,7 @@ using System.Upgrade;
 using Microsoft.Sales.Receivables;
 using Microsoft.Purchases.Payables;
 
-codeunit 51002 "Update Codeunit"
+codeunit 51101 "Update Codeunit"
 {
     Subtype = Upgrade;
     Permissions = tabledata "G/L Entry" = rimd,
@@ -15,7 +15,7 @@ codeunit 51002 "Update Codeunit"
     var
         UpgradeTag: Codeunit "Upgrade Tag";
     begin
-        if not UpgradeTag.HasUpgradeTag('CleanLedgerEntries-002') then
+        if not UpgradeTag.HasUpgradeTag('CleanLedgerEntries-003') then
             "CleanLedgerEntries"();
     end;
 
@@ -50,7 +50,7 @@ codeunit 51002 "Update Codeunit"
             CL.ModifyAll("Bank Document No.", '');
             CL.ModifyAll("Bank Posting Date", 0D);
         end;
-        UpgradeTag.SetUpgradeTag('CleanLedgerEntries-002');
+        UpgradeTag.SetUpgradeTag('CleanLedgerEntries-003');
     end;
 
 }

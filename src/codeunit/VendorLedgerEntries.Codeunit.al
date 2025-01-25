@@ -1,40 +1,29 @@
 namespace RST.TXL_Payment;
-using Microsoft.Finance.ReceivablesPayables;
 using Microsoft.Purchases.Payables;
 using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Bank.Ledger;
 using Microsoft.Finance.GeneralLedger.Journal;
 
-codeunit 51001 "Vendor Ledger Entries"
+codeunit 51102 "Vendor Ledger Entries"
 {
 
+    // TableNo = "Detailed Vendor Ledg. Entry";
     TableNo = "Detailed Vendor Ledg. Entry";
     Permissions = tabledata "G/L Entry" = rm,
                     tabledata "Vendor Ledger Entry" = rm;
 
     trigger OnRun()
-    begin
-        if not (Rec."Entry Type" = "Detailed CV Ledger Entry Type"::Application) then
-            exit;
-        if not ((Rec."Initial Document Type" = "Gen. Journal Document Type"::Invoice) or (Rec."Initial Document Type" = "Gen. Journal Document Type"::"Credit Memo")) then
-            exit;
-        ProcessLedgerEntries(Rec);
-    end;
-
-    local procedure ProcessLedgerEntries(var Rec: Record "Detailed Vendor Ledg. Entry")
     var
-        DetailedVendLedgerEntry, PmtDLEHelperEntry : Record "Detailed Vendor Ledg. Entry";
-        InvoiceLedgerEntry, PaymentLedgerEntry, PmtLEHelperEntry : Record "Vendor Ledger Entry";
         BankLedgerEntry: Record "Bank Account Ledger Entry";
+        InvoiceLedgerEntry: Record "Vendor Ledger Entry";
     begin
-        PaymentLedgerEntry.Get(Rec."Applied Vend. Ledger Entry No.");
-        BankLedgerEntry := GetBankLedgerEntry(PaymentLedgerEntry);
+        BankLedgerEntry := GetBankLedgerEntry(Rec);
         if (BankLedgerEntry."Entry No." = 0) then begin
             if not Rec.Unapplied = true then begin
                 // If payment is has not been posted through bank account, we'll use the vendor's payment ledger entry data.
                 // If posting is an un-application, these fields will remain empty - on purpose.
-                BankLedgerEntry."Posting Date" := PaymentLedgerEntry."Posting Date";
-                BankLedgerEntry."Document No." := PaymentLedgerEntry."Document No.";
+                BankLedgerEntry."Posting Date" := Rec."Posting Date";
+                BankLedgerEntry."Document No." := Rec."Document No.";
             end;
         end;
         InvoiceLedgerEntry.Get(Rec."Vendor Ledger Entry No.");
@@ -79,15 +68,15 @@ codeunit 51001 "Vendor Ledger Entries"
 
     // Helper methods
 
-    local procedure GetBankLedgerEntry(var PaymentLedgerEntry: Record "Vendor Ledger Entry"): Record "Bank Account Ledger Entry"
+    local procedure GetBankLedgerEntry(var DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry"): Record "Bank Account Ledger Entry"
     // ISSUE: Method needs testing.
     var
         BankLedgerEntry: Record "Bank Account Ledger Entry";
     begin
-        BankLedgerEntry.SetRange("Transaction No.", PaymentLedgerEntry."Transaction No.");
-        BankLedgerEntry.SetRange("Posting Date", PaymentLedgerEntry."Posting Date");
-        BankLedgerEntry.SetRange("Document No.", PaymentLedgerEntry."Document No.");
-        BankLedgerEntry.SetRange("Bal. Account No.", PaymentLedgerEntry."Vendor No.");
+        BankLedgerEntry.SetRange("Posting Date", DetailedVendorLedgEntry."Posting Date");
+        BankLedgerEntry.SetRange("Document No.", DetailedVendorLedgEntry."Document No.");
+        BankLedgerEntry.SetRange("Bal. Account No.", DetailedVendorLedgEntry."Vendor No.");
+        BankLedgerEntry.SetRange("Amount (LCY)", (DetailedVendorLedgEntry."Amount (LCY)" * -1));
         if BankLedgerEntry.Count > 1 then
             Error('Found more than 1 Bank Ledger Entry.');
         if BankLedgerEntry.FindFirst() then

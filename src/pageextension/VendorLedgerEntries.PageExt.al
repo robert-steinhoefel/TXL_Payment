@@ -2,7 +2,7 @@ namespace ALExtensions.ALExtensions;
 
 using Microsoft.Purchases.Payables;
 
-pageextension 51001 "VendorLedgerEntries PageExt" extends "Vendor Ledger Entries"
+pageextension 51101 "VendorLedgerEntries PageExt" extends "Vendor Ledger Entries"
 {
     layout
     {

@@ -6,7 +6,7 @@ using Microsoft.Finance.ReceivablesPayables;
 using Microsoft.Bank.Ledger;
 using Microsoft.Finance.GeneralLedger.Journal;
 
-codeunit 51003 "Customer Ledger Entries"
+codeunit 51103 "Customer Ledger Entries"
 {
     TableNo = "Detailed Cust. Ledg. Entry";
     Permissions = tabledata "G/L Entry" = rm,
@@ -18,6 +18,8 @@ codeunit 51003 "Customer Ledger Entries"
             exit;
         if not ((Rec."Initial Document Type" = "Gen. Journal Document Type"::Invoice) or (Rec."Initial Document Type" = "Gen. Journal Document Type"::"Credit Memo")) then
             exit;
+        // if ((Rec."Document Type" = "Gen. Journal Document Type"::Invoice) or (Rec."Initial Document Type" = "Gen. Journal Document Type"::"Credit Memo")) then
+        //     exit;
         ProcessLedgerEntries(Rec);
     end;
 
