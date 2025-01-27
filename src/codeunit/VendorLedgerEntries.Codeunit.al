@@ -9,7 +9,9 @@ codeunit 51102 "Vendor Ledger Entries"
 
     // TableNo = "Detailed Vendor Ledg. Entry";
     TableNo = "Detailed Vendor Ledg. Entry";
-    Permissions = tabledata "G/L Entry" = rm,
+    Permissions = tabledata "Bank Account Ledger Entry" = r,
+                    tabledata "Detailed Vendor Ledg. Entry" = r,
+                    tabledata "G/L Entry" = rm,
                     tabledata "Vendor Ledger Entry" = rm;
 
     trigger OnRun()
