@@ -6,8 +6,6 @@ using Microsoft.Finance.GeneralLedger.Journal;
 
 codeunit 51102 "Vendor Ledger Entries"
 {
-
-    // TableNo = "Detailed Vendor Ledg. Entry";
     TableNo = "Detailed Vendor Ledg. Entry";
     Permissions = tabledata "Bank Account Ledger Entry" = r,
                     tabledata "Detailed Vendor Ledg. Entry" = r,
