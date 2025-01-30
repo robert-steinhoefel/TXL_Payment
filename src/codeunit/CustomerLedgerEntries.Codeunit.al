@@ -52,13 +52,13 @@ codeunit 51103 "Customer Ledger Entries"
         GLEntries.SetRange("Document No.", CustomerLedgerEntry."Document No.");
         GLEntries.SetRange("Posting Date", CustomerLedgerEntry."Posting Date");
         if not GLEntries.IsEmpty then begin
-            GLEntries.ModifyAll(Paid, true);
-            GLEntries.ModifyAll("Pmt Cancelled", false);
             GLEntries.ModifyAll("Bank Posting Date", BankLedgerEntry."Posting Date");
             GLEntries.ModifyAll("Bank Document No.", BankLedgerEntry."Document No.");
             if not (BankLedgerEntry."Posting Date" = 0D) then begin
                 GLEntries.ModifyAll("Vend./Cust. Doc. No.", CustomerLedgerEntry."Document No.");
                 GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", CustomerLedgerEntry."Due Date");
+                GLEntries.ModifyAll(Paid, true);
+                GLEntries.ModifyAll("Pmt Cancelled", false);
             end else begin
                 GLEntries.ModifyAll("Vend./Cust. Doc. No.", '');
                 GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
@@ -67,6 +67,25 @@ codeunit 51103 "Customer Ledger Entries"
             end;
         end;
     end;
+
+    // procedure SetPaymentDetails(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var CustomerLedgerEntry: Record "Cust. Ledger Entry")
+    // var
+    //     GLEntries: Record "G/L Entry";
+    // begin
+    //     CustomerLedgerEntry."Bank Posting Date" := BankAccountLedgerEntry."Posting Date";
+    //     CustomerLedgerEntry."Bank Document No." := BankAccountLedgerEntry."Document No.";
+    //     CustomerLedgerEntry.Paid := true;
+    //     GLEntries.SetRange("Document No.", CustomerLedgerEntry."Document No.");
+    //     GLEntries.SetRange("Posting Date", CustomerLedgerEntry."Posting Date");
+    //     if not GLEntries.IsEmpty then begin
+    //         GLEntries.ModifyAll(Paid, true);
+    //         GLEntries.ModifyAll("Pmt Cancelled", false);
+    //         GLEntries.ModifyAll("Bank Posting Date", BankAccountLedgerEntry."Posting Date");
+    //         GLEntries.ModifyAll("Bank Document No.", BankAccountLedgerEntry."Document No.");
+    //         GLEntries.ModifyAll("Vend./Cust. Doc. No.", CustomerLedgerEntry."Document No.");
+    //         GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", CustomerLedgerEntry."Due Date");
+    //     end;
+    // end;
 
     // Helper methods
 

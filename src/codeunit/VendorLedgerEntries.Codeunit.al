@@ -1,4 +1,5 @@
 namespace P3.TXL.Payment.Vendor;
+
 using Microsoft.Purchases.Payables;
 using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Bank.Ledger;
@@ -50,13 +51,13 @@ codeunit 51102 "Vendor Ledger Entries"
         GLEntries.SetRange("Document No.", VendorLedgerEntry."Document No.");
         GLEntries.SetRange("Posting Date", VendorLedgerEntry."Posting Date");
         if not GLEntries.IsEmpty then begin
-            GLEntries.ModifyAll(Paid, true);
-            GLEntries.ModifyAll("Pmt Cancelled", false);
             GLEntries.ModifyAll("Bank Posting Date", BankLedgerEntry."Posting Date");
             GLEntries.ModifyAll("Bank Document No.", BankLedgerEntry."Document No.");
             if not (BankLedgerEntry."Posting Date" = 0D) then begin
                 GLEntries.ModifyAll("Vend./Cust. Doc. No.", VendorLedgerEntry."Document No.");
                 GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", VendorLedgerEntry."Due Date");
+                GLEntries.ModifyAll(Paid, true);
+                GLEntries.ModifyAll("Pmt Cancelled", false);
             end else begin
                 GLEntries.ModifyAll("Vend./Cust. Doc. No.", '');
                 GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
@@ -65,6 +66,25 @@ codeunit 51102 "Vendor Ledger Entries"
             end;
         end;
     end;
+
+    // procedure SetPaymentDetails(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry")
+    // var
+    //     GLEntries: Record "G/L Entry";
+    // begin
+    //     VendorLedgerEntry."Bank Posting Date" := BankAccountLedgerEntry."Posting Date";
+    //     VendorLedgerEntry."Bank Document No." := BankAccountLedgerEntry."Document No.";
+    //     VendorLedgerEntry.Paid := true;
+    //     GLEntries.SetRange("Document No.", VendorLedgerEntry."Document No.");
+    //     GLEntries.SetRange("Posting Date", VendorLedgerEntry."Posting Date");
+    //     if not GLEntries.IsEmpty then begin
+    //         GLEntries.ModifyAll(Paid, true);
+    //         GLEntries.ModifyAll("Pmt Cancelled", false);
+    //         GLEntries.ModifyAll("Bank Posting Date", BankAccountLedgerEntry."Posting Date");
+    //         GLEntries.ModifyAll("Bank Document No.", BankAccountLedgerEntry."Document No.");
+    //         GLEntries.ModifyAll("Vend./Cust. Doc. No.", VendorLedgerEntry."Document No.");
+    //         GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", VendorLedgerEntry."Due Date");
+    //     end;
+    // end;
 
     // Helper methods
 
