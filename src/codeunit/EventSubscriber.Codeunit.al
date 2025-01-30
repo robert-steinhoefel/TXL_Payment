@@ -5,6 +5,8 @@ using P3.TXL.Payment.BankAccount;
 using Microsoft.Purchases.Payables;
 using Microsoft.Sales.Receivables;
 using Microsoft.Bank.Ledger;
+using Microsoft.Finance.GeneralLedger.Journal;
+using Microsoft.Finance.ReceivablesPayables;
 
 codeunit 51100 "Event Subscriber"
 {
@@ -12,11 +14,11 @@ codeunit 51100 "Event Subscriber"
     local procedure OnAfterInsertDetailedVendorLedgerEntry(var Rec: Record "Detailed Vendor Ledg. Entry"; RunTrigger: Boolean)
     var
     begin
-        if Rec."Entry Type" <> Microsoft.Finance.ReceivablesPayables."Detailed CV Ledger Entry Type"::Application then
+        if Rec."Entry Type" <> "Detailed CV Ledger Entry Type"::Application then
             exit;
-        if Rec."Initial Document Type" = Microsoft.Finance.GeneralLedger.Journal."Gen. Journal Document Type"::Payment then
+        if Rec."Initial Document Type" = "Gen. Journal Document Type"::Payment then
             exit;
-        if Rec."Initial Document Type" = Microsoft.Finance.GeneralLedger.Journal."Gen. Journal Document Type"::Refund then
+        if Rec."Initial Document Type" = "Gen. Journal Document Type"::Refund then
             exit;
         Codeunit.Run(Codeunit::"Vendor Ledger Entries", Rec);
     end;
@@ -27,9 +29,9 @@ codeunit 51100 "Event Subscriber"
     begin
         if Rec."Entry Type" <> Microsoft.Finance.ReceivablesPayables."Detailed CV Ledger Entry Type"::Application then
             exit;
-        if Rec."Initial Document Type" = Microsoft.Finance.GeneralLedger.Journal."Gen. Journal Document Type"::Payment then
+        if Rec."Initial Document Type" = "Gen. Journal Document Type"::Payment then
             exit;
-        if Rec."Initial Document Type" = Microsoft.Finance.GeneralLedger.Journal."Gen. Journal Document Type"::Refund then
+        if Rec."Initial Document Type" = "Gen. Journal Document Type"::Refund then
             exit;
         Codeunit.Run(Codeunit::"Customer Ledger Entries", Rec);
     end;
