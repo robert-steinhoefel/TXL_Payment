@@ -1,8 +1,8 @@
-namespace ALExtensions.ALExtensions;
+namespace P3.TXL.Payment.GenJnl;
 
 using Microsoft.Finance.GeneralLedger.Journal;
 
-tableextension 51103 "Gen. Journal Batches" extends "Gen. Journal Batch"
+tableextension 51103 "GenJournalBatch TableExt" extends "Gen. Journal Batch"
 {
     fields
     {

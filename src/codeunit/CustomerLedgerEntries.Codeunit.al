@@ -1,4 +1,4 @@
-namespace RST.TXL_Payment;
+namespace P3.TXL.Payment.Customer;
 
 using Microsoft.Sales.Receivables;
 using Microsoft.Finance.GeneralLedger.Ledger;

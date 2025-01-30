@@ -1,4 +1,4 @@
-namespace ALExtensions.ALExtensions;
+namespace P3.TXL.Payment.System;
 using Microsoft.Finance.GeneralLedger.Ledger;
 using System.Upgrade;
 using Microsoft.Sales.Receivables;

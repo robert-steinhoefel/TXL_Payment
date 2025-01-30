@@ -1,4 +1,4 @@
-namespace ALExtensions.ALExtensions;
+namespace P3.TXL.Payment.GenJnl;
 
 using Microsoft.Finance.GeneralLedger.Ledger;
 

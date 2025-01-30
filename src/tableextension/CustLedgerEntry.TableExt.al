@@ -1,4 +1,4 @@
-namespace ALExtensions.ALExtensions;
+namespace P3.TXL.Payment.Customer;
 
 using Microsoft.Sales.Receivables;
 

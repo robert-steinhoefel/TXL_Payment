@@ -1,4 +1,4 @@
-namespace ALExtensions.ALExtensions;
+namespace P3.TXL.Payment.Vendor;
 
 using Microsoft.Purchases.Payables;
 

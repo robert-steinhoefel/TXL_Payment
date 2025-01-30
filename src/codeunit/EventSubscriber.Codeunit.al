@@ -1,6 +1,8 @@
-namespace RST.TXL_Payment;
+namespace P3.TXL.Payment.System;
 using Microsoft.Purchases.Payables;
 using Microsoft.Sales.Receivables;
+using P3.TXL.Payment.Vendor;
+using P3.TXL.Payment.Customer;
 
 codeunit 51100 "Event Subscriber"
 {
