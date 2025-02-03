@@ -2,7 +2,7 @@
   "id": "1af44bdf-7d71-4fbd-92d7-acb705d59bcb",
   "name": "TXL Payment",
   "publisher": "RST",
-  "version": "0.0.0.3",
+  "version": "25.3.1.3",
   "brief": "Extending Ledger Entry functionalities upon payment reconciliation.",
   "description": "This extension adds funtionality to mark several different ledger entry types with data from a corresponding payment.",
   "privacyStatement": "",
@@ -13,7 +13,7 @@
   "dependencies": [],
   "screenshots": [],
   "platform": "25.0.0.0",
-  "application": "25.0.0.0",
+  "application": "25.3.0.0",
   "idRanges": [
     {
       "from": 51100,
