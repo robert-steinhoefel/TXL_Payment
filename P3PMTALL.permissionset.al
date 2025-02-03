@@ -14,5 +14,6 @@ permissionset 51100 "P3.PMT-ALL"
         codeunit "Event Subscriber" = X,
         codeunit "Update Codeunit" = X,
         codeunit "Vendor Ledger Entries" = X,
-        query "Bank Account Ledger Entries" = X;
+        query "Bank Account Ledger Entries" = X,
+        codeunit Installation = X;
 }
