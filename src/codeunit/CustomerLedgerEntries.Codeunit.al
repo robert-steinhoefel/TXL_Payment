@@ -4,6 +4,7 @@ using Microsoft.Sales.Receivables;
 using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Finance.ReceivablesPayables;
 using Microsoft.Bank.Ledger;
+using P3.TXL.Payment.BankAccount;
 using Microsoft.Finance.GeneralLedger.Journal;
 
 codeunit 51103 "Customer Ledger Entries"
@@ -30,6 +31,7 @@ codeunit 51103 "Customer Ledger Entries"
         end;
         InvoiceLedgerEntry.Get(Rec."Cust. Ledger Entry No.");
         GetAndSetGLEntriesPaid(BankLedgerEntry, InvoiceLedgerEntry);
+        Codeunit.Run(Codeunit::"Bank Account Ledger Entries", BankLedgerEntry);
     end;
 
     local procedure GetAndSetGLEntriesPaid(var BankLedgerEntry: Record "Bank Account Ledger Entry"; var CustomerLedgerEntry: Record "Cust. Ledger Entry")
@@ -68,38 +70,30 @@ codeunit 51103 "Customer Ledger Entries"
         end;
     end;
 
-    // procedure SetPaymentDetails(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var CustomerLedgerEntry: Record "Cust. Ledger Entry")
-    // var
-    //     GLEntries: Record "G/L Entry";
-    // begin
-    //     CustomerLedgerEntry."Bank Posting Date" := BankAccountLedgerEntry."Posting Date";
-    //     CustomerLedgerEntry."Bank Document No." := BankAccountLedgerEntry."Document No.";
-    //     CustomerLedgerEntry.Paid := true;
-    //     GLEntries.SetRange("Document No.", CustomerLedgerEntry."Document No.");
-    //     GLEntries.SetRange("Posting Date", CustomerLedgerEntry."Posting Date");
-    //     if not GLEntries.IsEmpty then begin
-    //         GLEntries.ModifyAll(Paid, true);
-    //         GLEntries.ModifyAll("Pmt Cancelled", false);
-    //         GLEntries.ModifyAll("Bank Posting Date", BankAccountLedgerEntry."Posting Date");
-    //         GLEntries.ModifyAll("Bank Document No.", BankAccountLedgerEntry."Document No.");
-    //         GLEntries.ModifyAll("Vend./Cust. Doc. No.", CustomerLedgerEntry."Document No.");
-    //         GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", CustomerLedgerEntry."Due Date");
-    //     end;
-    // end;
-
     // Helper methods
 
     local procedure GetBankLedgerEntry(var DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry"): Record "Bank Account Ledger Entry"
     // ISSUE: Method needs testing.
     var
+        DetailedPmtCustLedgerEntry: Record "Detailed Cust. Ledg. Entry";
         BankLedgerEntry: Record "Bank Account Ledger Entry";
+        ErrorTooManyRecords: Label 'Found %1 records of %2.';
     begin
+        DetailedPmtCustLedgerEntry.SetRange("Cust. Ledger Entry No.", DetailedCustLedgEntry."Applied Cust. Ledger Entry No.");
+        DetailedPmtCustLedgerEntry.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+        DetailedPmtCustLedgerEntry.SetRange(Unapplied, false);
+        DetailedPmtCustLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund);
+        DetailedPmtCustLedgerEntry.SetFilter("Applied Cust. Ledger Entry No.", '<>%1', DetailedCustLedgEntry."Cust. Ledger Entry No.");
+        if DetailedPmtCustLedgerEntry.Count() > 1 then
+            Error(StrSubstNo(ErrorTooManyRecords, Format(DetailedPmtCustLedgerEntry.Count()), DetailedCustLedgEntry.TableCaption()));
+        if DetailedPmtCustLedgerEntry.FindFirst() then
+            BankLedgerEntry.SetRange("Transaction No.", DetailedCustLedgEntry."Transaction No.");
         BankLedgerEntry.SetRange("Posting Date", DetailedCustLedgEntry."Posting Date");
         BankLedgerEntry.SetRange("Document No.", DetailedCustLedgEntry."Document No.");
         BankLedgerEntry.SetRange("Bal. Account No.", DetailedCustLedgEntry."Customer No.");
         BankLedgerEntry.SetRange("Amount (LCY)", (DetailedCustLedgEntry."Amount (LCY)" * -1));
         if BankLedgerEntry.Count > 1 then
-            Error('Found more than 1 Bank Ledger Entry.');
+            Error(StrSubstNo(ErrorTooManyRecords, Format(BankLedgerEntry.Count()), BankLedgerEntry.TableCaption()));
         if BankLedgerEntry.FindFirst() then
             exit(BankLedgerEntry)
         else begin

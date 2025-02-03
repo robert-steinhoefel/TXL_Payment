@@ -1,9 +1,11 @@
 namespace P3.TXL.Payment.Vendor;
 
 using Microsoft.Purchases.Payables;
-using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Bank.Ledger;
+using P3.TXL.Payment.BankAccount;
+using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Finance.GeneralLedger.Journal;
+using Microsoft.Finance.ReceivablesPayables;
 
 codeunit 51102 "Vendor Ledger Entries"
 {
@@ -29,6 +31,7 @@ codeunit 51102 "Vendor Ledger Entries"
         end;
         InvoiceLedgerEntry.Get(Rec."Vendor Ledger Entry No.");
         GetAndSetGLEntriesPaid(BankLedgerEntry, InvoiceLedgerEntry);
+        Codeunit.Run(Codeunit::"Bank Account Ledger Entries", BankLedgerEntry);
     end;
 
     local procedure GetAndSetGLEntriesPaid(var BankLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry")
@@ -67,38 +70,30 @@ codeunit 51102 "Vendor Ledger Entries"
         end;
     end;
 
-    // procedure SetPaymentDetails(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry")
-    // var
-    //     GLEntries: Record "G/L Entry";
-    // begin
-    //     VendorLedgerEntry."Bank Posting Date" := BankAccountLedgerEntry."Posting Date";
-    //     VendorLedgerEntry."Bank Document No." := BankAccountLedgerEntry."Document No.";
-    //     VendorLedgerEntry.Paid := true;
-    //     GLEntries.SetRange("Document No.", VendorLedgerEntry."Document No.");
-    //     GLEntries.SetRange("Posting Date", VendorLedgerEntry."Posting Date");
-    //     if not GLEntries.IsEmpty then begin
-    //         GLEntries.ModifyAll(Paid, true);
-    //         GLEntries.ModifyAll("Pmt Cancelled", false);
-    //         GLEntries.ModifyAll("Bank Posting Date", BankAccountLedgerEntry."Posting Date");
-    //         GLEntries.ModifyAll("Bank Document No.", BankAccountLedgerEntry."Document No.");
-    //         GLEntries.ModifyAll("Vend./Cust. Doc. No.", VendorLedgerEntry."Document No.");
-    //         GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", VendorLedgerEntry."Due Date");
-    //     end;
-    // end;
-
     // Helper methods
 
     local procedure GetBankLedgerEntry(var DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry"): Record "Bank Account Ledger Entry"
     // ISSUE: Method needs testing.
     var
+        DetailedPmtVendorLedgerEntry: Record "Detailed Vendor Ledg. Entry";
         BankLedgerEntry: Record "Bank Account Ledger Entry";
+        ErrorTooManyRecords: Label 'Found %1 records of %2.';
     begin
+        DetailedPmtVendorLedgerEntry.SetRange("Vendor Ledger Entry No.", DetailedVendorLedgEntry."Applied Vend. Ledger Entry No.");
+        DetailedPmtVendorLedgerEntry.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+        DetailedPmtVendorLedgerEntry.SetRange(Unapplied, false);
+        DetailedPmtVendorLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund);
+        DetailedPmtVendorLedgerEntry.SetFilter("Applied Vend. Ledger Entry No.", '<>%1', DetailedVendorLedgEntry."Vendor Ledger Entry No.");
+        if DetailedPmtVendorLedgerEntry.Count() > 1 then
+            Error(StrSubstNo(ErrorTooManyRecords, Format(DetailedPmtVendorLedgerEntry.Count()), DetailedVendorLedgEntry.TableCaption()));
+        if DetailedPmtVendorLedgerEntry.FindFirst() then
+            BankLedgerEntry.SetRange("Transaction No.", DetailedPmtVendorLedgerEntry."Transaction No.");
         BankLedgerEntry.SetRange("Posting Date", DetailedVendorLedgEntry."Posting Date");
         BankLedgerEntry.SetRange("Document No.", DetailedVendorLedgEntry."Document No.");
         BankLedgerEntry.SetRange("Bal. Account No.", DetailedVendorLedgEntry."Vendor No.");
         BankLedgerEntry.SetRange("Amount (LCY)", (DetailedVendorLedgEntry."Amount (LCY)" * -1));
         if BankLedgerEntry.Count > 1 then
-            Error('Found more than 1 Bank Ledger Entry.');
+            Error(StrSubstNo(ErrorTooManyRecords, Format(BankLedgerEntry.Count()), BankLedgerEntry.TableCaption()));
         if BankLedgerEntry.FindFirst() then
             exit(BankLedgerEntry)
         else begin

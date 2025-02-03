@@ -13,6 +13,11 @@ using Microsoft.Sales.Receivables;
 codeunit 51104 "Bank Account Ledger Entries"
 {
     TableNo = "Bank Account Ledger Entry";
+    Permissions = tabledata "Bank Account Ledger Entry" = rm,
+    tabledata "Vendor Ledger Entry" = r,
+    tabledata "Cust. Ledger Entry" = r,
+    tabledata "Detailed Vendor Ledg. Entry" = r,
+    tabledata "Detailed Cust. Ledg. Entry" = r;
 
     trigger OnRun()
     begin
