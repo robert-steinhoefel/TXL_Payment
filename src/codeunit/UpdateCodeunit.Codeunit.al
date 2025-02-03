@@ -35,16 +35,16 @@ codeunit 51101 "Update Codeunit"
             GL.ModifyAll("Bank Posting Date", 0D);
         end;
         if VL.FindSet() then begin
-            VL.ModifyAll("Vend./Cust. Doc. No.", '');
-            VL.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
+            VL.ModifyAll("CV Doc. No.", '');
+            VL.ModifyAll("CV Doc. Due Date", 0D);
             VL.ModifyAll(Paid, false);
             VL.ModifyAll("Pmt Cancelled", false);
             VL.ModifyAll("Bank Document No.", '');
             VL.ModifyAll("Bank Posting Date", 0D);
         end;
         if CL.FindSet() then begin
-            CL.ModifyAll("Vend./Cust. Doc. No.", '');
-            CL.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
+            CL.ModifyAll("CV Doc. No.", '');
+            CL.ModifyAll("CV Doc. Due Date", 0D);
             CL.ModifyAll(Paid, false);
             CL.ModifyAll("Pmt Cancelled", false);
             CL.ModifyAll("Bank Document No.", '');

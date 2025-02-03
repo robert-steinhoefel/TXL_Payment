@@ -30,13 +30,13 @@ tableextension 51102 "CustLedgerEntry TableExt" extends "Cust. Ledger Entry"
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(51104; "Vend./Cust. Doc. No."; Code[20])
+        field(51104; "CV Doc. No."; Code[20])
         {
             Caption = 'Vendor/Customer Document No.';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(51105; "Vend./Cust. Doc. Due Date"; Date)
+        field(51105; "CV Doc. Due Date"; Date)
         {
             Caption = 'Vendor/Customer Document Due Date';
             DataClassification = ToBeClassified;

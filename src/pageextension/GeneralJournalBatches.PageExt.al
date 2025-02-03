@@ -6,13 +6,13 @@ pageextension 51104 "GeneralJournalBatches PageExt" extends "General Journal Bat
 {
     layout
     {
-        addafter("Reason Code")
-        {
-            field("Cameralistic Journal Batch"; Rec."Cameralistic Journal Batch")
-            {
-                ApplicationArea = All;
-                Caption = 'Cameralistic Journal Batch';
-            }
-        }
+        // addafter("Reason Code")
+        // {
+        //     field("Cameralistic Journal Batch"; Rec."Cameralistic Journal Batch")
+        //     {
+        //         ApplicationArea = All;
+        //         Caption = 'Cameralistic Journal Batch';
+        //     }
+        // }
     }
 }
