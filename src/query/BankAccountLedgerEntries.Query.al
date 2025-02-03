@@ -1,6 +1,7 @@
-namespace ALExtensions.ALExtensions;
+namespace P3.TXL.Payment.System;
 
 using Microsoft.Bank.Ledger;
+using Microsoft.Finance.Dimension;
 
 query 51100 "Bank Account Ledger Entries"
 {
@@ -16,6 +17,9 @@ query 51100 "Bank Account Ledger Entries"
     {
         dataitem(BankAccountLedgerEntry; "Bank Account Ledger Entry")
         {
+            column(Entry_No_; "Entry No.")
+            {
+            }
             column(BankAccountNo; "Bank Account No.")
             {
             }
@@ -54,6 +58,20 @@ query 51100 "Bank Account Ledger Entries"
             }
             column(LedgerEntryType; "Ledger Entry Type")
             {
+            }
+            // TODO: We might probably need the Dim ID resolution to the Bank Account Ledger Entry itself, not the CV Ledger Entry.
+            dataitem(Dimension_Set_ID; "Dimension Set Entry")
+            {
+                DataItemLink = "Dimension Set ID" = BankAccountLedgerEntry."CV Dimension Set ID";
+                column(Dimension_Code; "Dimension Code")
+                {
+                }
+                column(Dimension_Value_Code; "Dimension Value Code")
+                {
+                }
+                column(Dimension_Value_Name; "Dimension Value Name")
+                {
+                }
             }
         }
     }
