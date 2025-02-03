@@ -43,7 +43,7 @@ pageextension 51103 "GeneralJournal PageExt" extends "General Journal"
             field("Bank Document No"; BankDocumentNo)
             {
                 ApplicationArea = All;
-                Caption = 'Bank Document No';
+                Caption = 'Bank Document No.';
                 Visible = ShowColumns;
                 Editable = EditBankDetails;
             }

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="de-DE" original="TXL Payment">
+    <body>
+      <group id="body">
+        <trans-unit id="PageExtension 2591587468 - Control 3113451206 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Dimension Set ID field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor-/Debitor Dimensionssatz-ID an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control CV Dimension Set ID - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 827537182 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Global Dimension 1 Code field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor/Debitor Globale Dimension 1 Code an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control CV Global Dimension 1 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 1248707195 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Global Dimension 2 Code field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor/Debitor Global Dimension 2 Code an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control CV Global Dimension 2 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 3319631365 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Transaction No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Transaktionsnummer an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Transaction No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 1714107377 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Document Type field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor/Debitorbelegart an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Vend./Cust. Doc Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 4089433211 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Document Due Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Fälligkeitsdatum des Kreditor-/Debitorbelegs an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Vend./Cust. Doc. Due Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 602587242 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor-/Debitorbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Vend./Cust. Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2591587468 - Method 2054125307 - NamedType 824249955" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Poting payments directly to %1s is not allowed in cameralistics. Use an invoice or credit memo on a customer or vendor instead.</source>
+          <target state="translated">Das direkt Buchen von Zahlungen an %1s ist in der Kameralistik nicht zulässig. Verwenden Sie stattdessen eine Rechnung oder Gutschrift für einen Kunden oder Lieferanten.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Bank Account Ledger Entries - Method GetAndProcessLedgerEntries - NamedType ErrNoDirectPosting</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 3113451206 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Dimension Set ID</source>
+          <target state="translated">Kreditor/Debitor Dimensionssatz-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Dimension Set ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 2037333831 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Document Type</source>
+          <target state="translated">Kreditor/Debitor Belegart</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Doc Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 2894683269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Document Due Date</source>
+          <target state="translated">Kreditor/Debitor Dokument Fälligkeitsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Doc. Due Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 6029200 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Document No.</source>
+          <target state="translated">Kreditor/Debitor Dokument-Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 827537182 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Global Dimension 1 Code</source>
+          <target state="translated">Kreditor/Debitor Globale Dimension 1 Code</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Global Dimension 1 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 1248707195 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Global Dimension 2 Code</source>
+          <target state="translated">Kreditor/Debitor Globale Dimension 2 Code</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Global Dimension 2 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 2105177955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Source Ledger Entry Type</source>
+          <target state="translated">Quelle Posten Eintragstyp</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field Ledger Entry Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2393537757 - Method 3724757915 - NamedType 3160015003" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Found %1 records of %2.</source>
+          <target state="translated">%1 Datensätze von %2 gefunden.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Customer Ledger Entries - Method GetBankLedgerEntry - NamedType ErrorTooManyRecords</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 3102773586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Bank Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Bank Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 1675438334 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Bank Posting Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbuchungsdatum an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Bank Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 789473408 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Paid field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bezahlt an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Paid - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 510685278 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Payment Cancelled field.</source>
+          <target state="translated">Gibt den Wert des Feldes "Zahlung storniert" an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Pmt Cancelled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 3102773586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Bank Document No.</source>
+          <target state="translated">Bank Dokument Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Bank Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 1675438334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Bank Posting Date</source>
+          <target state="translated">Bank Buchungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Bank Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 789473408 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Paid</source>
+          <target state="translated">Bezahlt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Paid - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 510685278 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Payment Cancelled</source>
+          <target state="translated">Zahlung storniert</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Pmt Cancelled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 4089433211 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Vendor/Customer Document Due Date</source>
+          <target state="translated">Kreditor/Debitor Dokument Fälligkeitsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Vend./Cust. Doc. Due Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 602587242 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Vendor/Customer Document No.</source>
+          <target state="translated">Kreditor/Debitor Dokument-Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Vend./Cust. Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3630610439 - Control 2208882292 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Bank Document No</source>
+          <target state="translated">Bankdokument Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralJournal PageExt - Control Bank Document No - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3630610439 - Control 1727466090 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Bank Transaction Date</source>
+          <target state="translated">Datum der Banktransaktion</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralJournal PageExt - Control Bank Transaction Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3630610439 - Control 2157351802 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Check this box if you want to make changes to the bank transaction data used for cameralistics, e.g. set another bank transaction date or document number. If left false, the data from the reference G/L Entry will be used.</source>
+          <target state="translated">Aktivieren Sie dieses Kontrollkästchen, wenn Sie Änderungen an den für die Kameralistik verwendeten Bankgeschäftsdaten vornehmen möchten, z. B. ein anderes Bankgeschäftsdatum oder eine andere Belegnummer festlegen möchten. Wenn Sie dieses Feld nicht markieren, werden die Daten aus der Referenz-Sachbuchung verwendet.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralJournal PageExt - Control Edit Bank Transaction Data - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3630610439 - Control 2157351802 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Edit Bank Transaction Data</source>
+          <target state="translated">Bankgeschäftsdaten bearbeiten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralJournal PageExt - Control Edit Bank Transaction Data - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3630610439 - Control 2921530364 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Reference Gen. Ledger Entry</source>
+          <target state="translated">Referenz Hauptbucheintrag</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralJournal PageExt - Control Reference Gen. Ledger Entry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 519486841 - Control 657781976 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3603089623">
+          <source>Cameralistic Journal Batch</source>
+          <target state="translated">Kameralistisches Buch.-Blatt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralJournalBatches PageExt - Control Cameralistic Journal Batch - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 3102773586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Bank Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Bank Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 1675438334 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Bank Posting Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbuchungsdatum an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Bank Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 789473408 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Paid field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bezahlt an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Paid - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 510685278 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Payment Cancelled field.</source>
+          <target state="translated">Gibt den Wert des Feldes "Zahlung storniert" an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Pmt Cancelled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 4089433211 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Vendor/Customer Document Due Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Fälligkeitsdatum des Kreditor-/Debitorbelegs an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Vend./Cust. Doc. Due Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 602587242 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Vendor/Customer Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor-/Debitorbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Vend./Cust. Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 31016562 - Field 657781976 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3690479385">
+          <source>Cameralistic Journal Batch</source>
+          <target state="translated">Kameralistisches Buch.-Blatt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GenJournalBatch TableExt - Field Cameralistic Journal Batch - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 3102773586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Bank Document No.</source>
+          <target state="translated">Bank Dokument Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Bank Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 1675438334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Bank Posting Date</source>
+          <target state="translated">Bank Buchungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Bank Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 2894683269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Vendor/Customer Document Due Date</source>
+          <target state="translated">Kreditor/Debitor Dokument Fälligkeitsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field CV Doc. Due Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 6029200 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Vendor/Customer Document No.</source>
+          <target state="translated">Kreditor/Debitor Dokument-Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field CV Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 789473408 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Paid</source>
+          <target state="translated">Bezahlt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Paid - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 510685278 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Payment Cancelled</source>
+          <target state="translated">Zahlung abgebrochen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Pmt Cancelled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source/>
+          <target state="needs-translation"></target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue   - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 1994964448 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer</source>
+          <target state="translated">Debitor</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue Customer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 4274826855 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account</source>
+          <target state="translated">Sachkonto</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue G/L Account - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 1936001480 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor</source>
+          <target state="translated">Kreditor</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue Vendor - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1567633909 - Method 3724757915 - NamedType 3160015003" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Found %1 records of %2.</source>
+          <target state="translated">%1 Datensätze von %2 gefunden.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Vendor Ledger Entries - Method GetBankLedgerEntry - NamedType ErrorTooManyRecords</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 3102773586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Bank Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Bank Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 1675438334 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Bank Posting Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbuchungsdatum an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Bank Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 789473408 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Paid field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bezahlt an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Paid - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 510685278 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Payment Cancelled field.</source>
+          <target state="translated">Gibt den Wert des Feldes "Zahlung storniert" an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Pmt Cancelled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 3102773586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Bank Document No.</source>
+          <target state="translated">Bank Dokument Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Bank Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 1675438334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Bank Posting Date</source>
+          <target state="translated">Bank Buchungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Bank Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 789473408 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Paid</source>
+          <target state="translated">Bezahlt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Paid - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 510685278 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Payment Cancelled</source>
+          <target state="translated">Zahlung abgebrochen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Pmt Cancelled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 4089433211 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Vendor/Customer Document Due Date</source>
+          <target state="translated">Kreditor/Debitor Dokument Fälligkeitsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Vend./Cust. Doc. Due Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 602587242 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Vendor/Customer Document No.</source>
+          <target state="translated">Kreditor/Debitor Dokument-Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Vend./Cust. Doc. No. - Property Caption</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

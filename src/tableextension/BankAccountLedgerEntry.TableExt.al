@@ -38,21 +38,14 @@ tableextension 51104 "Bank Acc. Ledger Entry" extends "Bank Account Ledger Entry
         {
             Caption = 'Vendor/Customer Document Type';
             Editable = false;
-            // TableRelation =
-            // if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Customer)) "Cust. Ledger Entry"."Document Type" where("Document No." = field("CV Doc. No."))
-            // else
-            // if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Vendor)) "Vendor Ledger Entry"."Document Type" where("Document No." = field("CV Doc. No."))
-            // else
-            // // FIXME: Probably not working properly since we're pretty sure that there will be more than 1 G/L entries.
-            // if ("Ledger Entry Type" = const("Source Ledger Entry Type"::"G/L Account")) "G/L Entry"."Document Type" where("Document No." = field("CV Doc. No."));
         }
-        field(51104; "CV Global Dimension 1 Code"; Code[10])
+        field(51104; "CV Global Dimension 1 Code"; Code[20])
         {
             Caption = 'Vendor/Customer Global Dimension 1 Code';
             Editable = false;
             TableRelation = Dimension;
         }
-        field(51105; "CV Global Dimension 2 Code"; Code[10])
+        field(51105; "CV Global Dimension 2 Code"; Code[20])
         {
             Caption = 'Vendor/Customer Global Dimension 2 Code';
             Editable = false;
