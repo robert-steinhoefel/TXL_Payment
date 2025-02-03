@@ -27,8 +27,8 @@ codeunit 51101 "Update Codeunit"
         UpgradeTag: Codeunit "Upgrade Tag";
     begin
         if GL.FindSet() then begin
-            GL.ModifyAll("Vend./Cust. Doc. No.", '');
-            GL.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
+            GL.ModifyAll("CV Doc. No.", '');
+            GL.ModifyAll("CV Doc. Due Date", 0D);
             GL.ModifyAll(Paid, false);
             GL.ModifyAll("Pmt Cancelled", false);
             Gl.ModifyAll("Bank Document No.", '');

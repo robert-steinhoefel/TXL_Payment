@@ -4,6 +4,7 @@ using P3.TXL.Payment.Vendor;
 using P3.TXL.Payment.Customer;
 using P3.TXL.Payment.System;
 using Microsoft.Bank.Ledger;
+using Microsoft.Finance.Dimension;
 using Microsoft.Purchases.Payables;
 using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Finance.GeneralLedger.Journal;
@@ -17,7 +18,9 @@ codeunit 51104 "Bank Account Ledger Entries"
     tabledata "Vendor Ledger Entry" = r,
     tabledata "Cust. Ledger Entry" = r,
     tabledata "Detailed Vendor Ledg. Entry" = r,
-    tabledata "Detailed Cust. Ledg. Entry" = r;
+    tabledata "Detailed Cust. Ledg. Entry" = r,
+    tabledata Dimension = r,
+    tabledata "Dimension Set Entry" = r;
 
     trigger OnRun()
     begin
@@ -51,9 +54,12 @@ codeunit 51104 "Bank Account Ledger Entries"
             "Gen. Journal Account Type"::"G/L Account":
                 begin
                     Rec."Ledger Entry Type" := "Source Ledger Entry Type"::"G/L Account";
-                    Rec."Vend./Cust. Doc Type" := Rec."Document Type";
-                    Rec."Vend./Cust. Doc. Due Date" := Rec."Posting Date";
-                    Rec."Vend./Cust. Doc. No." := Rec."Document No.";
+                    Rec."CV Doc Type" := Rec."Document Type";
+                    Rec."CV Doc. Due Date" := Rec."Posting Date";
+                    Rec."CV Doc. No." := Rec."Document No.";
+                    Rec."CV Global Dimension 1 Code" := Rec."Global Dimension 1 Code";
+                    Rec."CV Global Dimension 2 Code" := Rec."Global Dimension 2 Code";
+                    Rec."CV Dimension Set ID" := Rec."Dimension Set ID";
                     Rec.Modify();
                 end;
             "Gen. Journal Account Type"::"Fixed Asset":
@@ -81,16 +87,19 @@ codeunit 51104 "Bank Account Ledger Entries"
         if DetailedVendorLedgerEntry.FindSet() then
             repeat
                 DocVendLedgEntry.Get(DetailedVendorLedgerEntry."Vendor Ledger Entry No.");
-                if BankAccountLedgerEntry."Vend./Cust. Doc. No." <> '' then begin
-                    BankAccountLedgerEntry."Vend./Cust. Doc. No." := BankAccountLedgerEntry."Vend./Cust. Doc. No." + '|' + DocVendLedgEntry."Document No.";
-                    if BankAccountLedgerEntry."Vend./Cust. Doc. Due Date" < DocVendLedgEntry."Due Date" then
-                        BankAccountLedgerEntry."Vend./Cust. Doc. Due Date" := DocVendLedgEntry."Due Date";
+                if BankAccountLedgerEntry."CV Doc. No." <> '' then begin
+                    BankAccountLedgerEntry."CV Doc. No." := BankAccountLedgerEntry."CV Doc. No." + '|' + DocVendLedgEntry."Document No.";
+                    if BankAccountLedgerEntry."CV Doc. Due Date" < DocVendLedgEntry."Due Date" then
+                        BankAccountLedgerEntry."CV Doc. Due Date" := DocVendLedgEntry."Due Date";
                 end else begin
-                    BankAccountLedgerEntry."Vend./Cust. Doc. No." := DocVendLedgEntry."Document No.";
-                    BankAccountLedgerEntry."Vend./Cust. Doc. Due Date" := DocVendLedgEntry."Due Date"
+                    BankAccountLedgerEntry."CV Doc. No." := DocVendLedgEntry."Document No.";
+                    BankAccountLedgerEntry."CV Doc. Due Date" := DocVendLedgEntry."Due Date"
                 end;
                 BankAccountLedgerEntry."Ledger Entry Type" := "Source Ledger Entry Type"::Vendor;
-                BankAccountLedgerEntry."Vend./Cust. Doc Type" := DocVendLedgEntry."Document Type";
+                BankAccountLedgerEntry."CV Doc Type" := DocVendLedgEntry."Document Type";
+                BankAccountLedgerEntry."CV Global Dimension 1 Code" := DocVendLedgEntry."Global Dimension 1 Code";
+                BankAccountLedgerEntry."CV Global Dimension 2 Code" := DocVendLedgEntry."Global Dimension 2 Code";
+                BankAccountLedgerEntry."CV Dimension Set ID" := DocVendLedgEntry."Dimension Set ID";
                 // VendorLedgerEntriesProcessing.SetPaymentDetails(BankAccountLedgerEntry, DocVendLedgEntry);
                 // DocVendLedgEntry.Modify();
                 // TODO: Explicitely test what if there are multiple VendorLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
@@ -110,16 +119,19 @@ codeunit 51104 "Bank Account Ledger Entries"
         if DetailedCustomerLedgerEntry.FindSet() then
             repeat
                 DocCustomerLedgEntry.Get(DetailedCustomerLedgerEntry."Cust. Ledger Entry No.");
-                if BankAccountLedgerEntry."Vend./Cust. Doc. No." <> '' then begin
-                    BankAccountLedgerEntry."Vend./Cust. Doc. No." := BankAccountLedgerEntry."Vend./Cust. Doc. No." + '|' + DocCustomerLedgEntry."Document No.";
-                    if BankAccountLedgerEntry."Vend./Cust. Doc. Due Date" < DocCustomerLedgEntry."Due Date" then
-                        BankAccountLedgerEntry."Vend./Cust. Doc. Due Date" := DocCustomerLedgEntry."Due Date";
+                if BankAccountLedgerEntry."CV Doc. No." <> '' then begin
+                    BankAccountLedgerEntry."CV Doc. No." := BankAccountLedgerEntry."CV Doc. No." + '|' + DocCustomerLedgEntry."Document No.";
+                    if BankAccountLedgerEntry."CV Doc. Due Date" < DocCustomerLedgEntry."Due Date" then
+                        BankAccountLedgerEntry."CV Doc. Due Date" := DocCustomerLedgEntry."Due Date";
                 end else begin
-                    BankAccountLedgerEntry."Vend./Cust. Doc. No." := DocCustomerLedgEntry."Document No.";
-                    BankAccountLedgerEntry."Vend./Cust. Doc. Due Date" := DocCustomerLedgEntry."Due Date"
+                    BankAccountLedgerEntry."CV Doc. No." := DocCustomerLedgEntry."Document No.";
+                    BankAccountLedgerEntry."CV Doc. Due Date" := DocCustomerLedgEntry."Due Date"
                 end;
                 BankAccountLedgerEntry."Ledger Entry Type" := "Source Ledger Entry Type"::Customer;
-                BankAccountLedgerEntry."Vend./Cust. Doc Type" := DocCustomerLedgEntry."Document Type";
+                BankAccountLedgerEntry."CV Doc Type" := DocCustomerLedgEntry."Document Type";
+                BankAccountLedgerEntry."CV Global Dimension 1 Code" := DocCustomerLedgEntry."Global Dimension 1 Code";
+                BankAccountLedgerEntry."CV Global Dimension 2 Code" := DocCustomerLedgEntry."Global Dimension 2 Code";
+                BankAccountLedgerEntry."CV Dimension Set ID" := DocCustomerLedgEntry."Dimension Set ID";
                 // CustomerLedgerEntriesProcessing.SetPaymentDetails(BankAccountLedgerEntry, DocCustomerLedgEntry);
                 // DocCustomerLedgEntry.Modify();
                 // TODO: Explicitely test what if there are multiple CustomerLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.

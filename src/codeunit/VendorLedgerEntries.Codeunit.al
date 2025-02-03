@@ -57,13 +57,13 @@ codeunit 51102 "Vendor Ledger Entries"
             GLEntries.ModifyAll("Bank Posting Date", BankLedgerEntry."Posting Date");
             GLEntries.ModifyAll("Bank Document No.", BankLedgerEntry."Document No.");
             if not (BankLedgerEntry."Posting Date" = 0D) then begin
-                GLEntries.ModifyAll("Vend./Cust. Doc. No.", VendorLedgerEntry."Document No.");
-                GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", VendorLedgerEntry."Due Date");
+                GLEntries.ModifyAll("CV Doc. No.", VendorLedgerEntry."Document No.");
+                GLEntries.ModifyAll("CV Doc. Due Date", VendorLedgerEntry."Due Date");
                 GLEntries.ModifyAll(Paid, true);
                 GLEntries.ModifyAll("Pmt Cancelled", false);
             end else begin
-                GLEntries.ModifyAll("Vend./Cust. Doc. No.", '');
-                GLEntries.ModifyAll("Vend./Cust. Doc. Due Date", 0D);
+                GLEntries.ModifyAll("CV Doc. No.", '');
+                GLEntries.ModifyAll("CV Doc. Due Date", 0D);
                 GLEntries.ModifyAll(Paid, false);
                 GLEntries.ModifyAll("Pmt Cancelled", true);
             end;

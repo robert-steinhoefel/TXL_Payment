@@ -29,12 +29,12 @@ pageextension 51100 "GeneralLedgerEntries PageExt" extends "General Ledger Entri
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Bank Document No. field.', Comment = '%';
             }
-            field("Vend./Cust. Doc. Due Date"; Rec."Vend./Cust. Doc. Due Date")
+            field("Vend./Cust. Doc. Due Date"; Rec."CV Doc. Due Date")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Vendor/Customer Document Due Date field.', Comment = '%';
             }
-            field("Vend./Cust. Doc. No."; Rec."Vend./Cust. Doc. No.")
+            field("Vend./Cust. Doc. No."; Rec."CV Doc. No.")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Vendor/Customer Document No. field.', Comment = '%';
