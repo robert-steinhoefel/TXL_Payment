@@ -43,13 +43,14 @@ tableextension 51104 "Bank Acc. Ledger Entry" extends "Bank Account Ledger Entry
         {
             Caption = 'Vendor/Customer Global Dimension 1 Code';
             Editable = false;
-            TableRelation = Dimension;
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
+
         }
         field(51105; "CV Global Dimension 2 Code"; Code[20])
         {
             Caption = 'Vendor/Customer Global Dimension 2 Code';
             Editable = false;
-            TableRelation = Dimension;
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2));
         }
         field(51106; "CV Dimension Set ID"; Integer)
         {
