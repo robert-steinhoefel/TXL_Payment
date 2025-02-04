@@ -63,15 +63,27 @@ query 51100 "Bank Account Ledger Entries"
             dataitem(Dimension_Set_ID; "Dimension Set Entry")
             {
                 DataItemLink = "Dimension Set ID" = BankAccountLedgerEntry."CV Dimension Set ID";
-                column(Dimension_Code; "Dimension Code")
+                column(CVDimension_Code; "Dimension Code")
                 {
                 }
-                column(Dimension_Value_Code; "Dimension Value Code")
+                column(CVDimension_Value_Code; "Dimension Value Code")
                 {
                 }
-                column(Dimension_Value_Name; "Dimension Value Name")
+                column(CVDimension_Value_Name; "Dimension Value Name")
                 {
                 }
+            }
+            column(BankLEGlobDim1; "Global Dimension 1 Code")
+            {
+
+            }
+            column(BankLEGlobDim2; "Global Dimension 2 Code")
+            {
+
+            }
+            column(BankLEDimSetID; "Dimension Set ID")
+            {
+
             }
         }
     }
