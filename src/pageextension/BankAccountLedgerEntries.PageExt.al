@@ -1,8 +1,8 @@
-namespace ALExtensions.ALExtensions;
+namespace P3.TXL.Payment.BankAccount;
 
 using Microsoft.Bank.Ledger;
 
-pageextension 51105 "Bank Account Ledger Entries" extends "Bank Account Ledger Entries"
+pageextension 51103 "Bank Account Ledger Entries" extends "Bank Account Ledger Entries"
 {
     layout
     {

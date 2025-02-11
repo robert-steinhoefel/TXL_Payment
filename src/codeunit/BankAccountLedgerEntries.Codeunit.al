@@ -100,8 +100,6 @@ codeunit 51104 "Bank Account Ledger Entries"
                 BankAccountLedgerEntry."CV Global Dimension 1 Code" := DocVendLedgEntry."Global Dimension 1 Code";
                 BankAccountLedgerEntry."CV Global Dimension 2 Code" := DocVendLedgEntry."Global Dimension 2 Code";
                 BankAccountLedgerEntry."CV Dimension Set ID" := DocVendLedgEntry."Dimension Set ID";
-                // VendorLedgerEntriesProcessing.SetPaymentDetails(BankAccountLedgerEntry, DocVendLedgEntry);
-                // DocVendLedgEntry.Modify();
                 // TODO: Explicitely test what if there are multiple VendorLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
                 BankAccountLedgerEntry.Modify();
             until DetailedVendorLedgerEntry.Next() = 0;
@@ -132,8 +130,6 @@ codeunit 51104 "Bank Account Ledger Entries"
                 BankAccountLedgerEntry."CV Global Dimension 1 Code" := DocCustomerLedgEntry."Global Dimension 1 Code";
                 BankAccountLedgerEntry."CV Global Dimension 2 Code" := DocCustomerLedgEntry."Global Dimension 2 Code";
                 BankAccountLedgerEntry."CV Dimension Set ID" := DocCustomerLedgEntry."Dimension Set ID";
-                // CustomerLedgerEntriesProcessing.SetPaymentDetails(BankAccountLedgerEntry, DocCustomerLedgEntry);
-                // DocCustomerLedgEntry.Modify();
                 // TODO: Explicitely test what if there are multiple CustomerLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
                 BankAccountLedgerEntry.Modify();
             until DetailedCustomerLedgerEntry.Next() = 0;

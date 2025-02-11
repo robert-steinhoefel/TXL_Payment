@@ -1,10 +1,9 @@
-namespace P3.PMT;
+namespace P3.TXL.Payment.System;
 
 using P3.TXL.Payment.BankAccount;
 using P3.TXL.Payment.Customer;
 using P3.TXL.Payment.System;
 using P3.TXL.Payment.Vendor;
-using ALExtensions.ALExtensions;
 
 permissionset 51100 "P3.PMT-ALL"
 {

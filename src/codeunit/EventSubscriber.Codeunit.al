@@ -39,47 +39,16 @@ codeunit 51100 "Event Subscriber"
         Codeunit.Run(Codeunit::"Customer Ledger Entries", Rec);
     end;
 
-    // [EventSubscriber(ObjectType::Table, Database::"Bank Account Ledger Entry", 'OnAfterInsertEvent', '', false, false)]
-    // local procedure OnAfterInsertBankAccountLedgerEntry(var Rec: Record "Bank Account Ledger Entry"; RunTrigger: Boolean)
-    // var
-    // begin
-    //     Codeunit.Run(Codeunit::"Bank Account Ledger Entries", Rec);
-    // end;
+    // Possible other entry points:
 
     // [EventSubscriber(ObjectType::Table, Database::"Bank Account Ledger Entry", 'OnAfterCopyFromGenJnlLine', '', false, false)]
-    // local procedure OnAfterCopyFromGenJnlLine(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry")
-    // var
-    // begin
     //     // #1
-    //     // Codeunit.Run(Codeunit::"Bank Account Ledger Entries", BankAccountLedgerEntry);
-    //     Message('Halt.');
-    // end;
-
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Batch", 'OnAfterPostReversingLines', '', false, false)]
-    // local procedure OnAfterPostReversingLines(var GenJournalLine: Record "Gen. Journal Line"; PreviewMode: Boolean)
-    // var
-    // begin
-    //     // Codeunit.Run(Codeunit::"Bank Account Ledger Entries", BankAccountLedgerEntry);
-    //     Message('Halt.');
-    // end;
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", 'OnAfterPostBankAcc', '', false, false)]
-    // local procedure OnAfterPostBankAcc(var GenJnlLine: Record "Gen. Journal Line"; Balancing: Boolean; var TempGLEntryBuf: Record "G/L Entry" temporary; var NextEntryNo: Integer; var NextTransactionNo: Integer)
-    // var
-    // begin
     //     // #3
-    //     // Codeunit.Run(Codeunit::"Bank Account Ledger Entries", BankAccountLedgerEntry);
-    //     Message('Halt.');
-    // end;
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", 'OnPostBankAccOnAfterBankAccLedgEntryInsert', '', false, false)]
-    // local procedure OnPostBankAccOnAfterBankAccLedgEntryInsert(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var GenJournalLine: Record "Gen. Journal Line"; BankAccount: Record "Bank Account")
-    // var
-    // begin
     //     // #2
     //     // Fired before Detailed Ledger Entry is being created. --> Too early
-    //     Message('Halt.');
-    //     // Codeunit.Run(Codeunit::"Bank Account Ledger Entries", BankAccountLedgerEntry);
-    // end;
 
 }
