@@ -30,17 +30,5 @@ tableextension 51101 "VendorLedgerEntry TableExt" extends "Vendor Ledger Entry"
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(51104; "CV Doc. No."; Code[20])
-        {
-            Caption = 'Vendor/Customer Document No.';
-            DataClassification = ToBeClassified;
-            Editable = false;
-        }
-        field(51105; "CV Doc. Due Date"; Date)
-        {
-            Caption = 'Vendor/Customer Document Due Date';
-            DataClassification = ToBeClassified;
-            Editable = false;
-        }
     }
 }
