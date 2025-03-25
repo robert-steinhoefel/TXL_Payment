@@ -24,9 +24,9 @@ tableextension 51104 "Bank Acc. Ledger Entry" extends "Bank Account Ledger Entry
             DataClassification = ToBeClassified;
             Editable = false;
             TableRelation =
-            if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Customer)) "Cust. Ledger Entry"."Document No." where("Document No." = field("CV Doc. No."))
+            if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Customer)) "Cust. Ledger Entry"."Document No." where("Document No." = field("CV Doc. No."), "Customer No." = field("Bal. Account No."), "Due Date" = field("CV Doc. Due Date"), "Document Type" = field("CV Doc Type"))
             else
-            if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Vendor)) "Vendor Ledger Entry"."Document No." where("Document No." = field("CV Doc. No."));
+            if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Vendor)) "Vendor Ledger Entry"."Document No." where("Document No." = field("CV Doc. No."), "Vendor No." = field("Bal. Account No."), "Due Date" = field("CV Doc. Due Date"), "Document Type" = field("CV Doc Type"));
         }
         field(51102; "CV Doc. Due Date"; Date)
         {

@@ -23,33 +23,43 @@ codeunit 51104 "Bank Account Ledger Entries"
     tabledata "Dimension Set Entry" = r;
 
     trigger OnRun()
+    var
+        LedgerEntry: Variant;
     begin
-        GetAndProcessLedgerEntries(Rec);
+        GetAndProcessLedgerEntries(Rec, LedgerEntry);
     end;
 
-    local procedure GetAndProcessLedgerEntries(var Rec: Record "Bank Account Ledger Entry")
+    procedure GetAndProcessLedgerEntries(var Rec: Record "Bank Account Ledger Entry"; var LedgerEntry: Variant)
     var
         VendorLedgerEntry: Record "Vendor Ledger Entry";
         CustomerLederEntry: Record "Cust. Ledger Entry";
-        GeneralLedgerEntries: Record "G/L Entry";
+        GeneralLedgerEntry: Record "G/L Entry";
+        LedgerEntryRecRef: RecordRef;
         ErrNoDirectPosting: Label 'Poting payments directly to %1s is not allowed in cameralistics. Use an invoice or credit memo on a customer or vendor instead.';
     begin
+        if Rec."Entry No." = 0 then
+            exit;
+
+        LedgerEntryRecRef.GetTable(LedgerEntry);
+        case LedgerEntryRecRef.Number() of
+            17:
+                GeneralLedgerEntry := LedgerEntry;
+            21:
+                CustomerLederEntry := LedgerEntry;
+            25:
+                VendorLedgerEntry := LedgerEntry;
+
+        end;
+
         case Rec."Bal. Account Type" of
             "Gen. Journal Account Type"::Vendor:
                 begin
-                    VendorLedgerEntry.SetRange("Transaction No.", Rec."Transaction No.");
-                    // TODO: Is it definite that there will only be 1 Vendor Ledger Entry per Bank Ledger Entry? What if 1 BLE balances multiple VLE?
-                    if VendorLedgerEntry.FindFirst() then begin
-                        SetVendLedgEntryDetailsOnBankLedgEntry(Rec, VendorLedgerEntry);
-                    end;
+                    SetVendLedgEntryDetailsOnBankLedgEntry(Rec, VendorLedgerEntry);
+                    // end;
                 end;
             "Gen. Journal Account Type"::Customer:
                 begin
-                    CustomerLederEntry.SetRange("Transaction No.", Rec."Transaction No.");
-                    // TODO: Is it definite that there will only be 1 Customer Ledger Entry per Bank Ledger Entry? What if 1 BLE balances multiple CLE?
-                    if CustomerLederEntry.FindFirst() then begin
-                        SetCustLedgEntryDetailsOnBankLedgEntry(Rec, CustomerLederEntry)
-                    end;
+                    SetCustLedgEntryDetailsOnBankLedgEntry(Rec, CustomerLederEntry)
                 end;
             "Gen. Journal Account Type"::"G/L Account":
                 begin
@@ -75,34 +85,53 @@ codeunit 51104 "Bank Account Ledger Entries"
         end;
     end;
 
+    procedure GetAndProcessLedgerEntries(var Rec: Record "Bank Account Ledger Entry"; Unapplied: Boolean)
+    var
+    begin
+        if Unapplied then begin
+            Rec."Ledger Entry Type" := "Source Ledger Entry Type"::" ";
+            Rec."CV Doc Type" := "Gen. Journal Document Type"::" ";
+            Rec."CV Doc. Due Date" := 0D;
+            Rec."CV Doc. No." := '';
+            Rec."CV Global Dimension 1 Code" := '';
+            Rec."CV Global Dimension 2 Code" := '';
+            Rec."CV Dimension Set ID" := 0;
+            Rec.Modify();
+        end;
+    end;
+
     local procedure SetVendLedgEntryDetailsOnBankLedgEntry(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry")
     var
         DetailedVendorLedgerEntry: Record "Detailed Vendor Ledg. Entry";
-        DocVendLedgEntry: Record "Vendor Ledger Entry";
-        VendorLedgerEntriesProcessing: Codeunit "Vendor Ledger Entries";
+        // VendorLedgerEntry: Record "Vendor Ledger Entry";
+        FilterVLE: Record "Vendor Ledger Entry";
     begin
-        DetailedVendorLedgerEntry.SetRange("Applied Vend. Ledger Entry No.", VendorLedgerEntry."Entry No.");
-        DetailedVendorLedgerEntry.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
-        DetailedVendorLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Invoice, "Gen. Journal Document Type"::"Credit Memo");
-        if DetailedVendorLedgerEntry.FindSet() then
-            repeat
-                DocVendLedgEntry.Get(DetailedVendorLedgerEntry."Vendor Ledger Entry No.");
-                if BankAccountLedgerEntry."CV Doc. No." <> '' then begin
-                    BankAccountLedgerEntry."CV Doc. No." := BankAccountLedgerEntry."CV Doc. No." + '|' + DocVendLedgEntry."Document No.";
-                    if BankAccountLedgerEntry."CV Doc. Due Date" < DocVendLedgEntry."Due Date" then
-                        BankAccountLedgerEntry."CV Doc. Due Date" := DocVendLedgEntry."Due Date";
-                end else begin
-                    BankAccountLedgerEntry."CV Doc. No." := DocVendLedgEntry."Document No.";
-                    BankAccountLedgerEntry."CV Doc. Due Date" := DocVendLedgEntry."Due Date"
-                end;
-                BankAccountLedgerEntry."Ledger Entry Type" := "Source Ledger Entry Type"::Vendor;
-                BankAccountLedgerEntry."CV Doc Type" := DocVendLedgEntry."Document Type";
-                BankAccountLedgerEntry."CV Global Dimension 1 Code" := DocVendLedgEntry."Global Dimension 1 Code";
-                BankAccountLedgerEntry."CV Global Dimension 2 Code" := DocVendLedgEntry."Global Dimension 2 Code";
-                BankAccountLedgerEntry."CV Dimension Set ID" := DocVendLedgEntry."Dimension Set ID";
-                // TODO: Explicitely test what if there are multiple VendorLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
-                BankAccountLedgerEntry.Modify();
-            until DetailedVendorLedgerEntry.Next() = 0;
+        // DetailedVendorLedgerEntry.SetRange("Applied Vend. Ledger Entry No.", VendorLedgerEntry."Entry No.");
+        // DetailedVendorLedgerEntry.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+        // DetailedVendorLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Invoice, "Gen. Journal Document Type"::"Credit Memo");
+        // if DetailedVendorLedgerEntry.FindSet() then
+
+        // FilterVLE.SetRange("Transaction No.", VendorLedgerEntry."Transaction No.");
+        // if FilterVLE.FindSet() then
+        //     repeat
+        // VendorLedgerEntry.Get(DetailedVendorLedgerEntry."Vendor Ledger Entry No.");
+
+        if BankAccountLedgerEntry."CV Doc. No." <> '' then begin
+            BankAccountLedgerEntry."CV Doc. No." := BankAccountLedgerEntry."CV Doc. No." + '|' + VendorLedgerEntry."Document No.";
+            if BankAccountLedgerEntry."CV Doc. Due Date" < VendorLedgerEntry."Due Date" then
+                BankAccountLedgerEntry."CV Doc. Due Date" := VendorLedgerEntry."Due Date";
+        end else begin
+            BankAccountLedgerEntry."CV Doc. No." := VendorLedgerEntry."Document No.";
+            BankAccountLedgerEntry."CV Doc. Due Date" := VendorLedgerEntry."Due Date"
+        end;
+        BankAccountLedgerEntry."Ledger Entry Type" := "Source Ledger Entry Type"::Vendor;
+        BankAccountLedgerEntry."CV Doc Type" := VendorLedgerEntry."Document Type";
+        BankAccountLedgerEntry."CV Global Dimension 1 Code" := VendorLedgerEntry."Global Dimension 1 Code";
+        BankAccountLedgerEntry."CV Global Dimension 2 Code" := VendorLedgerEntry."Global Dimension 2 Code";
+        BankAccountLedgerEntry."CV Dimension Set ID" := VendorLedgerEntry."Dimension Set ID";
+        // TODO: Explicitely test what if there are multiple VendorLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
+        BankAccountLedgerEntry.Modify();
+        // until DetailedVendorLedgerEntry.Next() = 0;
     end;
 
     local procedure SetCustLedgEntryDetailsOnBankLedgEntry(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var CustomerLedgerEntry: Record "Cust. Ledger Entry")

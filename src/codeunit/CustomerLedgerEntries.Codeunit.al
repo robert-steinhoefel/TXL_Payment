@@ -57,12 +57,10 @@ codeunit 51103 "Customer Ledger Entries"
             GLEntries.ModifyAll("Bank Posting Date", BankLedgerEntry."Posting Date");
             GLEntries.ModifyAll("Bank Document No.", BankLedgerEntry."Document No.");
             if not (BankLedgerEntry."Posting Date" = 0D) then begin
-                GLEntries.ModifyAll("CV Doc. No.", CustomerLedgerEntry."Document No.");
                 GLEntries.ModifyAll("CV Doc. Due Date", CustomerLedgerEntry."Due Date");
                 GLEntries.ModifyAll(Paid, true);
                 GLEntries.ModifyAll("Pmt Cancelled", false);
             end else begin
-                GLEntries.ModifyAll("CV Doc. No.", '');
                 GLEntries.ModifyAll("CV Doc. Due Date", 0D);
                 GLEntries.ModifyAll(Paid, false);
                 GLEntries.ModifyAll("Pmt Cancelled", true);
@@ -86,17 +84,17 @@ codeunit 51103 "Customer Ledger Entries"
         DetailedPmtCustLedgerEntry.SetFilter("Applied Cust. Ledger Entry No.", '<>%1', DetailedCustLedgEntry."Cust. Ledger Entry No.");
         if DetailedPmtCustLedgerEntry.Count() > 1 then
             Error(StrSubstNo(ErrorTooManyRecords, Format(DetailedPmtCustLedgerEntry.Count()), DetailedCustLedgEntry.TableCaption()));
-        if DetailedPmtCustLedgerEntry.FindFirst() then
-            BankLedgerEntry.SetRange("Transaction No.", DetailedCustLedgEntry."Transaction No.");
-        BankLedgerEntry.SetRange("Posting Date", DetailedCustLedgEntry."Posting Date");
-        BankLedgerEntry.SetRange("Document No.", DetailedCustLedgEntry."Document No.");
-        BankLedgerEntry.SetRange("Bal. Account No.", DetailedCustLedgEntry."Customer No.");
-        BankLedgerEntry.SetRange("Amount (LCY)", (DetailedCustLedgEntry."Amount (LCY)" * -1));
-        if BankLedgerEntry.Count > 1 then
-            Error(StrSubstNo(ErrorTooManyRecords, Format(BankLedgerEntry.Count()), BankLedgerEntry.TableCaption()));
-        if BankLedgerEntry.FindFirst() then
-            exit(BankLedgerEntry)
-        else begin
+        if DetailedPmtCustLedgerEntry.FindFirst() then begin
+            // BankLedgerEntry.SetRange("Transaction No.", DetailedCustLedgEntry."Transaction No.");
+            BankLedgerEntry.SetRange("Posting Date", DetailedCustLedgEntry."Posting Date");
+            BankLedgerEntry.SetRange("Document No.", DetailedCustLedgEntry."Document No.");
+            BankLedgerEntry.SetRange("Bal. Account No.", DetailedCustLedgEntry."Customer No.");
+            BankLedgerEntry.SetRange("Amount (LCY)", (DetailedCustLedgEntry."Amount (LCY)" * -1));
+            if BankLedgerEntry.Count > 1 then
+                Error(StrSubstNo(ErrorTooManyRecords, Format(BankLedgerEntry.Count()), BankLedgerEntry.TableCaption()));
+            if BankLedgerEntry.FindFirst() then
+                exit(BankLedgerEntry)
+        end else begin
             Clear(BankLedgerEntry);
             exit(BankLedgerEntry);
         end;

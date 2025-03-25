@@ -34,11 +34,6 @@ pageextension 51100 "GeneralLedgerEntries PageExt" extends "General Ledger Entri
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Vendor/Customer Document Due Date field.', Comment = '%';
             }
-            field("Vend./Cust. Doc. No."; Rec."CV Doc. No.")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Vendor/Customer Document No. field.', Comment = '%';
-            }
         }
     }
 }
