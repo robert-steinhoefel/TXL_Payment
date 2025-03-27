@@ -1,5 +1,6 @@
 namespace P3.TXL.Payment.System;
 using System.Upgrade;
+using Microsoft.Bank.Ledger;
 
 codeunit 51101 "Update Codeunit"
 {
@@ -9,9 +10,6 @@ codeunit 51101 "Update Codeunit"
     var
         UpgradeTag: Codeunit "Upgrade Tag";
     begin
-        // if not UpgradeTag.HasUpgradeTag('') then
-        // begin
 
-        // end;
     end;
 }

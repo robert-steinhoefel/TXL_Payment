@@ -1,6 +1,5 @@
 namespace P3.TXL.Payment.BankAccount;
 
-using P3.TXL.Payment.Vendor;
 using P3.TXL.Payment.Customer;
 using P3.TXL.Payment.System;
 using Microsoft.Bank.Ledger;
@@ -48,14 +47,12 @@ codeunit 51104 "Bank Account Ledger Entries"
                 CustomerLederEntry := LedgerEntry;
             25:
                 VendorLedgerEntry := LedgerEntry;
-
         end;
 
         case Rec."Bal. Account Type" of
             "Gen. Journal Account Type"::Vendor:
                 begin
                     SetVendLedgEntryDetailsOnBankLedgEntry(Rec, VendorLedgerEntry);
-                    // end;
                 end;
             "Gen. Journal Account Type"::Customer:
                 begin
@@ -85,9 +82,11 @@ codeunit 51104 "Bank Account Ledger Entries"
         end;
     end;
 
-    procedure GetAndProcessLedgerEntries(var Rec: Record "Bank Account Ledger Entry"; Unapplied: Boolean)
+    procedure UnApplyLedgerEntries(var Rec: Record "Bank Account Ledger Entry"; Unapplied: Boolean)
     var
     begin
+        if Rec."Entry No." = 0 then
+            exit;
         if Unapplied then begin
             Rec."Ledger Entry Type" := "Source Ledger Entry Type"::" ";
             Rec."CV Doc Type" := "Gen. Journal Document Type"::" ";
@@ -103,21 +102,15 @@ codeunit 51104 "Bank Account Ledger Entries"
     local procedure SetVendLedgEntryDetailsOnBankLedgEntry(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry")
     var
         DetailedVendorLedgerEntry: Record "Detailed Vendor Ledg. Entry";
-        // VendorLedgerEntry: Record "Vendor Ledger Entry";
-        FilterVLE: Record "Vendor Ledger Entry";
+        DocumentNo: Text;
     begin
-        // DetailedVendorLedgerEntry.SetRange("Applied Vend. Ledger Entry No.", VendorLedgerEntry."Entry No.");
-        // DetailedVendorLedgerEntry.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
-        // DetailedVendorLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Invoice, "Gen. Journal Document Type"::"Credit Memo");
-        // if DetailedVendorLedgerEntry.FindSet() then
-
-        // FilterVLE.SetRange("Transaction No.", VendorLedgerEntry."Transaction No.");
-        // if FilterVLE.FindSet() then
-        //     repeat
-        // VendorLedgerEntry.Get(DetailedVendorLedgerEntry."Vendor Ledger Entry No.");
-
         if BankAccountLedgerEntry."CV Doc. No." <> '' then begin
-            BankAccountLedgerEntry."CV Doc. No." := BankAccountLedgerEntry."CV Doc. No." + '|' + VendorLedgerEntry."Document No.";
+            if StrPos(BankAccountLedgerEntry."CV Doc. No.", VendorLedgerEntry."Document No.") > 0 then
+                exit;
+            DocumentNo := BankAccountLedgerEntry."CV Doc. No." + '|' + VendorLedgerEntry."Document No.";
+            if StrLen(DocumentNo) > 20 then
+                DocumentNo := DocumentNo.Remove(1, (StrLen(DocumentNo) - 20));
+            BankAccountLedgerEntry."CV Doc. No." := DocumentNo;
             if BankAccountLedgerEntry."CV Doc. Due Date" < VendorLedgerEntry."Due Date" then
                 BankAccountLedgerEntry."CV Doc. Due Date" := VendorLedgerEntry."Due Date";
         end else begin
@@ -130,8 +123,8 @@ codeunit 51104 "Bank Account Ledger Entries"
         BankAccountLedgerEntry."CV Global Dimension 2 Code" := VendorLedgerEntry."Global Dimension 2 Code";
         BankAccountLedgerEntry."CV Dimension Set ID" := VendorLedgerEntry."Dimension Set ID";
         // TODO: Explicitely test what if there are multiple VendorLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
+        // TODO: When an unapplication is started through user action, the Bank Ledger entry will be modified BEFORE the unapplication has been posted. Meaning: When unapplication then is cancelled, the CV Doc. No. will be specified twice.
         BankAccountLedgerEntry.Modify();
-        // until DetailedVendorLedgerEntry.Next() = 0;
     end;
 
     local procedure SetCustLedgEntryDetailsOnBankLedgEntry(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var CustomerLedgerEntry: Record "Cust. Ledger Entry")
