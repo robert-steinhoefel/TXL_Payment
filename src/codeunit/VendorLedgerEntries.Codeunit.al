@@ -25,12 +25,6 @@ codeunit 51102 "Vendor Ledger Entries"
         ErrTooManyRecords: Label 'Too many %1 found to continue processing.';
         ErrNoRecords: Label 'No %1 found to continue processing.';
     begin
-        if (BankLedgerEntry."Entry No." = 0) and not (Rec.Unapplied = true) then begin
-            // If payment is has not been posted through bank account, we'll use the vendor's payment ledger entry data.
-            // If posting is an un-application, these fields will remain empty - on purpose.
-            BankLedgerEntry."Posting Date" := Rec."Posting Date";
-            BankLedgerEntry."Document No." := Rec."Document No.";
-        end;
         if Rec."Vendor Ledger Entry No." = Rec."Applied Vend. Ledger Entry No." then begin
             // we'll enter this lopp if an application is started from the invoice-type vendor ledger entry
             // first: find the corresponding payment-type vendor ledger entry with the help of the counter-parted detailed vendor ledger entry.
