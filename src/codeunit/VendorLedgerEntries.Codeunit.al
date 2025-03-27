@@ -117,7 +117,7 @@ codeunit 51102 "Vendor Ledger Entries"
 
     // Helper methods
 
-    local procedure GetBankLedgerEntry(var DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry"; var VendorLederEntry: Record "Vendor Ledger Entry"): Record "Bank Account Ledger Entry"
+    local procedure GetBankLedgerEntry(var DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry"): Record "Bank Account Ledger Entry"
     // ISSUE: Method needs testing.
     var
         BankLedgerEntry: Record "Bank Account Ledger Entry";
@@ -129,7 +129,7 @@ codeunit 51102 "Vendor Ledger Entries"
             TheOtherVendLedgEntr.Get(DetailedVendorLedgEntry."Applied Vend. Ledger Entry No.");
             BankLedgerEntry.SetRange("Transaction No.", TheOtherVendLedgEntr."Transaction No.");
         end else
-            BankLedgerEntry.SetRange("Transaction No.", VendorLederEntry."Transaction No.");
+            BankLedgerEntry.SetRange("Transaction No.", VendorLedgerEntry."Transaction No.");
         BankLedgerEntry.SetRange("Posting Date", DetailedVendorLedgEntry."Posting Date");
         BankLedgerEntry.SetRange("Document No.", DetailedVendorLedgEntry."Document No.");
         BankLedgerEntry.SetRange("Bal. Account No.", DetailedVendorLedgEntry."Vendor No.");
