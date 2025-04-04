@@ -20,11 +20,13 @@ codeunit 51102 "Vendor Ledger Entries"
         BankLedgerEntry: Record "Bank Account Ledger Entry";
         VendorLedgerToModify, PaymentVendorLedgerEntry : Record "Vendor Ledger Entry";
         PaymentDetailedLedgerEntry: Record "Detailed Vendor Ledg. Entry";
+        VendLedgEntryNo: Integer;
         SetBankLedgerEntry: Codeunit "Bank Account Ledger Entries";
         InvLedgerEntryVariant: Variant;
         ErrTooManyRecords: Label 'Too many %1 found to continue processing.';
         ErrNoRecords: Label 'No %1 found to continue processing.';
     begin
+        VendorLedgerToModify.Get(Rec."Vendor Ledger Entry No.");
         if Rec."Vendor Ledger Entry No." = Rec."Applied Vend. Ledger Entry No." then begin
             // we'll enter this lopp if an application is started from the invoice-type vendor ledger entry
             // first: find the corresponding payment-type vendor ledger entry with the help of the counter-parted detailed vendor ledger entry.
@@ -36,13 +38,18 @@ codeunit 51102 "Vendor Ledger Entries"
                 PaymentDetailedLedgerEntry.SetFilter("Transaction No.", '<>%1', 0);
             PaymentDetailedLedgerEntry.SetFilter("Vendor Ledger Entry No.", '<>%1', Rec."Vendor Ledger Entry No.");
             PaymentDetailedLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund);
-            if PaymentDetailedLedgerEntry.Count > 1 then
-                Error(StrSubstNo(ErrTooManyRecords, PaymentDetailedLedgerEntry.TableCaption()));
+            if PaymentDetailedLedgerEntry.FindSet() then
+                // check if we really do have multiple payment entries.
+                repeat
+                    if VendLedgEntryNo = 0 then
+                        VendLedgEntryNo := PaymentDetailedLedgerEntry."Vendor Ledger Entry No.";
+                    if (VendLedgEntryNo <> PaymentDetailedLedgerEntry."Vendor Ledger Entry No.") then
+                        Error(StrSubstNo(ErrTooManyRecords, PaymentDetailedLedgerEntry.TableCaption()));
+                until PaymentDetailedLedgerEntry.Next() = 0;
             if Rec.Unapplied and (PaymentDetailedLedgerEntry.Count = 0) then
                 Error(StrSubstNo(ErrNoRecords, PaymentDetailedLedgerEntry.TableCaption()));
-            PaymentDetailedLedgerEntry.FindFirst();
             // now we can GET the invoice-type entry:
-            PaymentVendorLedgerEntry.Get(PaymentDetailedLedgerEntry."Vendor Ledger Entry No.");
+            PaymentVendorLedgerEntry.Get(VendLedgEntryNo);
             // second, we'll find the originatig detailed vendor ledger entry for the payment:
             PaymentDetailedLedgerEntry.Reset();
             PaymentDetailedLedgerEntry.SetRange("Transaction No.", PaymentVendorLedgerEntry."Transaction No.");
@@ -57,8 +64,6 @@ codeunit 51102 "Vendor Ledger Entries"
             // when application of ledger entries is started from the payment-type vendor ledger entry, we'll enter here.
             BankLedgerEntry := GetBankLedgerEntry(Rec, VendorLedgerToModify);
         end;
-
-        VendorLedgerToModify.Get(Rec."Vendor Ledger Entry No.");
 
         if (BankLedgerEntry."Entry No." = 0) and not (Rec.Unapplied = true) then begin
             // If payment is has not been posted through bank account, we'll use the vendor's payment ledger entry data.
@@ -78,38 +83,37 @@ codeunit 51102 "Vendor Ledger Entries"
     local procedure GetAndSetPaymentData(var BankLedgerEntry: Record "Bank Account Ledger Entry"; var VendorLedgerEntry: Record "Vendor Ledger Entry"; var Unapplied: Boolean)
     var
         GLEntries: Record "G/L Entry";
-        PostingDate: Date;
+        PostingDate, CVDocDueDate : Date;
+        Paid, Cancelled : Boolean;
         DocumentNo: Code[20];
     begin
         // ISSUE: What about partial payments to ledger entries?
         // ISSUE: When an invoice is being applied to two payments and one of those payments is cancelled, the entry is not modified.
         if Unapplied then begin
-            VendorLedgerEntry.Paid := false;
-            VendorLedgerEntry."Pmt Cancelled" := true;
+            Paid := false;
+            Cancelled := true;
             // Using vars to not change the Bank Ledger Entry since it's needed again later.
             PostingDate := 0D;
             DocumentNo := '';
+            CVDocDueDate := 0D;
         end else begin
-            VendorLedgerEntry.Paid := true;
-            VendorLedgerEntry."Pmt Cancelled" := false;
+            Paid := true;
+            Cancelled := false;
             PostingDate := BankLedgerEntry."Posting Date";
             DocumentNo := BankLedgerEntry."Document No.";
+            CVDocDueDate := VendorLedgerEntry."Due Date";
         end;
         GLEntries.SetRange("Document No.", VendorLedgerEntry."Document No.");
         GLEntries.SetRange("Posting Date", VendorLedgerEntry."Posting Date");
         if not GLEntries.IsEmpty then begin
             GLEntries.ModifyAll("Bank Posting Date", PostingDate);
             GLEntries.ModifyAll("Bank Document No.", DocumentNo);
-            if not (Unapplied) then begin
-                GLEntries.ModifyAll("CV Doc. Due Date", VendorLedgerEntry."Due Date");
-                GLEntries.ModifyAll(Paid, true);
-                GLEntries.ModifyAll("Pmt Cancelled", false);
-            end else begin
-                GLEntries.ModifyAll("CV Doc. Due Date", 0D);
-                GLEntries.ModifyAll(Paid, false);
-                GLEntries.ModifyAll("Pmt Cancelled", true);
-            end;
+            GLEntries.ModifyAll("CV Doc. Due Date", CVDocDueDate);
+            GLEntries.ModifyAll(Paid, Paid);
+            GLEntries.ModifyAll("Pmt Cancelled", Cancelled);
         end;
+        VendorLedgerEntry.Paid := Paid;
+        VendorLedgerEntry."Pmt Cancelled" := Cancelled;
         VendorLedgerEntry."Bank Posting Date" := PostingDate;
         VendorLedgerEntry."Bank Document No." := DocumentNo;
         VendorLedgerEntry.Modify();
@@ -128,9 +132,13 @@ codeunit 51102 "Vendor Ledger Entries"
                 and (DetailedVendorLedgEntry."Applied Vend. Ledger Entry No." <> 0) then begin
             TheOtherVendLedgEntr.Get(DetailedVendorLedgEntry."Applied Vend. Ledger Entry No.");
             BankLedgerEntry.SetRange("Transaction No.", TheOtherVendLedgEntr."Transaction No.");
-        end else
+            // Changed b/c makes sense, taken from CustLedger Entry:
+            BankLedgerEntry.SetRange("Posting Date", DetailedVendorLedgEntry."Posting Date");
+        end else begin
             BankLedgerEntry.SetRange("Transaction No.", VendorLedgerEntry."Transaction No.");
-        BankLedgerEntry.SetRange("Posting Date", DetailedVendorLedgEntry."Posting Date");
+            // Changed b/c makes sense, taken from CustLedger Entry:
+            BankLedgerEntry.SetRange("Posting Date", DetailedVendorLedgEntry."Posting Date");
+        end;
         BankLedgerEntry.SetRange("Document No.", DetailedVendorLedgEntry."Document No.");
         BankLedgerEntry.SetRange("Bal. Account No.", DetailedVendorLedgEntry."Vendor No.");
         if not DetailedVendorLedgEntry.Unapplied then

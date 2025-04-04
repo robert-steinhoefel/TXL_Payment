@@ -130,31 +130,28 @@ codeunit 51104 "Bank Account Ledger Entries"
     local procedure SetCustLedgEntryDetailsOnBankLedgEntry(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var CustomerLedgerEntry: Record "Cust. Ledger Entry")
     var
         DetailedCustomerLedgerEntry: Record "Detailed Cust. Ledg. Entry";
-        DocCustomerLedgEntry: Record "Cust. Ledger Entry";
-        CustomerLedgerEntriesProcessing: Codeunit "Customer Ledger Entries";
+        DocumentNo: Text;
     begin
-        DetailedCustomerLedgerEntry.SetRange("Applied Cust. Ledger Entry No.", CustomerLedgerEntry."Entry No.");
-        DetailedCustomerLedgerEntry.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
-        DetailedCustomerLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Invoice, "Gen. Journal Document Type"::"Credit Memo");
-        if DetailedCustomerLedgerEntry.FindSet() then
-            repeat
-                DocCustomerLedgEntry.Get(DetailedCustomerLedgerEntry."Cust. Ledger Entry No.");
-                if BankAccountLedgerEntry."CV Doc. No." <> '' then begin
-                    BankAccountLedgerEntry."CV Doc. No." := BankAccountLedgerEntry."CV Doc. No." + '|' + DocCustomerLedgEntry."Document No.";
-                    if BankAccountLedgerEntry."CV Doc. Due Date" < DocCustomerLedgEntry."Due Date" then
-                        BankAccountLedgerEntry."CV Doc. Due Date" := DocCustomerLedgEntry."Due Date";
-                end else begin
-                    BankAccountLedgerEntry."CV Doc. No." := DocCustomerLedgEntry."Document No.";
-                    BankAccountLedgerEntry."CV Doc. Due Date" := DocCustomerLedgEntry."Due Date"
-                end;
-                BankAccountLedgerEntry."Ledger Entry Type" := "Source Ledger Entry Type"::Customer;
-                BankAccountLedgerEntry."CV Doc Type" := DocCustomerLedgEntry."Document Type";
-                BankAccountLedgerEntry."CV Global Dimension 1 Code" := DocCustomerLedgEntry."Global Dimension 1 Code";
-                BankAccountLedgerEntry."CV Global Dimension 2 Code" := DocCustomerLedgEntry."Global Dimension 2 Code";
-                BankAccountLedgerEntry."CV Dimension Set ID" := DocCustomerLedgEntry."Dimension Set ID";
-                // TODO: Explicitely test what if there are multiple CustomerLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
-                BankAccountLedgerEntry.Modify();
-            until DetailedCustomerLedgerEntry.Next() = 0;
+        if BankAccountLedgerEntry."CV Doc. No." <> '' then begin
+            if StrPos(BankAccountLedgerEntry."CV Doc. No.", CustomerLedgerEntry."Document No.") > 0 then
+                exit;
+            DocumentNo := BankAccountLedgerEntry."CV Doc. No." + '|' + CustomerLedgerEntry."Document No.";
+            if StrLen(DocumentNo) > 20 then
+                DocumentNo := DocumentNo.Remove(1, (StrLen(DocumentNo) - 20));
+            BankAccountLedgerEntry."CV Doc. No." := DocumentNo;
+            if BankAccountLedgerEntry."CV Doc. Due Date" < CustomerLedgerEntry."Due Date" then
+                BankAccountLedgerEntry."CV Doc. Due Date" := CustomerLedgerEntry."Due Date";
+        end else begin
+            BankAccountLedgerEntry."CV Doc. No." := CustomerLedgerEntry."Document No.";
+            BankAccountLedgerEntry."CV Doc. Due Date" := CustomerLedgerEntry."Due Date"
+        end;
+        BankAccountLedgerEntry."Ledger Entry Type" := "Source Ledger Entry Type"::Customer;
+        BankAccountLedgerEntry."CV Doc Type" := CustomerLedgerEntry."Document Type";
+        BankAccountLedgerEntry."CV Global Dimension 1 Code" := CustomerLedgerEntry."Global Dimension 1 Code";
+        BankAccountLedgerEntry."CV Global Dimension 2 Code" := CustomerLedgerEntry."Global Dimension 2 Code";
+        BankAccountLedgerEntry."CV Dimension Set ID" := CustomerLedgerEntry."Dimension Set ID";
+        // TODO: Explicitely test what if there are multiple CustomerLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
+        BankAccountLedgerEntry.Modify();
     end;
 
 }
