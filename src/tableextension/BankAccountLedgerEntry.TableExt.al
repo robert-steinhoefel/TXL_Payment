@@ -4,6 +4,7 @@ using P3.TXL.Payment.System;
 using Microsoft.Bank.Ledger;
 using Microsoft.Finance.Dimension;
 using Microsoft.Finance.GeneralLedger.Journal;
+using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Purchases.Payables;
 using Microsoft.Sales.Receivables;
 
@@ -25,7 +26,9 @@ tableextension 51104 "Bank Acc. Ledger Entry" extends "Bank Account Ledger Entry
             TableRelation =
             if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Customer)) "Cust. Ledger Entry"."Document No." where("Document No." = field("CV Doc. No."), "Customer No." = field("Bal. Account No."), "Due Date" = field("CV Doc. Due Date"), "Document Type" = field("CV Doc Type"))
             else
-            if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Vendor)) "Vendor Ledger Entry"."Document No." where("Document No." = field("CV Doc. No."), "Vendor No." = field("Bal. Account No."), "Due Date" = field("CV Doc. Due Date"), "Document Type" = field("CV Doc Type"));
+            if ("Ledger Entry Type" = const("Source Ledger Entry Type"::Vendor)) "Vendor Ledger Entry"."Document No." where("Document No." = field("CV Doc. No."), "Vendor No." = field("Bal. Account No."), "Due Date" = field("CV Doc. Due Date"), "Document Type" = field("CV Doc Type"))
+            else
+            if ("Ledger Entry Type" = const("Source Ledger Entry Type"::"G/L Account")) "G/L Entry"."Document No." where("Document No." = field("CV Doc. No."), "G/L Account No." = field("Bal. Account No."), "Document Type" = field("CV Doc Type"));
         }
         field(51102; "CV Doc. Due Date"; Date)
         {

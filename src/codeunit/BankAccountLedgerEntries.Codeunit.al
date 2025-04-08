@@ -12,6 +12,7 @@ codeunit 51104 "Bank Account Ledger Entries"
 {
     TableNo = "Bank Account Ledger Entry";
     Permissions = tabledata "Bank Account Ledger Entry" = rm,
+    tabledata "G/L Entry" = rm,
     tabledata "Vendor Ledger Entry" = r,
     tabledata "Cust. Ledger Entry" = r,
     tabledata "Detailed Vendor Ledg. Entry" = r,
@@ -21,9 +22,7 @@ codeunit 51104 "Bank Account Ledger Entries"
 
     trigger OnRun()
     var
-        LedgerEntry: Variant;
     begin
-        GetAndProcessLedgerEntries(Rec, LedgerEntry);
     end;
 
     procedure GetAndProcessLedgerEntries(var Rec: Record "Bank Account Ledger Entry"; var LedgerEntry: Variant)
@@ -31,8 +30,9 @@ codeunit 51104 "Bank Account Ledger Entries"
         VendorLedgerEntry: Record "Vendor Ledger Entry";
         CustomerLederEntry: Record "Cust. Ledger Entry";
         GeneralLedgerEntry: Record "G/L Entry";
+        GLEntries: Record "G/L Entry";
         LedgerEntryRecRef: RecordRef;
-        ErrNoDirectPosting: Label 'Poting payments directly to %1s is not allowed in cameralistics. Use an invoice or credit memo on a customer or vendor instead.';
+        ErrNoDirectPosting: Label 'Posting payments directly to %1s is not allowed in cameralistics. Use an invoice or credit memo on a customer or vendor instead.';
     begin
         if Rec."Entry No." = 0 then
             exit;
@@ -56,17 +56,15 @@ codeunit 51104 "Bank Account Ledger Entries"
                 begin
                     SetCustLedgEntryDetailsOnBankLedgEntry(Rec, CustomerLederEntry)
                 end;
+
+            // This is not really implemented yet since we do not have an EventSubscriber to OnAfterInsert G/L Entries.
+
             "Gen. Journal Account Type"::"G/L Account":
                 begin
-                    Rec."Ledger Entry Type" := "Source Ledger Entry Type"::"G/L Account";
-                    Rec."CV Doc Type" := Rec."Document Type";
-                    Rec."CV Doc. Due Date" := Rec."Posting Date";
-                    Rec."CV Doc. No." := Rec."Document No.";
-                    Rec."CV Global Dimension 1 Code" := Rec."Global Dimension 1 Code";
-                    Rec."CV Global Dimension 2 Code" := Rec."Global Dimension 2 Code";
-                    Rec."CV Dimension Set ID" := Rec."Dimension Set ID";
-                    Rec.Modify();
+                    SetGLEntryOnBankLedgEntry(Rec, GeneralLedgerEntry);
                 end;
+
+
             "Gen. Journal Account Type"::"Fixed Asset":
                 Error(StrSubstNo(ErrNoDirectPosting, Rec."Bal. Account Type"));
             "Gen. Journal Account Type"::Employee:
@@ -150,6 +148,61 @@ codeunit 51104 "Bank Account Ledger Entries"
         BankAccountLedgerEntry."CV Dimension Set ID" := CustomerLedgerEntry."Dimension Set ID";
         // TODO: Explicitely test what if there are multiple CustomerLedgerEntries being balanced? Won't work in BC base, but maybe through extensions like OPPlus or Megabau.
         BankAccountLedgerEntry.Modify();
+    end;
+
+    local procedure SetGLEntryOnBankLedgEntry(var Rec: Record "Bank Account Ledger Entry"; var SrcGLEntry: Record "G/L Entry")
+    var
+        PostingDate, DocDueDate : Date;
+        DocNo, CVGlobDim1, CVGlobDim2 : Code[20];
+        Paid, Cancelled : Boolean;
+        CVDimSetID: Integer;
+        CVLedgEntryType: Enum "Source Ledger Entry Type";
+        CVDocType: Enum "Gen. Journal Document Type";
+        BankAccountLedgerEntry: Record "Bank Account Ledger Entry";
+        GeneralLedgerEntry: Record "G/L Entry";
+    begin
+        if SrcGLEntry.Reversed then begin
+            Paid := false;
+            Cancelled := true;
+            PostingDate := 0D;
+            DocNo := '';
+            if Rec."Reversed Entry No." <> 0 then begin
+                Rec.Get(Rec."Reversed Entry No.");
+            end;
+            CVLedgEntryType := "Source Ledger Entry Type"::" ";
+            CVDocType := "Gen. Journal Document Type"::" ";
+        end else begin
+            Paid := true;
+            Cancelled := false;
+            PostingDate := Rec."Posting Date";
+            DocNo := Rec."Document No.";
+            CVLedgEntryType := "Source Ledger Entry Type"::"G/L Account";
+            CVDocType := SrcGLEntry."Document Type";
+            CVGlobDim1 := SrcGLEntry."Global Dimension 1 Code";
+            CVGlobDim2 := SrcGLEntry."Global Dimension 2 Code";
+            CVDimSetID := SrcGLEntry."Dimension Set ID";
+        end;
+        BankAccountLedgerEntry.Reset();
+        BankAccountLedgerEntry.SetRange("Document No.", Rec."Document No.");
+        BankAccountLedgerEntry.SetRange("Posting Date", Rec."Posting Date");
+        if not BankAccountLedgerEntry.IsEmpty then begin
+            BankAccountLedgerEntry.ModifyAll("Ledger Entry Type", CVLedgEntryType);
+            BankAccountLedgerEntry.ModifyAll("CV Doc. No.", DocNo);
+            BankAccountLedgerEntry.ModifyAll("CV Doc. Due Date", 0D);
+            BankAccountLedgerEntry.ModifyAll("CV Global Dimension 1 Code", CVGlobDim1);
+            BankAccountLedgerEntry.ModifyAll("CV Global Dimension 2 Code", CVGlobDim2);
+            BankAccountLedgerEntry.ModifyAll("CV Dimension Set ID", CVDimSetID);
+        end;
+        GeneralLedgerEntry.Reset();
+        GeneralLedgerEntry.SetRange("Document No.", SrcGLEntry."Document No.");
+        GeneralLedgerEntry.SetRange("Posting Date", SrcGLEntry."Posting Date");
+        if not GeneralLedgerEntry.IsEmpty then begin
+            GeneralLedgerEntry.ModifyAll(Paid, Paid);
+            GeneralLedgerEntry.ModifyAll("Pmt Cancelled", Cancelled);
+            GeneralLedgerEntry.ModifyAll("Bank Posting Date", PostingDate);
+            GeneralLedgerEntry.ModifyAll("Bank Document No.", DocNo);
+            GeneralLedgerEntry.ModifyAll("CV Doc. Due Date", 0D);
+        end;
     end;
 
 }
