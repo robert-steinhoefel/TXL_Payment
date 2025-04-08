@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Testf&auml;lle und Ergebnisse der Kameralistik Erweiterung</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="testfälle-und-ergebnisse-der-kameralistik-erweiterung">Testfälle und Ergebnisse der Kameralistik Erweiterung</h1>
+<p>Dieses Dokument ist nur in deutscher Sprache verfügbar</p>
+<ol>
+<li><a href="#ausgleiche-%C3%BCber-beleghafte-kreditoren--und-debitorenposten">Ausgleiche über beleghafte Kreditoren- und Debitorenposten</a>
+<ol>
+<li><a href="#ausgleich-eines-kreditoren-rechnungspostens-mit-einer-zahlung">Ausgleich eines Kreditoren-Rechnungspostens mit einer Zahlung</a></li>
+<li><a href="#ausgleich-eines-kreditoren-zahlungsposten-mit-einer-rechnung">Ausgleich eines Kreditoren-Zahlungsposten mit einer Rechnung</a></li>
+<li><a href="#ausgleich-eines-kreditoren-gutschriftspostens-mit-einer-erstattung">Ausgleich eines Kreditoren-Gutschriftspostens mit einer Erstattung</a></li>
+<li><a href="#ausgleich-eines-kreditoren-erstattungsposten-mit-einer-gutschrift">Ausgleich eines Kreditoren-Erstattungsposten mit einer Gutschrift</a></li>
+<li><a href="#ausgleich-eines-debitoren-rechnungspostens-mit-einer-zahlung">Ausgleich eines Debitoren-Rechnungspostens mit einer Zahlung</a></li>
+<li><a href="#ausgleich-eines-debitoren-zahlungsposten-mit-einer-rechnung">Ausgleich eines Debitoren-Zahlungsposten mit einer Rechnung</a></li>
+<li><a href="#ausgleich-eines-debitoren-gutschriftspostens-mit-einer-erstattung">Ausgleich eines Debitoren-Gutschriftspostens mit einer Erstattung</a></li>
+<li><a href="#ausgleich-eines-debitoren-erstattungsposten-mit-einer-gutschrift">Ausgleich eines Debitoren-Erstattungsposten mit einer Gutschrift</a></li>
+</ol>
+</li>
+<li><a href="#ausgleiche-von-und-%C3%BCber-buch-blatt-buchungen">Ausgleiche von und über Buch.-Blatt Buchungen</a>
+<ol>
+<li><a href="#erfassen-einer-kreditorzahlung-im-buch-blatt-mit-direktem-ausgleich-der-zugeh%C3%B6rigen-rechnung">Erfassen einer Kreditorzahlung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Rechnung</a></li>
+<li><a href="#erfassen-einer-kreditorerstattung-im-buch-blatt-mit-direktem-ausgleich-der-zugeh%C3%B6rigen-gutschrift">Erfassen einer Kreditorerstattung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Gutschrift</a></li>
+<li><a href="#erfassen-einer-debitorzahlung-im-buch-blatt-mit-direktem-ausgleich-der-zugeh%C3%B6rigen-rechnung">Erfassen einer Debitorzahlung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Rechnung</a></li>
+<li><a href="#erfassen-einer-debitorerstattung-im-buch-blatt-mit-direktem-ausgleich-der-zugeh%C3%B6rigen-gutschrift">Erfassen einer Debitorerstattung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Gutschrift</a></li>
+</ol>
+</li>
+<li><a href="#aufheben-eines-zahlungsausgleiches">Aufheben eines Zahlungsausgleiches</a></li>
+<li><a href="#bankposten-abfrage">Bankposten Abfrage</a></li>
+</ol>
+<h2 id="ausgleiche-über-beleghafte-kreditoren--und-debitorenposten">Ausgleiche über beleghafte Kreditoren- und Debitorenposten</h2>
+<h3 id="ausgleich-eines-kreditoren-rechnungspostens-mit-einer-zahlung">Ausgleich eines Kreditoren-Rechnungspostens mit einer Zahlung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Zahlungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)</p>
+<ul>
+<li>Kreditoren mit offenem Rechnungsposten aufrufen und in die Postenliste gehen</li>
+<li>Offenen Rechnungsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Zahlungsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Kreditorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h3 id="ausgleich-eines-kreditoren-zahlungsposten-mit-einer-rechnung">Ausgleich eines Kreditoren-Zahlungsposten mit einer Rechnung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Zahlungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)</p>
+<ul>
+<li>Kreditoren mit offenem Rechnungsposten aufrufen und in die Postenliste gehen</li>
+<li>Zahlungsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Rechnungsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Kreditorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h3 id="ausgleich-eines-kreditoren-gutschriftspostens-mit-einer-erstattung">Ausgleich eines Kreditoren-Gutschriftspostens mit einer Erstattung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Erstattungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)</p>
+<ul>
+<li>Kreditoren mit offenem Gutschriftsposten aufrufen und in die Postenliste gehen</li>
+<li>Gutschriftsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Erstattungsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Kreditorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h3 id="ausgleich-eines-kreditoren-erstattungsposten-mit-einer-gutschrift">Ausgleich eines Kreditoren-Erstattungsposten mit einer Gutschrift</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Erstattungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)</p>
+<ul>
+<li>Kreditoren mit offenem Gutschriftsposten aufrufen und in die Postenliste gehen</li>
+<li>Erstattungsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Gutschriftsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Kreditorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h3 id="ausgleich-eines-debitoren-rechnungspostens-mit-einer-zahlung">Ausgleich eines Debitoren-Rechnungspostens mit einer Zahlung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Zahlungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)</p>
+<ul>
+<li>Debitor mit offenem Rechnungsposten aufrufen und in die Postenliste gehen</li>
+<li>Offenen Rechnungsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Zahlungsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Debitorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h3 id="ausgleich-eines-debitoren-zahlungsposten-mit-einer-rechnung">Ausgleich eines Debitoren-Zahlungsposten mit einer Rechnung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Zahlungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)</p>
+<ul>
+<li>Debitor mit offenem Rechnungsposten aufrufen und in die Postenliste gehen</li>
+<li>Offenen Zahlungsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Rechnungsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Debitorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h3 id="ausgleich-eines-debitoren-gutschriftspostens-mit-einer-erstattung">Ausgleich eines Debitoren-Gutschriftspostens mit einer Erstattung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Debitoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Erstattungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)</p>
+<ul>
+<li>Debitor mit offenem Gutschriftsposten aufrufen und in die Postenliste gehen</li>
+<li>Gutschriftsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Erstattungsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Debitorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h3 id="ausgleich-eines-debitoren-erstattungsposten-mit-einer-gutschrift">Ausgleich eines Debitoren-Erstattungsposten mit einer Gutschrift</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<p>(Erstattungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)</p>
+<ul>
+<li>Debitor mit offenem Gutschriftsposten aufrufen und in die Postenliste gehen</li>
+<li>Erstattungsposten auswählen</li>
+<li>Menü: Start -&gt; Posten ausgleichen</li>
+<li>Gutschriftsposten auswählen, im Menü &quot;Ausgleichs-ID setzen&quot; wählen</li>
+<li>Menü: &quot;Ausgleich buchen&quot;</li>
+<li>Ergebnis prüfen: Debitorenposten, Sachposten, Bankposten</li>
+</ul>
+<p>Ausgleich: bestanden
+Ausgleich aufheben: bestanden</p>
+<h2 id="ausgleiche-von-und-über-buch-blatt-buchungen">Ausgleiche von und über Buch.-Blatt Buchungen</h2>
+<h3 id="erfassen-einer-kreditorzahlung-im-buch-blatt-mit-direktem-ausgleich-der-zugehörigen-rechnung">Erfassen einer Kreditorzahlung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Rechnung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<ul>
+<li>Zahlungsposten in Buch Blatt erfassen</li>
+<li>In den Spalten &quot;Ausgleich mit Belegart&quot;: Rechnung, &quot;Ausgleich mit Belegnr.&quot; die entsprechende Rechnung auswählen.</li>
+<li>Buchen, Ergebnis prüfen</li>
+</ul>
+<p>FiBu Buch.-Blatt: bestanden
+FiBu Buch.-Blatt Ausgleich aufheben: bestanden
+Erw. Zahlungseingangs Buch.-Blatt: bestanden
+Erw. Zahlungseingangs Buch.-Blatt Ausgleich aufheben: bestanden</p>
+<h3 id="erfassen-einer-kreditorerstattung-im-buch-blatt-mit-direktem-ausgleich-der-zugehörigen-gutschrift">Erfassen einer Kreditorerstattung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Gutschrift</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<ul>
+<li>Erstattungsposten in Buch Blatt erfassen</li>
+<li>In den Spalten &quot;Ausgleich mit Belegart&quot;: Gutschrift, &quot;Ausgleich mit Belegnr.&quot; die entsprechende Gutschrift auswählen.</li>
+<li>Buchen, Ergebnis prüfen</li>
+</ul>
+<p>FiBu Buch.-Blatt: bestanden
+FiBu Buch.-Blatt Ausgleich aufheben: bestanden
+Erw. Zahlungseingangs Buch.-Blatt: bestanden
+Erw. Zahlungseingangs Buch.-Blatt Ausgleich aufheben: bestanden</p>
+<h3 id="erfassen-einer-debitorzahlung-im-buch-blatt-mit-direktem-ausgleich-der-zugehörigen-rechnung">Erfassen einer Debitorzahlung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Rechnung</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<ul>
+<li>Zahlungsposten in Buch Blatt erfassen</li>
+<li>In den Spalten &quot;Ausgleich mit Belegart&quot;: Rechnung, &quot;Ausgleich mit Belegnr.&quot; die entsprechende Rechnung auswählen.</li>
+<li>Buchen, Ergebnis prüfen</li>
+</ul>
+<p>FiBu Buch.-Blatt: bestanden
+FiBu Buch.-Blatt Ausgleich aufheben: bestanden
+Erw. Zahlungseingangs Buch.-Blatt: bestanden
+Erw. Zahlungseingangs Buch.-Blatt Ausgleich aufheben: bestanden</p>
+<h3 id="erfassen-einer-debitorerstattung-im-buch-blatt-mit-direktem-ausgleich-der-zugehörigen-gutschrift">Erfassen einer Debitorerstattung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Gutschrift</h3>
+<p>Erwartetes Ergebnis: Die Informationen aus dem Debitor Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.</p>
+<p>Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.</p>
+<ul>
+<li>Erstattungsposten in Buch Blatt erfassen</li>
+<li>In den Spalten &quot;Ausgleich mit Belegart&quot;: Gutschrift, &quot;Ausgleich mit Belegnr.&quot; die entsprechende Gutschrift auswählen.</li>
+<li>Buchen, Ergebnis prüfen</li>
+</ul>
+<p>FiBu Buch.-Blatt: bestanden
+FiBu Buch.-Blatt Ausgleich aufheben: bestanden
+Erw. Zahlungseingangs Buch.-Blatt: bestanden
+Erw. Zahlungseingangs Buch.-Blatt Ausgleich aufheben: bestanden</p>
+<h2 id="aufheben-eines-zahlungsausgleiches">Aufheben eines Zahlungsausgleiches</h2>
+<p>Erwartetes Ergebnis: Bei jeder Aufhebung eines Ausgleiches zwischen Zahlung und Rechnung oder Erstattung und Gutschrift, werden die betroffenen Informationen wieder entfernt. Im Rechnungs- (Gutschrifts-) Posten sowie den unmittelbar verknüpften Sachposten werden Bank-Buchungsdatum, Bank-Belegnummer und das Kennzeichen &quot;bezahlt&quot; wieder entfernt, das Kennzeichen &quot;Zahlung storniert&quot; hingegen gesetzt. Aus dem mit der Zahlung (Erstattung) verknüpften Bankposten werden der Belegtyp, Beleg-Fälligkeitsdatum, Belegnummer(n) und Postentyp sowie die Dimensionsinformationen zum Rechnungs-/Gutschriftsposten entfernt.</p>
+<h2 id="bankposten-abfrage">Bankposten Abfrage</h2>
+<p>Erwartetes Ergebnis: Die Abfrage (Query) listet alle Bankposten, unabhängig von Buchungsdatum, Bankkonto oder Ausgleichsstatus auf (sie kann über Parameter in der externen Abfrage eingeschränkt werden). Dabei werden die Informationen aus den Ausgleichen zwischen Rechnungen und Zahlungen mit aufgelistet sowie die zugehörigen Dimensionswerte.</p>
+<p>Ergebnis: bestanden</p>
+
+            
+            
+        </body>
+        </html>

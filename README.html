@@ -147,17 +147,7 @@
 <li>Namespace: P3.TXL.Payment.{ModuleSpace}</li>
 </ul>
 <ol>
-<li><a href="#implemented-functionality">Implemented functionality</a>
-<ol>
-<li><a href="#relevant-extensions">Relevant Extensions</a></li>
-<li><a href="#ledger-entry-methodology">Ledger entry methodology</a></li>
-<li><a href="#bank-transaction-query">Bank transaction query</a>
-<ol>
-<li><a href="#api-fields">API Fields</a></li>
-</ol>
-</li>
-</ol>
-</li>
+<li><a href="#implemented-functionality">Implemented functionality</a></li>
 <li><a href="#todos">ToDos</a>
 <ol>
 <li><a href="#megabau">Megabau</a></li>
@@ -168,186 +158,14 @@
 <li><a href="#discarded-requirements">Discarded requirements</a></li>
 </ol>
 <h2 id="implemented-functionality">Implemented functionality</h2>
-<p><a href="./src/codeunit/EventSubscriber.Codeunit.al">EventSubscribers</a> for tables Detailed Vendor Ledger Entries and Detailed Customer Ledger Entries are subscribed to OnAfterInsertEvents. These events will trigger a <code>Codeunit.Run</code> if the Initial Document is of type &quot;Invoice&quot; or &quot;Credit Memo&quot; and if the Ledger Entry type is Application. The RunTrigger is being ignored.</p>
-<pre><code>if Rec.&quot;Entry Type&quot; &lt;&gt; &quot;Detailed CV Ledger Entry Type&quot;::Application then
-    exit;
-if Rec.&quot;Initial Document Type&quot; = &quot;Gen. Journal Document Type&quot;::Payment then
-    exit;
-if Rec.&quot;Initial Document Type&quot; = &quot;Gen. Journal Document Type&quot;::Refund then
-    exit;
-Codeunit.Run(Codeunit::&quot;Vendor Ledger Entries&quot;, Rec);
-</code></pre>
-<ul>
-<li><a href="./src/codeunit/VendorLedgerEntries.Codeunit.al">Codeunit VendorLedgerEntries</a></li>
-<li><a href="./src/codeunit/CustomerLedgerEntries.Codeunit.al">Codeunit CustomerLedgerEntries</a></li>
-</ul>
-<h3 id="relevant-extensions">Relevant Extensions</h3>
-<ul>
-<li><a href="./src/tableextension/GLEntry.TableExt.al">TableExtension 51100</a>,</li>
-<li><a href="./src/tableextension/VendorLedgerEntry.TableExt.al">TableExtension 51101</a>,</li>
-<li><a href="./src/tableextension/CustLedgerEntry.TableExt.al">TableExtension 51102</a> and their corresponding</li>
-<li><a href="./src/pageextension/GeneralLedgerEntries.PageExt.al">PageExtension 51100</a>,</li>
-<li><a href="./src/pageextension/VendorLedgerEntries.PageExt.al">PageExtension 51101</a>,</li>
-<li><a href="./src/pageextension/CustomerLedgerEntries.PageExt.al">PageExtension 51102</a>.</li>
-</ul>
-<h3 id="ledger-entry-methodology">Ledger entry methodology</h3>
-<p>Both of these codeunit follow the same methodology an will do the following:</p>
-<ol>
-<li>Get the corresponding Bank Account Ledger Entry</li>
-<li>Get the originating Vendor Ledger Entry / Customer Ledger Entry that has been created with the invoice or credit memo document.</li>
-<li>Add Bank Account Ledger Entry information to Vendor Ledger Entry / Customer Ledger Entry which has been made available through
-<ul>
-<li>Paid (<code>Boolean</code>)</li>
-<li>Payment Cancelled (<code>Boolean</code>)</li>
-<li>Bank Posting Date (<code>Date</code>)</li>
-<li>Bank Document No. (<code>Code[20]</code>)</li>
-<li>CV Doc. No. (<code>Code[20]</code>)</li>
-<li>CV Doc. Due Date (<code>Date</code>)</li>
-</ul>
-</li>
-<li>Find corresponding G/L entries for Vendor Ledger Entry / Customer Ledger Entry by their Document No. and Posting Date and add the Bank Account Ledger Entry information accordingly.</li>
-<li>Add Vendor Ledger Entry / Customer Ledger Entry information by passing the Bank Account Ledger Entry from 1. to the <a href="./src/codeunit/BankAccountLedgerEntries.Codeunit.al">BankAccountLedgerEntries CodeUnit</a>.</li>
-</ol>
-<p>If an application is being cancelled, the functionality basically runs &quot;backwards&quot; and removes all previously entered data simply leaving the <code>Payment Cancelled</code> field to <code>true</code>.</p>
-<h3 id="bank-transaction-query">Bank transaction query</h3>
-<p>A <a href="./src/query/BankAccountLedgerEntries.Query.al">BankAccountLedgerEntries Query</a> provides the payment ledger entries as API query.</p>
-<pre><code>EntitySetName = 'CameralisticBankAccountLedgerEntries';
-EntityName = 'CameralisticBankAccountLedgerEntry';
-APIPublisher = 'P3';
-APIVersion = 'v1.0';
-APIGroup = 'CameralisticLedgerEntries';
-</code></pre>
-<p>By using an <a href="./src/codeunit/Installation.Codeunit.al">Installation Codeunit</a> procedure, the query is automatigically registered to BC's web services.</p>
-<p>Currently, we will be resolving the dimensions by the dimension set entry ID being posted with the customer / vendor ledger entry. Due to the concept of queries in BC and their DataItemLink property, the dimension values cannot be exploited in columns next to each other. Instead, they will be listed (linked) by multiple rows to a single Bank Account Ledger Entry resulting in &quot;fake&quot; Bank Account ledger entries that will only differentiate by the <code>CVDimension_</code>-values. For use in external analyzations, the field <code>Entry_No_</code> should be used to unite these entries.</p>
-<h4 id="api-fields">API Fields</h4>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Fieldname</th>
-<th style="text-align:left">Field description</th>
-<th style="text-align:left">Field content/example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Entry_No_</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Entry No.&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">BankAccountNo</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Bank Account No.&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">AmountLCY</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Amount (LCY)&quot;</td>
-<td style="text-align:left"><code>Decimal</code></td>
-</tr>
-<tr>
-<td style="text-align:left">PostingDate</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Posting Date&quot;</td>
-<td style="text-align:left"><code>Date</code></td>
-</tr>
-<tr>
-<td style="text-align:left">StatementNo</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Statement No.&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">BalAccountType</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Bal. Account Type&quot;</td>
-<td style="text-align:left">Enum &quot;Gen. Journal Account Type&quot;</td>
-</tr>
-<tr>
-<td style="text-align:left">BalAccountNo</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Bal. Account No.&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">CVDocType</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry Document Type</td>
-<td style="text-align:left">Invoice/Credit Memo</td>
-</tr>
-<tr>
-<td style="text-align:left">CVDocNo</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry Document No.</td>
-<td style="text-align:left">RG-251001</td>
-</tr>
-<tr>
-<td style="text-align:left">CVDocDueDate</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry Document Due Date</td>
-<td style="text-align:left"><code>Date</code></td>
-</tr>
-<tr>
-<td style="text-align:left">CVGlobalDimension1Code</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry Global Dimension 1 Code</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">CVGlobalDimension2Code</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry Global Dimension 2 Code</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">CVDimensionSetID</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry Dimension Set ID</td>
-<td style="text-align:left"><code>Integer</code></td>
-</tr>
-<tr>
-<td style="text-align:left">LedgerEntryType</td>
-<td style="text-align:left">Source Ledger Entry Entry Type</td>
-<td style="text-align:left"><code>Customer</code>/<code>Vendor</code>/<code>G/L Account</code></td>
-</tr>
-<tr>
-<td style="text-align:left"><strong>&gt;&gt;&gt; BEGIN</strong></td>
-<td style="text-align:left"><strong>DataItemLink = &quot;Dimension Set ID&quot; =</strong></td>
-<td style="text-align:left"><strong>BankAccountLedgerEntry.&quot;CV Dimension Set ID&quot;</strong></td>
-</tr>
-<tr>
-<td style="text-align:left">CVDimension_Code</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Dimension Code&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">CVDimension_Value_Code</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry &quot;Dimension Value Code&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">CVDimension_Value_Name</td>
-<td style="text-align:left">Customer/Vendor Ledger Entry &quot;Dimension Value Name&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left"><strong>&lt;&lt;&lt; END OF</strong></td>
-<td style="text-align:left"><strong>DATAITEMLINK</strong></td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">BankLEGlobDim1</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Global Dimension 1 Code&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">BankLEGlobDim2</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Global Dimension 2 Code&quot;</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">BankLEDimSetID</td>
-<td style="text-align:left">Bank Account Ledger Entry &quot;Dimension Set ID&quot;</td>
-<td style="text-align:left"><code>Integer</code></td>
-</tr>
-</tbody>
-</table>
+<p>Please refer to the <a href="./Documentation-EN.html">English documentation</a> or <a href="./Documentation-DE.html">German documentation</a> which are also available as HTML and PDF files.</p>
 <h2 id="todos">ToDos</h2>
 <h3 id="megabau">Megabau</h3>
 <p>The implementaion to <strong>MEGABAU</strong> is still missing. The app must be made dependant on this extension to be able to extend the corresponding tables and subscribe to their OnAfterInsert triggers (<code>Vend. Adv. Pay. Led. EntryMGB (1010772)</code> / <code>Cust. Adv. Pay. Led. EntryMGB (1010770)</code>).</p>
 <h3 id="partial-payments">Partial payments</h3>
 <p>Partial payments are currently not being processed. They will be treated as &quot;full payments&quot; to a C/V ledger entry.</p>
 <h3 id="line-wise-payment-balancing--reconciliation">Line-wise payment balancing / reconciliation</h3>
-<p>Also a line-wise treatment of payments / refunds is not taken into account. There  discussions to be held with TXL on how to deal with those. For the time being it seems that there are no partial Vendor or Customer payments at all or they haven't been taking these into account themselves yet. We will most likely need a line-wise matching of payments to correctly post spendings to Cost Centers, Planning Objects (Cost accounting) and Fundings as well as payment discounts (German: &quot;Skonto&quot;).</p>
+<p>Also a line-wise treatment of payments / refunds is not taken into account. There are discussions to be held with TXL on how to deal with those. For the time being it seems that there are no partial Vendor or Customer payments at all or they haven't been taking these into account themselves yet. We will most likely need a line-wise matching of payments to correctly post spendings to Cost Centers, Planning Objects (Cost accounting) and Fundings as well as payment discounts (German: &quot;Skonto&quot;).</p>
 <h2 id="discarded-requirements">Discarded requirements</h2>
 <p>Since the cameralistic reporting will be based on the Bank Account Ledger Entries only, there is currently no need for an extended General Journal posting functionality that moves bank account posting information across G/L entries.</p>
 

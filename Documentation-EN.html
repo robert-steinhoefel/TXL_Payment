@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>P3 TXL Payment Extension&colon; Cameralistic</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="p3-txl-payment-extension-cameralistic">P3 TXL Payment Extension: Cameralistic</h1>
+<h2 id="management-summary">Management Summary</h2>
+<p>This application is an individual customisation of Microsoft Dynamics Business Central 365. It links payment information with the corresponding invoice information and thus enables an accounting evaluation according to cameralistic aspects.</p>
+<p>To make this technically possible, some ledger entry tables are supplemented with individual columns that are filled during the payment settlement process. In addition, a separate query is implemented that enables the retrieval of the payment ledger entries, supplemented by the invoice information, via a REST API.</p>
+<ol>
+<li><a href="#management-summary">Management Summary</a></li>
+<li><a href="#implemented-objects">Implemented Objects</a>
+<ol>
+<li><a href="#object-overview">Object Overview</a></li>
+<li><a href="#source-ledger-entry-type-enum">Source Ledger Entry Type (Enum)</a></li>
+<li><a href="#p3pmt-all-permission-set">P3.PMT-ALL (Permission Set)</a></li>
+<li><a href="#installation-codeunit">Installation (Codeunit)</a></li>
+<li><a href="#update-codeunit-codeunit">Update Codeunit (Codeunit)</a></li>
+<li><a href="#event-subscriber-codeunit">Event Subscriber (Codeunit)</a></li>
+<li><a href="#customer-ledger-entries--vendor-ledger-entries-codeunit">Customer Ledger Entries / Vendor Ledger Entries (Codeunit)</a></li>
+<li><a href="#bank-account-ledger-entries-codeunit">Bank Account Ledger Entries (Codeunit)</a>
+<ol>
+<li><a href="#customervendor-ledger-entry">customer/vendor ledger entry</a></li>
+<li><a href="#general-ledger-entry">General ledger entry</a></li>
+</ol>
+</li>
+<li><a href="#table-extensions">Table Extensions</a>
+<ol>
+<li><a href="#bank-acc-ledger-entry">&quot;Bank Acc. Ledger Entry</a></li>
+<li><a href="#cust-ledger-entry-customer-ledger-entry">Cust. Ledger Entry (customer ledger entry)</a>
+<ol>
+<li><a href="#vendor-ledger-entry">Vendor Ledger Entry</a></li>
+</ol>
+</li>
+<li><a href="#gl-entry-general-ledger-entry">G/L Entry (general ledger entry)</a></li>
+<li><a href="#dimension-set-entry">Dimension Set Entry</a></li>
+</ol>
+</li>
+<li><a href="#bank-account-ledger-entries-query">Bank Account Ledger Entries (query)</a>
+<ol>
+<li><a href="#api-fields">API Fields</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="implemented-objects">Implemented Objects</h2>
+<p>The objects listed below have been added as part of this extension.</p>
+<h3 id="object-overview">Object Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Object type</th>
+<th>First ID</th>
+<th>Last ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Table extension</td>
+<td>51100</td>
+<td>51105</td>
+</tr>
+<tr>
+<td>Page</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Page extension</td>
+<td>51100</td>
+<td>51103</td>
+</tr>
+<tr>
+<td>Enum</td>
+<td>51100</td>
+<td>51100</td>
+</tr>
+<tr>
+<td>Query</td>
+<td>51100</td>
+<td>51100</td>
+</tr>
+<tr>
+<td>Codeunit</td>
+<td>51100</td>
+<td>51105</td>
+</tr>
+</tbody>
+</table>
+<h3 id="source-ledger-entry-type-enum">Source Ledger Entry Type (Enum)</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>‘ “</td>
+<td>” ’</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Customer</td>
+<td>Customer</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Vendor</td>
+<td>Vendor</td>
+</tr>
+<tr>
+<td>3</td>
+<td>G/L Account</td>
+<td>G/L Account</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p3pmt-all-permission-set">P3.PMT-ALL (Permission Set)</h3>
+<p>The permission set contains all permissions to use the functionalities of the extension without restriction.</p>
+<h3 id="installation-codeunit">Installation (Codeunit)</h3>
+<p>This codeunit is automatically executed when the extension is installed.<br>
+It adds an entry to the ‘Tenant Web Service’ table for querying the bank account ledger entries and publishes it. The web service has the service name <code>CameralisticBankAccountLedgerEntries</code>.</p>
+<h3 id="update-codeunit-codeunit">Update Codeunit (Codeunit)</h3>
+<p>This codeunit is automatically executed when the extension is updated. It currently has no content and is not used.</p>
+<h3 id="event-subscriber-codeunit">Event Subscriber (Codeunit)</h3>
+<p>This code unit subscribes to system-internal events and then calls certain functions.</p>
+<p>Three events are subscribed to in the extension:</p>
+<ul>
+<li>OnAfterInsertEvent of the Detailed Vendor Ledg. Entry table</li>
+<li>OnAfterInsertEvent of the Detailed Cust. Ledg. Entry table</li>
+<li>OnAfterInsertEvent of the G/L Entry table</li>
+</ul>
+<p>These events for the detailed vendor/customer ledger entries are triggered whenever a new detailed vendor/customer ledger entry is created in the system.</p>
+<p>These two events call an almost identical procedure. The system checks whether the entry triggering this event</p>
+<ul>
+<li>is a temporary data record,</li>
+<li>does not correspond to the ‘application’ entry type,</li>
+<li>has ‘payment’ or ‘refund’ as the original document type.<br>
+If none of these three conditions apply, a code unit is called that executes the core functionality of the extension based on the detailed vendor/customer ledger entry. The code unit called is one of those listed below [[#Customer Ledger Entries / Vendor Ledger Entries (Codeunit)]].</li>
+</ul>
+<p>The restriction ensures that the subsequent codeunit is only called when posting a ledger entry application or un-application (and not already when posting an invoice or payment).</p>
+<p>The <strong>third event</strong> is always triggered when a new general ledger entry is created. The triggered method checks whether this event is triggered by a ledger entry that</p>
+<ul>
+<li>is a temporary data record,</li>
+<li>whose balancing account is not a bank account.<br>
+If neither of these conditions applies, the corresponding bank ledger entry is identified. Together with the G/L ledger entry, this is transferred directly to the [[#Bank Account Ledger Entries (Codeunit)]] (see section [[#G/L Ledger Entries]]) for further processing.</li>
+</ul>
+<h3 id="customer-ledger-entries--vendor-ledger-entries-codeunit">Customer Ledger Entries / Vendor Ledger Entries (Codeunit)</h3>
+<p>These two code units run identically and are therefore explained in the same section. In the following, however, only the customer is mentioned in the wording. This is to be equated with the term ‘vendor’ for the reciprocal case. In the case of an applcation entry or when posting an un-application, the code units determine the invoice/credit memo ledger entries, G/L entries and bank account ledger entries to be processed.</p>
+<p>On the basis of the detailed customer ledger entry, which is transferred from the [[#Event Subscriber (Codeunit)]] to the code unit, the detailed customer ledger entry and customer ledger entries that define the payment ledger entry are determined. The corresponding bank account ledger entry is identified with the help of this payment ledger entry.</p>
+<p>The customer ledger entry from the <em>invoice</em> or credit memo and the general ledger entry belonging to this customer ledger entry are updated with the information from the bank account ledger entry and the payment ledger entry:</p>
+<ul>
+<li>The ‘Paid’ indicator is set,</li>
+<li>The posting date of the bank account ledger entry is entered as the bank posting date,</li>
+<li>The document number (usually the account statement number) of the bank account ledger entry is entered as the bank document number,</li>
+<li>In addition, the due date of the invoice or credit memo is entered in the general ledger entry.</li>
+</ul>
+<p>Finally, the bank account ledger entry determined is transferred to the [[#Bank Account Ledger Entries (Codeunit)]] together with the invoice ledger entry, in order to update the bank account ledger entry with the corresponding information.</p>
+<p>If clearing of an item is cancelled, all the above information is removed from the ledger entries. In addition, the ‘payment cancelled’ indicator is set. This is to ensure that it remains clear why there are shifts in the cameralistic evaluations.</p>
+<h3 id="bank-account-ledger-entries-codeunit">Bank Account Ledger Entries (Codeunit)</h3>
+<p>This code unit transfers the information from a payment or refund cleared invoice or credit memo ledger entry to the corresponding bank account ledger entry. It is accessed exclusively via the [[#Customer Ledger Entries / Vendor Ledger Entries (Codeunit)]] code units.<br>
+The code unit throws an error if you try to process a</p>
+<h4 id="customervendor-ledger-entry">customer/vendor ledger entry</h4>
+<p>Customer ledger entries and vendor ledger entries are treated identically, which is why only customer ledger entries are mentioned by name in the following.</p>
+<p>First, the system checks whether the invoice or credit memo number of the customer ledger entry already exists in the bank account ledger entry as the customer/vendor document number. If this is the case, the execution for this data record is terminated.<br>
+If another invoice or credit memo number has already been entered in the bank account ledger entry, the number from the current data record is appended, separated by a pipe character (<code>|</code>). If the due date of the new ledger entry falls <em>after</em> the already existing customer/vendor due date, it will be overwritten. Otherwise, it remains. So the later due date is always entered.<br>
+If the total length of the customer/vendor document number string is longer than 20 characters, the excess characters are truncated on the right.</p>
+<p>The following are then transferred from the customer ledger entry to the corresponding fields of the bank account ledger entry:</p>
+<ul>
+<li>the due date,</li>
+<li>the type of entry (debtor, creditor or general ledger entry)</li>
+<li>the type of document (invoice or credit note)</li>
+<li>the global dimension 1 code</li>
+<li>the global dimension 2 code</li>
+<li>the dimension record entry ID</li>
+</ul>
+<h4 id="general-ledger-entry">General ledger entry</h4>
+<p>If a bank account ledger entry is posted directly to a G/L account, the information from the general ledger entry is transferred to the bank account ledger entry in the same way as for customer/vendor entries. However, there are the following differences:</p>
+<ul>
+<li>Since a general ledger entry has no due date, the customer/vendor ledger entry due date is not set in either the general ledger entry or the bank account ledger entry and remains empty.</li>
+</ul>
+<p>If a bank transaction that was posted directly to a G/L account is cancelled using the ‘Reverse Transaction’ function from the BC standard, all set information is removed again. In addition, the ‘Payment Cleared’ indicator is set for all affected ledger entries, i.e. both the original and the correction ledger entries.</p>
+<h3 id="table-extensions">Table Extensions</h3>
+<p>The following table extensions have been implemented. The corresponding pages have also been added to allow the table columns to be displayed.</p>
+<h4 id="bank-acc-ledger-entry">&quot;Bank Acc. Ledger Entry</h4>
+<table>
+<thead>
+<tr>
+<th>Field no.</th>
+<th>Field name</th>
+<th>Field type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>51100</td>
+<td>Ledger Entry Type</td>
+<td>Enum ‘Source Ledger Entry Type’</td>
+</tr>
+<tr>
+<td>51101</td>
+<td>CV Doc. No.</td>
+<td>Code[20] <br>TableRelation, conditionally dependent on the Ledger Entry Type</td>
+</tr>
+<tr>
+<td>51102</td>
+<td>CV Doc. Due Date</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>51103</td>
+<td>CV Doc Type</td>
+<td>Enum ‘Gen. Journal Document Type’</td>
+</tr>
+<tr>
+<td>51104</td>
+<td>CV Global Dimension 1 Code</td>
+<td>Code[20] <br>TableRelation</td>
+</tr>
+<tr>
+<td>51105</td>
+<td>CV Global Dimension 2 Code</td>
+<td>Code[20] <br>TableRelation</td>
+</tr>
+<tr>
+<td>51106</td>
+<td>CV Dimension Set ID</td>
+<td>Integer <br>TableRelation</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cust-ledger-entry-customer-ledger-entry">Cust. Ledger Entry (customer ledger entry)</h4>
+<table>
+<thead>
+<tr>
+<th>Field No.</th>
+<th>Field Name</th>
+<th>Field Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>51100</td>
+<td>Paid</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>51101</td>
+<td>Pmt Cancelled</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>51102</td>
+<td>Bank Posting Date</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>51103</td>
+<td>Bank Document No.</td>
+<td>Code[20]</td>
+</tr>
+</tbody>
+</table>
+<h5 id="vendor-ledger-entry">Vendor Ledger Entry</h5>
+<table>
+<thead>
+<tr>
+<th>Field No.</th>
+<th>Field Name</th>
+<th>Field Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>51100</td>
+<td>Paid</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>51101</td>
+<td>Pmt Cancelled</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>51102</td>
+<td>Bank Posting Date</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>51103</td>
+<td>Bank Document No.</td>
+<td>Code[20]</td>
+</tr>
+</tbody>
+</table>
+<h4 id="gl-entry-general-ledger-entry">G/L Entry (general ledger entry)</h4>
+<table>
+<thead>
+<tr>
+<th>Field no.</th>
+<th>Field name</th>
+<th>Field type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>51100</td>
+<td>Paid</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>51101</td>
+<td>Pmt Cancelled</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>51102</td>
+<td>Bank Posting Date</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>51103</td>
+<td>Bank Document No.</td>
+<td>Code[20]</td>
+</tr>
+<tr>
+<td>51105</td>
+<td>CV Doc. Due Date</td>
+<td>Date</td>
+</tr>
+</tbody>
+</table>
+<h4 id="dimension-set-entry">Dimension Set Entry</h4>
+<p>A new field group of type DropDown has been defined in the dimension record items. It contains the fields ‘Dimension Code’, ‘Dimension Value Code’ and ‘Dimension Value Name’.</p>
+<p>This field group is used to improve the display of the table relation in the bank account ledger entries.</p>
+<h3 id="bank-account-ledger-entries-query">Bank Account Ledger Entries (query)</h3>
+<p>A custom query provides the payment ledger entries as API query.</p>
+<pre><code>EntitySetName = 'CameralisticBankAccountLedgerEntries';
+EntityName = 'CameralisticBankAccountLedgerEntry';
+APIPublisher = 'P3';
+APIVersion = 'v1.0';
+APIGroup = 'CameralisticLedgerEntries';
+</code></pre>
+<p>By using the <a href="#installation-codeunit">Installation Codeunit</a>, the query is automatitically registered to BC's web services.</p>
+<p>Currently, the dimensions are resolved by the dimension set entry ID being posted with the customer / vendor ledger entry. Due to the concept of queries in BC and their DataItemLink property, the dimension values cannot be exploited in columns next to each other. Instead, they will be listed by multiple rows, resulting in &quot;fake&quot; Bank Account ledger entries that will only differentiate by the <code>CVDimension_</code>-values. For use in external analyzations, the field <code>Entry_No_</code> should be used to re-unite these entries.</p>
+<h4 id="api-fields">API Fields</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Fieldname</th>
+<th style="text-align:left">Field description</th>
+<th style="text-align:left">Field type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Entry_No_</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Entry No.&quot;</td>
+<td style="text-align:left"><code>Integer</code></td>
+</tr>
+<tr>
+<td style="text-align:left">BankAccountNo</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Bank Account No.&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">AmountLCY</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Amount (LCY)&quot;</td>
+<td style="text-align:left"><code>Decimal</code></td>
+</tr>
+<tr>
+<td style="text-align:left">PostingDate</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Posting Date&quot;</td>
+<td style="text-align:left"><code>Date</code></td>
+</tr>
+<tr>
+<td style="text-align:left">StatementNo</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Statement No.&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">BalAccountType</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Bal. Account Type&quot;</td>
+<td style="text-align:left">Enum &quot;Gen. Journal Account Type&quot;</td>
+</tr>
+<tr>
+<td style="text-align:left">BalAccountNo</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Bal. Account No.&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">CVDocType</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry Document Type</td>
+<td style="text-align:left">Invoice/Credit Memo</td>
+</tr>
+<tr>
+<td style="text-align:left">CVDocNo</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry Document No.</td>
+<td style="text-align:left">RG-251001</td>
+</tr>
+<tr>
+<td style="text-align:left">CVDocDueDate</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry Document Due Date</td>
+<td style="text-align:left"><code>Date</code></td>
+</tr>
+<tr>
+<td style="text-align:left">CVGlobalDimension1Code</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry Global Dimension 1 Code</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">CVGlobalDimension2Code</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry Global Dimension 2 Code</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">CVDimensionSetID</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry Dimension Set ID</td>
+<td style="text-align:left"><code>Integer</code></td>
+</tr>
+<tr>
+<td style="text-align:left">LedgerEntryType</td>
+<td style="text-align:left">Source Ledger Entry Entry Type</td>
+<td style="text-align:left">Enum &quot;Source Ledger Entry Type&quot;</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>&gt;&gt;&gt; BEGIN</strong></td>
+<td style="text-align:left"><strong>DataItemLink = &quot;Dimension Set ID&quot; =</strong></td>
+<td style="text-align:left"><strong>BankAccountLedgerEntry.&quot;CV Dimension Set ID&quot;</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">CVDimension_Code</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Dimension Code&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">CVDimension_Value_Code</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry &quot;Dimension Value Code&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">CVDimension_Value_Name</td>
+<td style="text-align:left">Customer/Vendor Ledger Entry &quot;Dimension Value Name&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>&lt;&lt;&lt; END OF</strong></td>
+<td style="text-align:left"><strong>DATAITEMLINK</strong></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">BankLEGlobDim1</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Global Dimension 1 Code&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">BankLEGlobDim2</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Global Dimension 2 Code&quot;</td>
+<td style="text-align:left"><code>Code[20]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">BankLEDimSetID</td>
+<td style="text-align:left">Bank Account Ledger Entry &quot;Dimension Set ID&quot;</td>
+<td style="text-align:left"><code>Integer</code></td>
+</tr>
+</tbody>
+</table>
+
+            
+            
+        </body>
+        </html>
