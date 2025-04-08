@@ -5,12 +5,6 @@
   <file datatype="xml" source-language="en-US" target-language="de-DE" original="TXL Payment">
     <body>
       <group id="body">
-        <trans-unit id="Codeunit 2591587468 - Method 2054125307 - NamedType 824249955" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Poting payments directly to %1s is not allowed in cameralistics. Use an invoice or credit memo on a customer or vendor instead.</source>
-          <target state="translated">Das direkt Buchen von Zahlungen an %1s ist in der Kameralistik nicht zulässig. Verwenden Sie stattdessen eine Rechnung oder Gutschrift für einen Kunden oder Lieferanten.</target>
-          <note from="Developer" annotates="general" priority="2"/>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Bank Account Ledger Entries - Method GetAndProcessLedgerEntries - NamedType ErrNoDirectPosting</note>
-        </trans-unit>
         <trans-unit id="PageExtension 2591587468 - Control 3113451206 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
           <source>Specifies the value of the Vendor/Customer Dimension Set ID field.</source>
           <target state="translated">Gibt den Wert des Feldes Kreditor-/Debitor Dimensionssatz-ID an.</target>

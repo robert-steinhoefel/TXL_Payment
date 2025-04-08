@@ -32,7 +32,6 @@ codeunit 51104 "Bank Account Ledger Entries"
         GeneralLedgerEntry: Record "G/L Entry";
         GLEntries: Record "G/L Entry";
         LedgerEntryRecRef: RecordRef;
-        ErrNoDirectPosting: Label 'Posting payments directly to %1s is not allowed in cameralistics. Use an invoice or credit memo on a customer or vendor instead.';
     begin
         if Rec."Entry No." = 0 then
             exit;
@@ -63,18 +62,6 @@ codeunit 51104 "Bank Account Ledger Entries"
                 begin
                     SetGLEntryOnBankLedgEntry(Rec, GeneralLedgerEntry);
                 end;
-
-
-            "Gen. Journal Account Type"::"Fixed Asset":
-                Error(StrSubstNo(ErrNoDirectPosting, Rec."Bal. Account Type"));
-            "Gen. Journal Account Type"::Employee:
-                Error(StrSubstNo(ErrNoDirectPosting, Rec."Bal. Account Type"));
-            "Gen. Journal Account Type"::"IC Partner":
-                Error(StrSubstNo(ErrNoDirectPosting, Rec."Bal. Account Type"));
-            "Gen. Journal Account Type"::"Allocation Account":
-                Error(StrSubstNo(ErrNoDirectPosting, Rec."Bal. Account Type"));
-            "Gen. Journal Account Type"::"Bank Account":
-                Error(StrSubstNo(ErrNoDirectPosting, Rec."Bal. Account Type"));
         end;
     end;
 
