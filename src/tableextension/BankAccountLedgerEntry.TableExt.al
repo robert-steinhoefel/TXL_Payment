@@ -1,12 +1,11 @@
 namespace P3.TXL.Payment.BankAccount;
 
+using P3.TXL.Payment.System;
 using Microsoft.Bank.Ledger;
 using Microsoft.Finance.Dimension;
-using P3.TXL.Payment.System;
 using Microsoft.Finance.GeneralLedger.Journal;
 using Microsoft.Purchases.Payables;
 using Microsoft.Sales.Receivables;
-using Microsoft.Finance.GeneralLedger.Ledger;
 
 tableextension 51104 "Bank Acc. Ledger Entry" extends "Bank Account Ledger Entry"
 {

@@ -1,8 +1,8 @@
 namespace P3.TXL.Payment.Vendor;
 
+using P3.TXL.Payment.BankAccount;
 using Microsoft.Purchases.Payables;
 using Microsoft.Bank.Ledger;
-using P3.TXL.Payment.BankAccount;
 using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Finance.GeneralLedger.Journal;
 using Microsoft.Finance.ReceivablesPayables;

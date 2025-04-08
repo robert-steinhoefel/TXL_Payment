@@ -1,13 +1,9 @@
 namespace P3.TXL.Payment.System;
+
 using P3.TXL.Payment.Vendor;
 using P3.TXL.Payment.Customer;
-using Microsoft.Finance.GeneralLedger.Posting;
-using Microsoft.Bank.BankAccount;
-using Microsoft.Finance.GeneralLedger.Ledger;
-using P3.TXL.Payment.BankAccount;
 using Microsoft.Purchases.Payables;
 using Microsoft.Sales.Receivables;
-using Microsoft.Bank.Ledger;
 using Microsoft.Finance.GeneralLedger.Journal;
 using Microsoft.Finance.ReceivablesPayables;
 

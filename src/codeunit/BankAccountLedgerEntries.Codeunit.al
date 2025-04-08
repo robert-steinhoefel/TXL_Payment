@@ -1,13 +1,11 @@
 namespace P3.TXL.Payment.BankAccount;
 
-using P3.TXL.Payment.Customer;
 using P3.TXL.Payment.System;
 using Microsoft.Bank.Ledger;
 using Microsoft.Finance.Dimension;
 using Microsoft.Purchases.Payables;
 using Microsoft.Finance.GeneralLedger.Ledger;
 using Microsoft.Finance.GeneralLedger.Journal;
-using Microsoft.Finance.ReceivablesPayables;
 using Microsoft.Sales.Receivables;
 
 codeunit 51104 "Bank Account Ledger Entries"
