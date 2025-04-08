@@ -23,9 +23,7 @@ Dieses Dokument ist nur in deutscher Sprache verfügbar
 
 ### Ausgleich eines Kreditoren-Rechnungspostens mit einer Zahlung
 
-Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Zahlungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)
 
@@ -41,9 +39,7 @@ Ausgleich aufheben: bestanden
 
 ### Ausgleich eines Kreditoren-Zahlungsposten mit einer Rechnung
 
-Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Zahlungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)
 
@@ -59,9 +55,7 @@ Ausgleich aufheben: bestanden
 
 ### Ausgleich eines Kreditoren-Gutschriftspostens mit einer Erstattung
 
-Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Erstattungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)
 
@@ -77,9 +71,7 @@ Ausgleich aufheben: bestanden
 
 ### Ausgleich eines Kreditoren-Erstattungsposten mit einer Gutschrift
 
-Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Erstattungsposten zum Ausgleich muss auf dem Kreditor bereits vorhanden sein)
 
@@ -95,9 +87,7 @@ Ausgleich aufheben: bestanden
 
 ### Ausgleich eines Debitoren-Rechnungspostens mit einer Zahlung
 
-Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Zahlungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)
 
@@ -113,9 +103,7 @@ Ausgleich aufheben: bestanden
 
 ### Ausgleich eines Debitoren-Zahlungsposten mit einer Rechnung
 
-Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Zahlungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)
 
@@ -131,9 +119,7 @@ Ausgleich aufheben: bestanden
 
 ### Ausgleich eines Debitoren-Gutschriftspostens mit einer Erstattung
 
-Erwartetes Ergebnis: Die Informationen aus dem Debitoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Debitoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Erstattungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)
 
@@ -149,9 +135,7 @@ Ausgleich aufheben: bestanden
 
 ### Ausgleich eines Debitoren-Erstattungsposten mit einer Gutschrift
 
-Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 (Erstattungsposten zum Ausgleich muss auf dem Debitor bereits vorhanden sein)
 
@@ -168,9 +152,7 @@ Ausgleich aufheben: bestanden
 ## Ausgleiche von und über Buch.-Blatt Buchungen
 ### Erfassen einer Kreditorzahlung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Rechnung
 
-Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 - Zahlungsposten in Buch Blatt erfassen
 - In den Spalten "Ausgleich mit Belegart": Rechnung, "Ausgleich mit Belegnr." die entsprechende Rechnung auswählen.
@@ -183,9 +165,7 @@ Erw. Zahlungseingangs Buch.-Blatt Ausgleich aufheben: bestanden
 
 ### Erfassen einer Kreditorerstattung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Gutschrift
 
-Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Kreditoren Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 - Erstattungsposten in Buch Blatt erfassen
 - In den Spalten "Ausgleich mit Belegart": Gutschrift, "Ausgleich mit Belegnr." die entsprechende Gutschrift auswählen.
@@ -198,9 +178,7 @@ Erw. Zahlungseingangs Buch.-Blatt Ausgleich aufheben: bestanden
 
 ### Erfassen einer Debitorzahlung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Rechnung
 
-Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Debitoren Rechnungsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Zahlung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Rechnungsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 - Zahlungsposten in Buch Blatt erfassen
 - In den Spalten "Ausgleich mit Belegart": Rechnung, "Ausgleich mit Belegnr." die entsprechende Rechnung auswählen.
@@ -213,9 +191,7 @@ Erw. Zahlungseingangs Buch.-Blatt Ausgleich aufheben: bestanden
 
 ### Erfassen einer Debitorerstattung im Buch.-Blatt mit direktem Ausgleich der zugehörigen Gutschrift
 
-Erwartetes Ergebnis: Die Informationen aus dem Debitor Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen.
-
-Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
+Erwartetes Ergebnis: Die Informationen aus dem Debitor Gutschriftsposten (externe Belegnummer, Fälligkeitsdatum, Belegtyp, globale Dim 1, globale Dim 2, Dim Set ID) werden in den Bankposten der Erstattung übernommen. Aus dem Bankposten wird das Buchungsdatum und die Belegnummer in den Gutschriftsposten sowie die damit unmittelbar verknüpften Sachposten übernommen.
 
 - Erstattungsposten in Buch Blatt erfassen
 - In den Spalten "Ausgleich mit Belegart": Gutschrift, "Ausgleich mit Belegnr." die entsprechende Gutschrift auswählen.
