@@ -271,9 +271,9 @@ It adds an entry to the ‘Tenant Web Service’ table for querying the bank acc
 <p>This code unit subscribes to system-internal events and then calls certain functions.</p>
 <p>Three events are subscribed to in the extension:</p>
 <ul>
-<li>OnAfterInsertEvent of the Detailed Vendor Ledg. Entry table</li>
-<li>OnAfterInsertEvent of the Detailed Cust. Ledg. Entry table</li>
-<li>OnAfterInsertEvent of the G/L Entry table</li>
+<li><code>OnAfterInsertEvent</code> of the <code>Detailed Vendor Ledg. Entry</code> table</li>
+<li><code>OnAfterInsertEvent</code> of the <code>Detailed Cust. Ledg. Entry</code> table</li>
+<li><code>OnAfterInsertEvent</code> of the <code>G/L Entry</code> table</li>
 </ul>
 <p>These events for the detailed vendor/customer ledger entries are triggered whenever a new detailed vendor/customer ledger entry is created in the system.</p>
 <p>These two events call an almost identical procedure. The system checks whether the entry triggering this event</p>

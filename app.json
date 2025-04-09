@@ -1,7 +1,7 @@
 {
   "id": "1af44bdf-7d71-4fbd-92d7-acb705d59bcb",
-  "name": "TXL Payment",
-  "publisher": "RST",
+  "name": "P3 Group TXL Payment Cameralistic",
+  "publisher": "P3 Group GmbH",
   "version": "25.3.1.6",
   "brief": "Extending Ledger Entry functionalities upon payment reconciliation.",
   "description": "This extension adds funtionality to mark several different ledger entry types with data from a corresponding payment.",
@@ -22,7 +22,7 @@
   ],
   "resourceExposurePolicy": {
     "allowDebugging": true,
-    "allowDownloadingSource": true,
+    "allowDownloadingSource": false,
     "includeSourceInSymbolFile": true
   },
   "runtime": "14.0",

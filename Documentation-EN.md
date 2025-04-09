@@ -71,9 +71,9 @@ This codeunit is automatically executed when the extension is updated. It curren
 This code unit subscribes to system-internal events and then calls certain functions.  
   
 Three events are subscribed to in the extension:  
-- OnAfterInsertEvent of the Detailed Vendor Ledg. Entry table  
-- OnAfterInsertEvent of the Detailed Cust. Ledg. Entry table  
-- OnAfterInsertEvent of the G/L Entry table  
+- `OnAfterInsertEvent` of the `Detailed Vendor Ledg. Entry` table  
+- `OnAfterInsertEvent` of the `Detailed Cust. Ledg. Entry` table  
+- `OnAfterInsertEvent` of the `G/L Entry` table  
   
 These events for the detailed vendor/customer ledger entries are triggered whenever a new detailed vendor/customer ledger entry is created in the system.  
   
