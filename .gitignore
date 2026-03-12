@@ -24,3 +24,6 @@ TestResults.xml
 *.rsls
 #Obsidian files
 /.obsidian
+/images
+*.md
+*.canvas
