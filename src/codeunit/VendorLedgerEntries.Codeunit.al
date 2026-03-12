@@ -40,6 +40,11 @@ codeunit 51102 "Vendor Ledger Entries"
             PaymentDetailedLedgerEntry.SetFilter("Initial Document Type", '%1|%2', "Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund);
             if PaymentDetailedLedgerEntry.FindSet() then
                 // check if we really do have multiple payment entries.
+                // PARTIAL-PAYMENT-BUG-1 (VendorLedgerEntries / OnRun):
+                // Mirror of the same bug in CustomerLedgerEntries. When a second partial payment is applied
+                // to this invoice, the filter returns application entries from both payments (Unapplied=false,
+                // different Vendor Ledger Entry Nos.), causing Error() and rolling back the second application.
+                // Fix needed: Scope the filter to Rec."Transaction No." to only match the current event.
                 repeat
                     if VendLedgEntryNo = 0 then
                         VendLedgEntryNo := PaymentDetailedLedgerEntry."Vendor Ledger Entry No.";
@@ -89,6 +94,14 @@ codeunit 51102 "Vendor Ledger Entries"
     begin
         // ISSUE: What about partial payments to ledger entries?
         // ISSUE: When an invoice is being applied to two payments and one of those payments is cancelled, the entry is not modified.
+        //
+        // PARTIAL-PAYMENT-BUG-2 (VendorLedgerEntries / GetAndSetPaymentData):
+        // Mirror of the same bug in CustomerLedgerEntries. ModifyAll unconditionally overwrites all G/L entries
+        // for the invoice (Document No. + Posting Date) with the current payment's data. A second partial
+        // payment would overwrite the first payment's Bank Posting Date and Bank Document No.
+        // Unapplication of one partial payment incorrectly marks the invoice as Pmt Cancelled=true
+        // even if another partial payment is still applied.
+        // Fix needed: Check remaining open amount on the invoice before determining Paid status; accumulate dates.
         if Unapplied then begin
             Paid := false;
             Cancelled := true;

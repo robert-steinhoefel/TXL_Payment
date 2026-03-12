@@ -128,6 +128,14 @@ codeunit 51104 "Bank Account Ledger Entries"
             BankAccountLedgerEntry."CV Doc. No." := CustomerLedgerEntry."Document No.";
             BankAccountLedgerEntry."CV Doc. Due Date" := CustomerLedgerEntry."Due Date"
         end;
+        // PARTIAL-PAYMENT-BUG-3 (BankAccountLedgerEntries / SetCustLedgEntryDetailsOnBankLedgEntry):
+        // Dimensions (Global Dim 1/2, Dimension Set ID) and CV Doc Type are unconditionally overwritten
+        // with the invoice's values. When one bank payment covers multiple invoices, the last invoice's
+        // dimensions win. This is the INVERSE of the partial-payment problem (one payment, many invoices),
+        // but the same overwrite pattern applies. No accumulation or conflict detection for dimensions.
+        // For the partial-payment scenario (many payments, one invoice), this method is called once per
+        // payment event on the BANK entry for that payment — those are separate records, so the bank entries
+        // themselves are fine. The problem for that direction sits in CustomerLedgerEntries.GetAndSetPaymentData.
         BankAccountLedgerEntry."Ledger Entry Type" := "Source Ledger Entry Type"::Customer;
         BankAccountLedgerEntry."CV Doc Type" := CustomerLedgerEntry."Document Type";
         BankAccountLedgerEntry."CV Global Dimension 1 Code" := CustomerLedgerEntry."Global Dimension 1 Code";

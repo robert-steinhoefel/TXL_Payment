@@ -42,6 +42,13 @@ codeunit 51103 "Customer Ledger Entries"
 
             if PaymentDetailedLedgerEntry.FindSet() then
                 // check if we really do have multiple payment entries.
+                // PARTIAL-PAYMENT-BUG-1 (CustomerLedgerEntries / OnRun):
+                // This loop assumes exactly one payment CLE is linked to this invoice at any point in time.
+                // When a second partial payment is applied, this filter returns application entries from BOTH
+                // Payment1 and Payment2 (both Unapplied=false). They have different Cust. Ledger Entry Nos.,
+                // so the Error() on line below is thrown and the second application posting is rolled back by BC.
+                // Fix needed: Scope the filter to the current transaction (Rec."Transaction No.") so only the
+                // newly inserted application entry is matched, not all historical ones.
                 repeat
                     if CustLedgEntryNo = 0 then
                         CustLedgEntryNo := PaymentDetailedLedgerEntry."Cust. Ledger Entry No.";
@@ -95,6 +102,16 @@ codeunit 51103 "Customer Ledger Entries"
     begin
         // ISSUE: What about partial payments to ledger entries?
         // ISSUE: When an invoice is being applied to two payments and one of those payments is cancelled, the entry is not modified.
+        //
+        // PARTIAL-PAYMENT-BUG-2 (CustomerLedgerEntries / GetAndSetPaymentData):
+        // The ModifyAll calls below unconditionally overwrite ALL G/L entries for this invoice
+        // (matched by Document No. + Posting Date) with the CURRENT payment's Bank Posting Date and
+        // Bank Document No. There is no check for whether a prior payment has already written data here.
+        // A second partial payment would silently overwrite the first payment's date and doc no.
+        // Additionally, on unapplication of ONE of two partial payments, all G/L entries are set to
+        // Paid=false / Pmt Cancelled=true, even if the other partial payment is still applied.
+        // Fix needed: Before ModifyAll, check if the invoice still has other active applications (Remaining Amount <> 0
+        // vs. original amount) to correctly determine Paid status; accumulate payment dates rather than overwrite.
         if Unapplied then begin
             Paid := false;
             Cancelled := true;
