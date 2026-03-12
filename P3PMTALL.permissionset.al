@@ -3,6 +3,7 @@ namespace P3.TXL.Payment.System;
 using P3.TXL.Payment.BankAccount;
 using P3.TXL.Payment.Customer;
 using P3.TXL.Payment.Vendor;
+using P3.TXL.Payment.Settlement;
 
 permissionset 51100 "P3.PMT-ALL"
 {
@@ -13,5 +14,7 @@ permissionset 51100 "P3.PMT-ALL"
         codeunit "Update Codeunit" = X,
         codeunit "Vendor Ledger Entries" = X,
         query "Bank Account Ledger Entries" = X,
-        codeunit Installation = X;
+        codeunit Installation = X,
+        tabledata "Settlement Entry" = RIMD,
+        table "Settlement Entry" = X;
 }

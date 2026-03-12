@@ -1,4 +1,4 @@
-namespace P3.TXL.Payment.BankAccount;
+namespace P3.TXL.Payment.Banking;
 
 using Microsoft.Bank.Ledger;
 

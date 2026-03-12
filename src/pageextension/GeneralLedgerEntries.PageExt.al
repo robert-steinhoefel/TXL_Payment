@@ -1,4 +1,4 @@
-namespace P3.TXL.Payment.GenJnl;
+namespace P3.TXL.Payment.Finance;
 
 using Microsoft.Finance.GeneralLedger.Ledger;
 

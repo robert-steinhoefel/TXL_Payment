@@ -1,4 +1,4 @@
-namespace P3.TXL.Payment.Vendor;
+namespace P3.TXL.Payment.Payables;
 
 using Microsoft.Purchases.Payables;
 

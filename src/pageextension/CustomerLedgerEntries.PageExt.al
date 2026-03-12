@@ -1,4 +1,4 @@
-namespace P3.TXL.Payment.Customer;
+namespace P3.TXL.Payment.Receivables;
 
 using Microsoft.Sales.Receivables;
 
