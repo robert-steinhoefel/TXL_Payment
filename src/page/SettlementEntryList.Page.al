@@ -84,7 +84,7 @@ page 51100 "Settlement Entry List"
                 field("Cash Discount Amt (LCY)"; Rec."Cash Discount Amt (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies any cash discount amount granted at the time of settlement.';
+                    ToolTip = 'Specifies any cash discount amount (excl. VAT) granted at the time of settlement.';
                     Visible = false;
                 }
 

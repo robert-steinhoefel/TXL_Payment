@@ -1,10 +1,13 @@
 namespace P3.TXL.Payment.Settlement;
 
+using Microsoft.Bank.Ledger;
 using Microsoft.Finance.Dimension;
 using Microsoft.Finance.GeneralLedger.Account;
 using Microsoft.Finance.GeneralLedger.Journal;
-using Microsoft.Sales.Customer;
+using Microsoft.Purchases.History;
 using Microsoft.Purchases.Vendor;
+using Microsoft.Sales.Customer;
+using Microsoft.Sales.History;
 using System.Security.AccessControl;
 
 table 51106 "Settlement Entry"
@@ -42,6 +45,11 @@ table 51106 "Settlement Entry"
         field(12; "Document No."; Code[20])
         {
             Caption = 'Document No.';
+            TableRelation =
+                if ("Transaction Type" = const(Sales), "Document Type" = const(Invoice)) "Sales Invoice Header"."No."
+                else if ("Transaction Type" = const(Sales), "Document Type" = const("Credit Memo")) "Sales Cr.Memo Header"."No."
+                else if ("Transaction Type" = const(Purchase), "Document Type" = const(Invoice)) "Purch. Inv. Header"."No."
+                else if ("Transaction Type" = const(Purchase), "Document Type" = const("Credit Memo")) "Purch. Cr. Memo Hdr."."No.";
         }
         field(13; "Document Line No."; Integer)
         {
@@ -105,6 +113,7 @@ table 51106 "Settlement Entry"
         field(30; "Bank Statement Document No."; Code[20])
         {
             Caption = 'Bank Statement Document No.';
+            TableRelation = "Bank Account Ledger Entry"."Document No.";
         }
         field(31; "Payment Reference"; Text[100])
         {

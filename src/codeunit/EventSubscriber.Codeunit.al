@@ -3,6 +3,7 @@ namespace P3.TXL.Payment.System;
 using P3.TXL.Payment.Vendor;
 using P3.TXL.Payment.Customer;
 using P3.TXL.Payment.BankAccount;
+using P3.TXL.Payment.Settlement;
 using Microsoft.Purchases.Payables;
 using Microsoft.Bank.Ledger;
 using Microsoft.Finance.GeneralLedger.Ledger;
@@ -30,6 +31,8 @@ codeunit 51100 "Event Subscriber"
     [EventSubscriber(ObjectType::Table, Database::"Detailed Cust. Ledg. Entry", 'OnAfterInsertEvent', '', false, false)]
     local procedure OnAfterInsertDetailedCustomerLedgerEntry(var Rec: Record "Detailed Cust. Ledg. Entry"; RunTrigger: Boolean)
     var
+        SettlementEntryMgt: Codeunit "Settlement Entry Mgt.";
+        InvoiceCLE: Record "Cust. Ledger Entry";
     begin
         if Rec.IsTemporary() then
             exit;
@@ -39,6 +42,11 @@ codeunit 51100 "Event Subscriber"
             exit;
         if Rec."Initial Document Type" = "Gen. Journal Document Type"::Refund then
             exit;
+        // Epic 2+: BC updates InvoiceCLE ("Remaining Amount", "Closed by Entry No.",
+        // "Pmt. Disc. Given (LCY)") before inserting Application DCLEs, so all settlement
+        // amounts can be read reliably at this point.
+        if InvoiceCLE.Get(Rec."Cust. Ledger Entry No.") then
+            SettlementEntryMgt.CreateSalesSettlementEntries(InvoiceCLE, Rec."Posting Date");
         Codeunit.Run(Codeunit::"Customer Ledger Entries", Rec);
     end;
 
