@@ -41,6 +41,17 @@ table 51106 "Settlement Entry"
             Caption = 'Document Type';
         }
 
+        // ── Entry Type ────────────────────────────────────────────────────────
+        // Distinguishes Normal settlement entries from special types.
+        // Unallocated: payment amount not yet linked to an invoice line
+        //   (e.g. overpayment remainder awaiting future application).
+        //   Document No. is intentionally empty for Unallocated entries —
+        //   the blank value is the visual indicator in the list.
+        field(14; "Settlement Entry Type"; Enum "Settlement Entry Type")
+        {
+            Caption = 'Settlement Entry Type';
+        }
+
         // ── Document Reference ────────────────────────────────────────────────
         field(12; "Document No."; Code[20])
         {

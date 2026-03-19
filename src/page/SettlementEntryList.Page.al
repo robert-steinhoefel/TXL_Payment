@@ -30,6 +30,11 @@ page 51100 "Settlement Entry List"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the unique sequential entry number.';
                 }
+                field("Settlement Entry Type"; Rec."Settlement Entry Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the entry type. Normal = standard settlement; Unallocated = payment amount not yet linked to an invoice line.';
+                }
                 field("Transaction Type"; Rec."Transaction Type")
                 {
                     ApplicationArea = All;
