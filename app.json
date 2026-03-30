@@ -25,6 +25,9 @@
     "allowDownloadingSource": false,
     "includeSourceInSymbolFile": true
   },
+  "preprocessorSymbols": [
+    "TEST"
+  ],
   "runtime": "14.0",
   "features": [
     "NoImplicitWith",

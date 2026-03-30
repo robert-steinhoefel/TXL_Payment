@@ -256,6 +256,15 @@ table 51106 "Settlement Entry"
             Caption = 'Created DateTime';
             DataClassification = SystemMetadata;
         }
+        // Internal technical field used by SettlementEntryMgt to prevent duplicate entry
+        // creation when both sides of an application (invoice + payment) each fire their own
+        // OnAfterInsertDetailedCustomerLedgerEntry event. The guard checks whether any
+        // Settlement Entry with this Transaction No. already exists before inserting more.
+        field(112; "Source Transaction No."; Integer)
+        {
+            Caption = 'Source Transaction No.';
+            DataClassification = SystemMetadata;
+        }
     }
 
     keys
@@ -283,6 +292,10 @@ table 51106 "Settlement Entry"
         key(BankDoc; "Bank Statement Document No.")
         {
             // Bank reconciliation: find settlement by bank statement line.
+        }
+        key(SourceTransactionNo; "Source Transaction No.")
+        {
+            // Duplicate-guard: fast existence check before creating entries for a transaction.
         }
     }
 

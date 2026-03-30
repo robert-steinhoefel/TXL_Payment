@@ -1,6 +1,8 @@
 namespace P3.TXL.Payment.Payables;
 
+using Microsoft.Finance.GeneralLedger.Journal;
 using Microsoft.Purchases.Payables;
+using Microsoft.Purchases.History;
 
 pageextension 51101 "VendorLedgerEntries PageExt" extends "Vendor Ledger Entries"
 {
@@ -34,4 +36,35 @@ pageextension 51101 "VendorLedgerEntries PageExt" extends "Vendor Ledger Entries
             }
         }
     }
+#if TEST
+    var
+        PostingDescription: Text;
+
+    trigger OnAfterGetRecord()
+    var
+        PurchaseInvoice: Record "Purch. Inv. Header";
+        PurchaseCrMemo: Record "Purch. Cr. Memo Hdr.";
+    begin
+        case Rec."Document Type" of
+            "Gen. Journal Document Type"::Invoice:
+                begin
+                    if PurchaseInvoice.Get(Rec."Document No.") then
+                        PostingDescription := PurchaseInvoice."Posting Description"
+                    else
+                        PostingDescription := Rec."External Document No.";
+                end;
+            "Gen. Journal Document Type"::Payment:
+                PostingDescription := Rec."External Document No.";
+            "Gen. Journal Document Type"::"Credit Memo":
+                begin
+                    if PurchaseCrMemo.Get(Rec."Document No.") then
+                        PostingDescription := PurchaseCrMemo."Posting Description"
+                    else
+                        PostingDescription := Rec."External Document No.";
+                end;
+            "Gen. Journal Document Type"::Refund:
+                PostingDescription := Rec."External Document No.";
+        end;
+    end;
+#endif
 }

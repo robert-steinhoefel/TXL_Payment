@@ -29,6 +29,7 @@ page 51100 "Settlement Entry List"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the unique sequential entry number.';
+                    Visible = false;
                 }
                 field("Settlement Entry Type"; Rec."Settlement Entry Type")
                 {
@@ -205,4 +206,9 @@ page 51100 "Settlement Entry List"
             }
         }
     }
+
+    trigger OnOpenPage()
+    begin
+        Rec.Ascending(false);
+    end;
 }
