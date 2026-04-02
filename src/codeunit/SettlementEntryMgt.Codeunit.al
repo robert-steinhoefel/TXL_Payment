@@ -105,7 +105,7 @@ codeunit 51106 "Settlement Entry Mgt."
     begin
         // Guard: if entries were already created by the invoice-DCLE path, skip.
         // This fires when both sides close (full payment / apply-from-invoice direction).
-        if SettlementEntriesExistForTransaction(PaymentDCLE."Transaction No.") then
+        if SettlementEntriesExistForTransaction(PaymentDCLE."Transaction No.", PaymentDCLE."Cust. Ledger Entry No.") then
             exit;
 
         // The payment DCLE knows exactly which CLE was applied against via "Applied Cust. Ledger
@@ -205,9 +205,11 @@ codeunit 51106 "Settlement Entry Mgt."
 
         TransactionNo := InvoiceDCLE."Transaction No.";
 
-        // Guard: skip if a payment-DCLE handler already created entries for this transaction
-        // (e.g., payment DCLE fired first for a partial payment from gen journal).
-        if SettlementEntriesExistForTransaction(TransactionNo) then
+        // Guard: skip if a payment-DCLE handler already created entries for this
+        // (transaction, payment CLE) pair — payment DCLE fired first for a partial payment
+        // from gen journal. "Applied Cust. Ledger Entry No." on the invoice DCLE is the
+        // payment CLE entry no. in this path (non-self-reference, Transaction No. > 0).
+        if SettlementEntriesExistForTransaction(TransactionNo, InvoiceDCLE."Applied Cust. Ledger Entry No.") then
             exit;
 
         // ── Partial payment: invoice not fully settled → manual allocation ──
@@ -268,7 +270,7 @@ codeunit 51106 "Settlement Entry Mgt."
         CreateSalesLineEntries(
             SalesInvLine, TotalLines, InvoiceCLE, PaymentCLE."Posting Date", BankLedgEntry,
             TotalAmtExclVAT, TotalAmtInclVAT,
-            PaymentAmtLCY, CashDiscountAmtLCY, AssignmentID, TransactionNo);
+            PaymentAmtLCY, CashDiscountAmtLCY, AssignmentID, TransactionNo, PaymentCLE."Entry No.");
 
         // ── Overpayment: payment > invoice → insert unallocated entry ────────
         // Re-read the payment CLE to get the post-application "Remaining Amount".
@@ -346,7 +348,7 @@ codeunit 51106 "Settlement Entry Mgt."
             PostingDate := PaymentCLE."Posting Date";
 
         AssignmentID := GenerateAssignmentID(InvoiceCLE."Customer No.", PostingDate);
-        CreatePartialLineEntries(TempBuffer, InvoiceCLE, PostingDate, BankLedgEntry, AssignmentID, TransactionNo);
+        CreatePartialLineEntries(TempBuffer, InvoiceCLE, PostingDate, BankLedgEntry, AssignmentID, TransactionNo, PaymentCLE."Entry No.");
     end;
 
     /// <summary>
@@ -564,7 +566,8 @@ codeunit 51106 "Settlement Entry Mgt."
         PostingDate: Date;
         BankLedgEntry: Record "Bank Account Ledger Entry";
         AssignmentID: Code[50];
-        TransactionNo: Integer)
+        TransactionNo: Integer;
+        PaymentCLEEntryNo: Integer)
     var
         Customer: Record Customer;
     begin
@@ -573,7 +576,7 @@ codeunit 51106 "Settlement Entry Mgt."
             repeat
                 if TempBuffer."Alloc. Amt Incl. VAT (LCY)" <> 0 then
                     InsertPartialSalesSettlementEntry(
-                        TempBuffer, InvoiceCLE, PostingDate, BankLedgEntry, Customer, AssignmentID, TransactionNo);
+                        TempBuffer, InvoiceCLE, PostingDate, BankLedgEntry, Customer, AssignmentID, TransactionNo, PaymentCLEEntryNo);
             until TempBuffer.Next() = 0;
     end;
 
@@ -584,7 +587,8 @@ codeunit 51106 "Settlement Entry Mgt."
         BankLedgEntry: Record "Bank Account Ledger Entry";
         Customer: Record Customer;
         AssignmentID: Code[50];
-        TransactionNo: Integer)
+        TransactionNo: Integer;
+        PaymentCLEEntryNo: Integer)
     var
         SettlementEntry: Record "Settlement Entry";
         GLAccount: Record "G/L Account";
@@ -633,6 +637,7 @@ codeunit 51106 "Settlement Entry Mgt."
             CopyStr(TempBuffer.Description, 1, MaxStrLen(SettlementEntry.Description));
 
         SettlementEntry."Source Transaction No." := TransactionNo;
+        SettlementEntry."Source Payment CLE Entry No." := PaymentCLEEntryNo;
         SettlementEntry."Created By" := CopyStr(UserId(), 1, MaxStrLen(SettlementEntry."Created By"));
         SettlementEntry."Created DateTime" := CurrentDateTime();
 
@@ -676,6 +681,7 @@ codeunit 51106 "Settlement Entry Mgt."
         SettlementEntry."CV Name" := Customer.Name;
 
         SettlementEntry."Source Transaction No." := TransactionNo;
+        SettlementEntry."Source Payment CLE Entry No." := PaymentCLE."Entry No.";
         SettlementEntry."Created By" := CopyStr(UserId(), 1, MaxStrLen(SettlementEntry."Created By"));
         SettlementEntry."Created DateTime" := CurrentDateTime();
 
@@ -737,17 +743,23 @@ codeunit 51106 "Settlement Entry Mgt."
     // ── Private: duplicate guard ─────────────────────────────────────────────
 
     /// <summary>
-    /// Returns true if any Settlement Entry was already created for the given BC transaction.
-    /// Used to prevent double-processing when both the invoice-side and payment-side
-    /// Application DCLEs fire for the same application event.
+    /// Returns true if Settlement Entries were already created for the given
+    /// (Transaction No., Payment CLE Entry No.) pair.
+    /// Scoping by both fields allows multiple payments applied to the same invoice in one
+    /// session (all sharing the same Transaction No.) to each produce their own entries,
+    /// while still blocking the invoice-side and payment-side DCLEs from double-processing
+    /// the same individual payment application.
+    /// When TransactionNo = 0 (CLE apply path), the guard is intentionally bypassed —
+    /// the HandledInvoiceCLEs list in ProcessNewApplicationDCLEs provides dedup in that path.
     /// </summary>
-    local procedure SettlementEntriesExistForTransaction(TransactionNo: Integer): Boolean
+    local procedure SettlementEntriesExistForTransaction(TransactionNo: Integer; PaymentCLEEntryNo: Integer): Boolean
     var
         ExistingEntry: Record "Settlement Entry";
     begin
         if TransactionNo = 0 then
             exit(false);
         ExistingEntry.SetRange("Source Transaction No.", TransactionNo);
+        ExistingEntry.SetRange("Source Payment CLE Entry No.", PaymentCLEEntryNo);
         exit(not ExistingEntry.IsEmpty());
     end;
 
@@ -937,7 +949,8 @@ codeunit 51106 "Settlement Entry Mgt."
         PaymentAmtLCY: Decimal;
         CashDiscountAmtLCY: Decimal;
         AssignmentID: Code[50];
-        TransactionNo: Integer)
+        TransactionNo: Integer;
+        PaymentCLEEntryNo: Integer)
     var
         SalesInvLine2: Record "Sales Invoice Line";
         Customer: Record Customer;
@@ -998,7 +1011,7 @@ codeunit 51106 "Settlement Entry Mgt."
 
             InsertSalesSettlementEntry(
                 SalesInvLine, InvoiceCLE, PostingDate, BankLedgEntry, Customer,
-                AssignmentID, TransactionNo, LineAmt, LineAmtInclVAT, LineDiscount);
+                AssignmentID, TransactionNo, PaymentCLEEntryNo, LineAmt, LineAmtInclVAT, LineDiscount);
 
             UpdateSalesInvLineOutstandingAmt(SalesInvLine);
 
@@ -1013,6 +1026,7 @@ codeunit 51106 "Settlement Entry Mgt."
         Customer: Record Customer;
         AssignmentID: Code[50];
         TransactionNo: Integer;
+        PaymentCLEEntryNo: Integer;
         LineAmt: Decimal;
         LineAmtInclVAT: Decimal;
         LineDiscount: Decimal)
@@ -1056,6 +1070,7 @@ codeunit 51106 "Settlement Entry Mgt."
             CopyStr(SalesInvLine.Description, 1, MaxStrLen(SettlementEntry.Description));
 
         SettlementEntry."Source Transaction No." := TransactionNo;
+        SettlementEntry."Source Payment CLE Entry No." := PaymentCLEEntryNo;
         SettlementEntry."Created By" := CopyStr(UserId(), 1, MaxStrLen(SettlementEntry."Created By"));
         SettlementEntry."Created DateTime" := CurrentDateTime();
 

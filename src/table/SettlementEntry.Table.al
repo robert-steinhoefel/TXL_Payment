@@ -259,10 +259,18 @@ table 51106 "Settlement Entry"
         // Internal technical field used by SettlementEntryMgt to prevent duplicate entry
         // creation when both sides of an application (invoice + payment) each fire their own
         // OnAfterInsertDetailedCustomerLedgerEntry event. The guard checks whether any
-        // Settlement Entry with this Transaction No. already exists before inserting more.
+        // Settlement Entry with this Transaction No. AND Payment CLE Entry No. already exists
+        // before inserting more. The Payment CLE Entry No. is required to allow multiple
+        // payments applied to the same invoice in one session (same Transaction No.) to each
+        // produce their own Settlement Entries.
         field(112; "Source Transaction No."; Integer)
         {
             Caption = 'Source Transaction No.';
+            DataClassification = SystemMetadata;
+        }
+        field(113; "Source Payment CLE Entry No."; Integer)
+        {
+            Caption = 'Source Payment CLE Entry No.';
             DataClassification = SystemMetadata;
         }
     }
@@ -293,9 +301,11 @@ table 51106 "Settlement Entry"
         {
             // Bank reconciliation: find settlement by bank statement line.
         }
-        key(SourceTransactionNo; "Source Transaction No.")
+        key(SourceTransactionNo; "Source Transaction No.", "Source Payment CLE Entry No.")
         {
-            // Duplicate-guard: fast existence check before creating entries for a transaction.
+            // Duplicate-guard: fast existence check before creating entries for a
+            // (transaction, payment CLE) pair. Payment CLE Entry No. allows multiple
+            // payments applied in one session (same Transaction No.) to be distinguished.
         }
     }
 
