@@ -800,6 +800,26 @@ codeunit 51106 "Settlement Entry Mgt."
             ["Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund]);
     end;
 
+    // ── Public: already-settled amount lookup ────────────────────────────────
+
+    /// <summary>
+    /// Returns the net already-settled amount (incl. VAT, LCY) for a specific invoice line.
+    /// Sums ALL Settlement Entries for the given document + line — including reversal entries,
+    /// which carry negative amounts and therefore cancel their originals in the net.
+    /// Caller does not need to distinguish between active and reversed entries.
+    /// </summary>
+    procedure GetAlreadySettledAmtInclVAT(DocumentNo: Code[20]; DocumentLineNo: Integer): Decimal
+    var
+        SettlementEntry: Record "Settlement Entry";
+    begin
+        SettlementEntry.SetRange("Document Type", "Gen. Journal Document Type"::Invoice);
+        SettlementEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        SettlementEntry.SetRange("Document No.", DocumentNo);
+        SettlementEntry.SetRange("Document Line No.", DocumentLineNo);
+        SettlementEntry.CalcSums("Settlement Amt Incl. VAT (LCY)");
+        exit(SettlementEntry."Settlement Amt Incl. VAT (LCY)");
+    end;
+
     // ── Private: amount helpers ──────────────────────────────────────────────
 
     /// <summary>
@@ -906,6 +926,7 @@ codeunit 51106 "Settlement Entry Mgt."
         AssignmentID: Code[50];
         TransactionNo: Integer)
     var
+        SalesInvLine2: Record "Sales Invoice Line";
         Customer: Record Customer;
         LineCount: Integer;
         RemainingAmt: Decimal;
@@ -914,8 +935,26 @@ codeunit 51106 "Settlement Entry Mgt."
         LineAmt: Decimal;
         LineAmtInclVAT: Decimal;
         LineDiscount: Decimal;
+        LineRemainingInclVAT: Decimal;
+        TotalRemainingInclVAT: Decimal;
     begin
         Customer.Get(InvoiceCLE."Customer No.");
+
+        // Pre-pass: compute total remaining incl. VAT across all lines.
+        // Lines with prior partial payments contribute only their unallocated share,
+        // ensuring the proportional distribution reflects what each line still needs.
+        // This also fixes the miscalculation when the second partial payment closes the invoice.
+        SalesInvLine2.SetRange("Document No.", InvoiceCLE."Document No.");
+        SalesInvLine2.SetFilter(Amount, '<>0');
+        if SalesInvLine2.FindSet() then
+            repeat
+                TotalRemainingInclVAT +=
+                    SalesInvLine2."Amount Including VAT" -
+                    GetAlreadySettledAmtInclVAT(SalesInvLine2."Document No.", SalesInvLine2."Line No.");
+            until SalesInvLine2.Next() = 0;
+        // Fallback: no prior partial payments — use original total (first payment, full settlement).
+        if TotalRemainingInclVAT = 0 then
+            TotalRemainingInclVAT := TotalAmtInclVAT;
 
         RemainingAmt := Round(PaymentAmtLCY * TotalAmtExclVAT / TotalAmtInclVAT);
         RemainingAmtInclVAT := PaymentAmtLCY;
@@ -929,9 +968,16 @@ codeunit 51106 "Settlement Entry Mgt."
                 LineAmtInclVAT := RemainingAmtInclVAT;
                 LineDiscount := RemainingDiscount;
             end else begin
-                LineAmt := Round(SalesInvLine.Amount * PaymentAmtLCY / TotalAmtInclVAT);
-                LineAmtInclVAT := Round(SalesInvLine."Amount Including VAT" * PaymentAmtLCY / TotalAmtInclVAT);
-                LineDiscount := Round(SalesInvLine.Amount * CashDiscountAmtLCY / TotalAmtInclVAT);
+                // Distribute proportionally to each line's remaining (original minus already settled).
+                LineRemainingInclVAT :=
+                    SalesInvLine."Amount Including VAT" -
+                    GetAlreadySettledAmtInclVAT(SalesInvLine."Document No.", SalesInvLine."Line No.");
+                LineAmtInclVAT := Round(LineRemainingInclVAT * PaymentAmtLCY / TotalRemainingInclVAT);
+                if SalesInvLine."Amount Including VAT" <> 0 then
+                    LineAmt := Round(LineAmtInclVAT * SalesInvLine.Amount / SalesInvLine."Amount Including VAT")
+                else
+                    LineAmt := LineAmtInclVAT;
+                LineDiscount := Round(LineRemainingInclVAT * CashDiscountAmtLCY / TotalRemainingInclVAT);
                 RemainingAmt -= LineAmt;
                 RemainingAmtInclVAT -= LineAmtInclVAT;
                 RemainingDiscount -= LineDiscount;

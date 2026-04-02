@@ -138,7 +138,12 @@ page 51101 "Payment Allocation"
                     ToolTip = 'Enter how much of the received payment amount (incl. VAT) to allocate to this invoice line.';
 
                     trigger OnValidate()
+                    var
+                        LineRemaining: Decimal;
                     begin
+                        LineRemaining := Rec."Orig. Amt Incl. VAT (LCY)" - Rec."Already Settled Amt (LCY)";
+                        if Rec."Alloc. Amt Incl. VAT (LCY)" > LineRemaining + 0.005 then
+                            Error(AllocationExceedsLineRemainingErr, LineRemaining);
                         Rec.Modify();
                         RemainingNonZero := Abs(ApplicationAmtLCY - CalcTotalAllocated()) > 0.005;
                         CurrPage.Update(false);
@@ -276,6 +281,7 @@ page 51101 "Payment Allocation"
         CustomerName: Text[100];
         PaymentRef: Text[100];
         AllocMustMatchPaymentMsg: Label 'The total allocated amount (%1) must equal the payment amount (%2) before applying. Adjust the allocation amounts.', Comment = '%1 = total allocated amount, %2 = payment amount';
+        AllocationExceedsLineRemainingErr: Label 'The entered amount exceeds the remaining amount for this line (%1). A line cannot be allocated more than its outstanding balance.', Comment = '%1 = remaining amount for the line';
 
     /// <summary>
     /// Loads the invoice lines from the posted sales invoice into the page's temporary source table.
@@ -284,6 +290,7 @@ page 51101 "Payment Allocation"
     local procedure LoadInvoiceLines()
     var
         SalesInvLine: Record "Sales Invoice Line";
+        SettlementEntryMgt: Codeunit "Settlement Entry Mgt.";
     begin
         if InvoiceDocNo = '' then
             exit;
@@ -298,6 +305,7 @@ page 51101 "Payment Allocation"
             Rec."G/L Account No." := CopyStr(SalesInvLine."No.", 1, MaxStrLen(Rec."G/L Account No."));
             Rec."Original Amt (LCY)" := SalesInvLine.Amount;
             Rec."Orig. Amt Incl. VAT (LCY)" := SalesInvLine."Amount Including VAT";
+            Rec."Already Settled Amt (LCY)" := SettlementEntryMgt.GetAlreadySettledAmtInclVAT(InvoiceDocNo, SalesInvLine."Line No.");
             Rec."Global Dimension 1 Code" := SalesInvLine."Shortcut Dimension 1 Code";
             Rec."Global Dimension 2 Code" := SalesInvLine."Shortcut Dimension 2 Code";
             Rec."Dimension Set ID" := SalesInvLine."Dimension Set ID";
@@ -325,14 +333,21 @@ page 51101 "Payment Allocation"
     var
         AllocLineBuffer: Record "Pmt. Alloc. Line Buffer";
         Remaining: Decimal;
-        TotalOrigAmt: Decimal;
+        TotalRemainingAmt: Decimal;
         CurrentLine: Integer;
         LineCount: Integer;
     begin
         AllocLineBuffer.Copy(Rec, true);
-        AllocLineBuffer.CalcSums("Orig. Amt Incl. VAT (LCY)");
-        TotalOrigAmt := AllocLineBuffer."Orig. Amt Incl. VAT (LCY)";
-        if TotalOrigAmt = 0 then
+
+        // Compute total remaining (original minus already settled) as proportional weights.
+        // Using remaining amounts ensures lines with prior partial payments receive only
+        // their outstanding share — mirrors the automatic full-close distribution path.
+        if AllocLineBuffer.FindSet() then
+            repeat
+                TotalRemainingAmt +=
+                    AllocLineBuffer."Orig. Amt Incl. VAT (LCY)" - AllocLineBuffer."Already Settled Amt (LCY)";
+            until AllocLineBuffer.Next() = 0;
+        if TotalRemainingAmt = 0 then
             exit;
 
         AllocLineBuffer.Reset();
@@ -348,7 +363,9 @@ page 51101 "Payment Allocation"
                     AllocLineBuffer."Alloc. Amt Incl. VAT (LCY)" := Remaining
                 else begin
                     AllocLineBuffer."Alloc. Amt Incl. VAT (LCY)" :=
-                        Round(ApplicationAmtLCY * AllocLineBuffer."Orig. Amt Incl. VAT (LCY)" / TotalOrigAmt);
+                        Round(ApplicationAmtLCY *
+                            (AllocLineBuffer."Orig. Amt Incl. VAT (LCY)" - AllocLineBuffer."Already Settled Amt (LCY)") /
+                            TotalRemainingAmt);
                     Remaining -= AllocLineBuffer."Alloc. Amt Incl. VAT (LCY)";
                 end;
                 AllocLineBuffer.Modify();
