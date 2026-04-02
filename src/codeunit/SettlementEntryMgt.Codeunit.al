@@ -80,11 +80,11 @@ codeunit 51106 "Settlement Entry Mgt."
     /// BC sets "Remaining Amount", "Closed by Entry No.", and "Pmt. Disc. Given (LCY)"
     /// on the CLE before inserting Application DCLEs — all fields are reliable at this point.
     /// </summary>
-    procedure CreateSalesSettlementEntries(InvoiceCLE: Record "Cust. Ledger Entry"; InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; PostingDate: Date)
+    procedure CreateSalesSettlementEntries(InvoiceCLE: Record "Cust. Ledger Entry"; InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; PostingDate: Date; BaselineDCLEEntryNo: Integer)
     begin
         if InvoiceCLE."Document Type" <> "Gen. Journal Document Type"::Invoice then
             exit;
-        ProcessInvoiceCLEForSettlement(InvoiceCLE, InvoiceDCLE, PostingDate);
+        ProcessInvoiceCLEForSettlement(InvoiceCLE, InvoiceDCLE, PostingDate, BaselineDCLEEntryNo);
     end;
 
     /// <summary>
@@ -164,7 +164,7 @@ codeunit 51106 "Settlement Entry Mgt."
                         // HandlePartialPayment can look up the correct bank ledger entry.
                         if InvoiceCLE.Open then
                             ResolveAppliedCLEEntryNo(DCLE, BaselineDCLEEntryNo);
-                        CreateSalesSettlementEntries(InvoiceCLE, DCLE, DCLE."Posting Date");
+                        CreateSalesSettlementEntries(InvoiceCLE, DCLE, DCLE."Posting Date", BaselineDCLEEntryNo);
                         HandledInvoiceCLEs.Add(InvoiceCLE."Entry No.");
                     end;
             until DCLE.Next() = 0;
@@ -187,7 +187,7 @@ codeunit 51106 "Settlement Entry Mgt."
 
     // ── Private: per-invoice processing ─────────────────────────────────────
 
-    local procedure ProcessInvoiceCLEForSettlement(InvoiceCLE: Record "Cust. Ledger Entry"; InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; PostingDate: Date)
+    local procedure ProcessInvoiceCLEForSettlement(InvoiceCLE: Record "Cust. Ledger Entry"; InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; PostingDate: Date; BaselineDCLEEntryNo: Integer)
     var
         PaymentCLE: Record "Cust. Ledger Entry";
         SalesInvLine: Record "Sales Invoice Line";
@@ -226,7 +226,7 @@ codeunit 51106 "Settlement Entry Mgt."
 
         // ── Guard: settled by a payment, not a credit memo (→ Epic 5) ───────
         // TryGetPaymentCLE also populates PaymentCLE so it is ready for bank/overpayment lookups.
-        if not TryGetPaymentCLE(InvoiceDCLE, InvoiceCLE, PaymentCLE) then
+        if not TryGetPaymentCLE(InvoiceDCLE, InvoiceCLE, PaymentCLE, BaselineDCLEEntryNo) then
             exit;
 
         // ── Collect invoice line totals for proportional distribution ────────
@@ -259,12 +259,14 @@ codeunit 51106 "Settlement Entry Mgt."
 
         // ── Context for all Settlement Entries in this application ───────────
         BankLedgEntry := GetBankLedgEntryByPaymentCLE(PaymentCLE);
-        AssignmentID := GenerateAssignmentID(InvoiceCLE."Customer No.", PostingDate);
+        // Settlement Date = the payment's own posting date, not the application date.
+        // This ensures entries reflect when money was received, not when it was applied.
+        AssignmentID := GenerateAssignmentID(InvoiceCLE."Customer No.", PaymentCLE."Posting Date");
 
         // ── Create one Settlement Entry per non-zero invoice line ────────────
         SalesInvLine.FindSet(); // Reset cursor — filters are preserved from above
         CreateSalesLineEntries(
-            SalesInvLine, TotalLines, InvoiceCLE, PostingDate, BankLedgEntry,
+            SalesInvLine, TotalLines, InvoiceCLE, PaymentCLE."Posting Date", BankLedgEntry,
             TotalAmtExclVAT, TotalAmtInclVAT,
             PaymentAmtLCY, CashDiscountAmtLCY, AssignmentID, TransactionNo);
 
@@ -278,7 +280,7 @@ codeunit 51106 "Settlement Entry Mgt."
         PaymentCLE.Get(PaymentCLE."Entry No."); // fresh read for post-application Remaining Amount
         if PaymentCLE."Remaining Amount" < 0 then
             InsertUnallocatedEntry(
-                InvoiceCLE."Customer No.", PaymentCLE, PostingDate, BankLedgEntry, AssignmentID, TransactionNo);
+                InvoiceCLE."Customer No.", PaymentCLE, PaymentCLE."Posting Date", BankLedgEntry, AssignmentID, TransactionNo);
     end;
 
     // ── Private: partial payment handling ────────────────────────────────────
@@ -336,6 +338,12 @@ codeunit 51106 "Settlement Entry Mgt."
                 BankLedgEntry := GetBankLedgEntryByPaymentCLE(PaymentCLE);
         end else
             BankLedgEntry := GetBankLedgEntryByTransactionNo(TransactionNo);
+
+        // Settlement Date = the payment's own posting date when resolvable, otherwise fall
+        // back to the application date (PostingDate). The fallback applies only when no
+        // payment CLE could be found (PaymentCLEEntryNo = 0 after all resolution attempts).
+        if PaymentCLE."Entry No." <> 0 then
+            PostingDate := PaymentCLE."Posting Date";
 
         AssignmentID := GenerateAssignmentID(InvoiceCLE."Customer No.", PostingDate);
         CreatePartialLineEntries(TempBuffer, InvoiceCLE, PostingDate, BankLedgEntry, AssignmentID, TransactionNo);
@@ -758,25 +766,30 @@ codeunit 51106 "Settlement Entry Mgt."
     /// Fallback to "Closed by Entry No." when the payment DCLE has not yet been inserted
     /// (applies when the invoice DCLE fires before the payment DCLE in some posting paths).
     /// </summary>
-    local procedure TryGetPaymentCLE(InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; var InvoiceCLE: Record "Cust. Ledger Entry"; var PaymentCLE: Record "Cust. Ledger Entry"): Boolean
+    local procedure TryGetPaymentCLE(InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; var InvoiceCLE: Record "Cust. Ledger Entry"; var PaymentCLE: Record "Cust. Ledger Entry"; BaselineDCLEEntryNo: Integer): Boolean
     var
         PaymentDCLE: Record "Detailed Cust. Ledg. Entry";
     begin
         // Primary: the invoice-side Application DCLE stores the payment CLE entry no.
         // directly in "Applied Cust. Ledger Entry No.". This is the most direct and
         // version-independent lookup — no secondary DCLE scan needed.
-        if InvoiceDCLE."Applied Cust. Ledger Entry No." <> 0 then
+        // Guard against self-references (BC sets Applied = own CLE entry no. in some paths).
+        if (InvoiceDCLE."Applied Cust. Ledger Entry No." <> 0) and
+           (InvoiceDCLE."Applied Cust. Ledger Entry No." <> InvoiceDCLE."Cust. Ledger Entry No.")
+        then
             if PaymentCLE.Get(InvoiceDCLE."Applied Cust. Ledger Entry No.") then
                 if PaymentCLE."Document Type" in
                     ["Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund]
                 then
                     exit(true);
 
-        // Secondary: find the payment-side Application DCLE via Applied CLE No. and
-        // read the payment CLE from there. Handles cases where the invoice DCLE's
-        // "Applied Cust. Ledger Entry No." is unexpectedly 0 or points to a non-payment.
+        // Secondary: find the payment-side Application DCLE created in THIS application only.
+        // Scope by Entry No. > BaselineDCLEEntryNo to exclude historical DCLEs from prior
+        // partial payments on the same invoice — without this scope, Transaction No. = 0
+        // (set by BC on the CLE apply path) would match DCLEs from previous applications,
+        // causing the wrong payment CLE (and therefore wrong posting date) to be resolved.
+        PaymentDCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
         PaymentDCLE.SetRange("Applied Cust. Ledger Entry No.", InvoiceDCLE."Cust. Ledger Entry No.");
-        PaymentDCLE.SetRange("Transaction No.", InvoiceDCLE."Transaction No.");
         PaymentDCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
         PaymentDCLE.SetRange(Unapplied, false);
         PaymentDCLE.SetFilter("Cust. Ledger Entry No.", '<>%1', InvoiceDCLE."Cust. Ledger Entry No.");
