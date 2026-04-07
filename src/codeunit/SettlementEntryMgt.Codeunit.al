@@ -189,6 +189,7 @@ codeunit 51106 "Settlement Entry Mgt."
 
     local procedure ProcessInvoiceCLEForSettlement(InvoiceCLE: Record "Cust. Ledger Entry"; InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; PostingDate: Date; BaselineDCLEEntryNo: Integer)
     var
+        PaymentDCLE: Record "Detailed Cust. Ledg. Entry";
         PaymentCLE: Record "Cust. Ledger Entry";
         SalesInvLine: Record "Sales Invoice Line";
         BankLedgEntry: Record "Bank Account Ledger Entry";
@@ -199,6 +200,7 @@ codeunit 51106 "Settlement Entry Mgt."
         TotalAmtExclVAT: Decimal;
         TotalAmtInclVAT: Decimal;
         TotalLines: Integer;
+        PaymentDCLECount: Integer;
     begin
         if InvoiceCLE."Document Type" <> "Gen. Journal Document Type"::Invoice then
             exit;
@@ -226,11 +228,6 @@ codeunit 51106 "Settlement Entry Mgt."
             exit;
         end;
 
-        // ── Guard: settled by a payment, not a credit memo (→ Epic 5) ───────
-        // TryGetPaymentCLE also populates PaymentCLE so it is ready for bank/overpayment lookups.
-        if not TryGetPaymentCLE(InvoiceDCLE, InvoiceCLE, PaymentCLE, BaselineDCLEEntryNo) then
-            exit;
-
         // ── Collect invoice line totals for proportional distribution ────────
         SalesInvLine.SetRange("Document No.", InvoiceCLE."Document No.");
         SalesInvLine.SetFilter(Amount, '<>0');
@@ -247,42 +244,92 @@ codeunit 51106 "Settlement Entry Mgt."
         if TotalAmtInclVAT = 0 then
             exit;
 
-        // ── Amounts ─────────────────────────────────────────────────────────
-        // Cash discount: BC sets "Pmt. Disc. Given (LCY)" before inserting DCLEs — always reliable.
-        CashDiscountAmtLCY := GetCashDiscountAmt(InvoiceCLE);
+        // ── Find all payment-side Application DCLEs for this application ─────
+        // Primary scan: payment-side DCLEs pointing directly to the invoice CLE.
+        // Works for payments without cash discount (both gen journal and CLE apply paths)
+        // and for multi-payment scenarios.
+        PaymentDCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
+        PaymentDCLE.SetRange("Applied Cust. Ledger Entry No.", InvoiceCLE."Entry No.");
+        PaymentDCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+        PaymentDCLE.SetRange(Unapplied, false);
+        PaymentDCLE.SetFilter("Cust. Ledger Entry No.", '<>%1', InvoiceCLE."Entry No.");
+        PaymentDCLE.SetFilter(
+            "Initial Document Type", '%1|%2',
+            "Gen. Journal Document Type"::Payment,
+            "Gen. Journal Document Type"::Refund);
+        if not PaymentDCLE.FindSet() then begin
+            // Fallback for cash-discount applications: BC sets "Applied Cust. Ledger Entry No."
+            // on the payment-side DCLE to the PAYMENT'S OWN entry no. (self-reference) rather
+            // than the invoice CLE. In this case the invoice-side DCLE reliably carries the
+            // payment CLE entry no. in its own "Applied Cust. Ledger Entry No." field — use
+            // that to find the payment-side DCLE directly by "Cust. Ledger Entry No.".
+            // Guard against self-references and zeros on the invoice DCLE (credit memo path).
+            if (InvoiceDCLE."Applied Cust. Ledger Entry No." = 0) or
+               (InvoiceDCLE."Applied Cust. Ledger Entry No." = InvoiceDCLE."Cust. Ledger Entry No.")
+            then
+                exit; // Credit memo or unrecognized application → Epic 5
+            PaymentDCLE.Reset();
+            PaymentDCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
+            PaymentDCLE.SetRange("Cust. Ledger Entry No.", InvoiceDCLE."Applied Cust. Ledger Entry No.");
+            PaymentDCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+            PaymentDCLE.SetRange(Unapplied, false);
+            PaymentDCLE.SetFilter(
+                "Initial Document Type", '%1|%2',
+                "Gen. Journal Document Type"::Payment,
+                "Gen. Journal Document Type"::Refund);
+            if not PaymentDCLE.FindSet() then
+                exit; // Still nothing → credit memo or unrecognized → Epic 5
+        end;
 
-        // Payment amount for THIS invoice = the actual amount applied to this invoice
-        // (negated from the invoice DCLE) minus any cash discount.
-        // Using TotalAmtInclVAT would be wrong when prior partial payments exist,
-        // because the invoice total exceeds the amount settled in this application.
-        // Using -InvoiceDCLE."Amount (LCY)" gives the exact applied amount in all scenarios:
-        // full payment, overpayment, and final partial closing a previously-partial invoice.
-        PaymentAmtLCY := -InvoiceDCLE."Amount (LCY)" - CashDiscountAmtLCY;
+        PaymentDCLECount := PaymentDCLE.Count();
 
-        // ── Context for all Settlement Entries in this application ───────────
-        BankLedgEntry := GetBankLedgEntryByPaymentCLE(PaymentCLE);
-        // Settlement Date = the payment's own posting date, not the application date.
-        // This ensures entries reflect when money was received, not when it was applied.
-        AssignmentID := GenerateAssignmentID(InvoiceCLE."Customer No.", PaymentCLE."Posting Date");
+        // Cash discount: BC sets "Pmt. Disc. Given (LCY)" for the whole application event.
+        // When exactly one payment closes the invoice, the full discount belongs to it.
+        // When multiple payments close the invoice together, the discount cannot be unambiguously
+        // attributed to a single payment — pass 0 per payment to avoid inflating discount totals.
+        if PaymentDCLECount = 1 then
+            CashDiscountAmtLCY := GetCashDiscountAmt(InvoiceCLE)
+        else
+            CashDiscountAmtLCY := 0;
 
-        // ── Create one Settlement Entry per non-zero invoice line ────────────
-        SalesInvLine.FindSet(); // Reset cursor — filters are preserved from above
-        CreateSalesLineEntries(
-            SalesInvLine, TotalLines, InvoiceCLE, PaymentCLE."Posting Date", BankLedgEntry,
-            TotalAmtExclVAT, TotalAmtInclVAT,
-            PaymentAmtLCY, CashDiscountAmtLCY, AssignmentID, TransactionNo, PaymentCLE."Entry No.");
+        // ── One set of Settlement Entries per payment ────────────────────────
+        // PaymentDCLE."Amount (LCY)" is positive (this payment's contribution to closing the invoice).
+        // Settlement Date = PaymentCLE."Posting Date" — when money was received, not when applied.
+        // Each payment gets its own Assignment ID, grouping its line entries separately in Power BI.
+        repeat
+            if not PaymentCLE.Get(PaymentDCLE."Cust. Ledger Entry No.") then
+                continue;
+            if not (PaymentCLE."Document Type" in
+                ["Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund])
+            then
+                continue;
 
-        // ── Overpayment: payment > invoice → insert unallocated entry ────────
-        // Re-read the payment CLE to get the post-application "Remaining Amount".
-        // PaymentCLE."Remaining Amount" < 0 means the payment has unused AR credit remaining
-        // (e.g., customer paid 1,500 on a 1,190 invoice → Remaining = -310).
-        // Negate the negative remaining to store a positive unallocated amount.
-        // The unallocated entry carries the same Assignment ID as the line entries so
-        // the full payment event stays grouped; it is deleted/modified in Epic 3.3.
-        PaymentCLE.Get(PaymentCLE."Entry No."); // fresh read for post-application Remaining Amount
-        if PaymentCLE."Remaining Amount" < 0 then
-            InsertUnallocatedEntry(
-                InvoiceCLE."Customer No.", PaymentCLE, PaymentCLE."Posting Date", BankLedgEntry, AssignmentID, TransactionNo);
+            // For cash discount, BC's Skonto DCLEs increase the payment CLE's effective
+            // credit before the Application DCLE fires, so PaymentDCLE."Amount (LCY)"
+            // = actual cash + discount. Subtracting CashDiscountAmtLCY gives actual cash:
+            // - no discount: CashDiscountAmtLCY=0 → no change ✓
+            // - with discount (single payment): DCLE amount = cash + discount, minus discount = cash ✓
+            // - with discount (multi-payment, CashDiscountAmtLCY=0): each DCLE amount = cash ✓
+            PaymentAmtLCY := PaymentDCLE."Amount (LCY)" - CashDiscountAmtLCY;
+            BankLedgEntry := GetBankLedgEntryByPaymentCLE(PaymentCLE);
+            AssignmentID := GenerateAssignmentID(InvoiceCLE."Customer No.", PaymentCLE."Posting Date");
+
+            SalesInvLine.FindSet(); // Reset cursor for each payment — filters preserved from above
+            CreateSalesLineEntries(
+                SalesInvLine, TotalLines, InvoiceCLE, PaymentCLE."Posting Date", BankLedgEntry,
+                TotalAmtExclVAT, TotalAmtInclVAT,
+                PaymentAmtLCY, CashDiscountAmtLCY, AssignmentID, TransactionNo, PaymentCLE."Entry No.");
+
+            // Overpayment: re-read payment CLE for post-application Remaining Amount.
+            // PaymentCLE."Remaining Amount" < 0 = unused AR credit (e.g. paid 1,500 on 1,190 invoice).
+            // Negate to store positive unallocated amount. Unallocated entry shares the same
+            // Assignment ID so the full payment event stays grouped; consumed/modified in Epic 3.3.
+            PaymentCLE.Get(PaymentCLE."Entry No.");
+            if PaymentCLE."Remaining Amount" < 0 then
+                InsertUnallocatedEntry(
+                    InvoiceCLE."Customer No.", PaymentCLE, PaymentCLE."Posting Date", BankLedgEntry, AssignmentID, TransactionNo);
+
+        until PaymentDCLE.Next() = 0;
     end;
 
     // ── Private: partial payment handling ────────────────────────────────────
@@ -314,10 +361,14 @@ codeunit 51106 "Settlement Entry Mgt."
     begin
         // The allocation must have been pre-collected by ScanBatchForPartialPayments (Gen. Journal
         // path) or ScanCLEApplicationForPartialPayments (CLE apply path) before any write
-        // transaction began. If nothing was stored, the pre-posting hook was not reached — error
-        // rather than silently auto-distributing, to surface unexpected code paths.
+        // transaction began. This procedure is always called post-commit, so throwing an error
+        // here cannot roll back the application — it would only produce a misleading message.
+        // Exit silently: no settlement entries are created for this application, but the
+        // posting itself is unaffected. This covers edge cases where the pre-scan did not
+        // detect the partial application (e.g. apply-from-invoice-CLE when BC does not
+        // trigger the cash discount, leaving the invoice partially open unexpectedly).
         if not AllocContext.TryGetAllocation(InvoiceCLE."Entry No.", TempBuffer) then
-            Error(AllocationCancelledErr);
+            exit;
         AllocContext.ClearAllocation(InvoiceCLE."Entry No.");
 
         if TempBuffer.IsEmpty() then
@@ -506,8 +557,10 @@ codeunit 51106 "Settlement Entry Mgt."
         InvoiceCLE.CalcFields("Remaining Amount");
         if InvoiceCLE."Remaining Amount" <= 0 then
             exit(false);
-        // Use a small tolerance to avoid floating-point false positives on exact payments.
-        exit(Abs(GenJnlLine."Amount (LCY)") < InvoiceCLE."Remaining Amount" - 0.005);
+        // Subtract "Remaining Pmt. Disc. Possible" so that a payment qualifying for cash
+        // discount is not treated as partial — the discount closes the remaining gap.
+        // Consistent with the threshold used in ScanForCLEPartialPayments.
+        exit(Abs(GenJnlLine."Amount (LCY)") < InvoiceCLE."Remaining Amount" - InvoiceCLE."Remaining Pmt. Disc. Possible" - 0.005);
     end;
 
     /// <summary>
@@ -763,68 +816,6 @@ codeunit 51106 "Settlement Entry Mgt."
         exit(not ExistingEntry.IsEmpty());
     end;
 
-    // ── Private: application type detection ─────────────────────────────────
-
-    /// <summary>
-    /// Finds the payment CLE that settled the given invoice and populates PaymentCLE.
-    /// Returns false if the application was by a credit memo (→ Epic 5).
-    ///
-    /// Uses the same DCLE-based lookup as CustomerLedgerEntries.Codeunit.al:
-    ///   "Applied Cust. Ledger Entry No." equals the invoice entry no. on BOTH the invoice-side
-    ///   and payment-side Application DCLEs, making this direction-independent.
-    ///   "Transaction No." scopes to the current application only, preventing false matches
-    ///   from historical partial payments on the same invoice (PARTIAL-PAYMENT-BUG-1).
-    ///
-    /// Fallback to "Closed by Entry No." when the payment DCLE has not yet been inserted
-    /// (applies when the invoice DCLE fires before the payment DCLE in some posting paths).
-    /// </summary>
-    local procedure TryGetPaymentCLE(InvoiceDCLE: Record "Detailed Cust. Ledg. Entry"; var InvoiceCLE: Record "Cust. Ledger Entry"; var PaymentCLE: Record "Cust. Ledger Entry"; BaselineDCLEEntryNo: Integer): Boolean
-    var
-        PaymentDCLE: Record "Detailed Cust. Ledg. Entry";
-    begin
-        // Primary: the invoice-side Application DCLE stores the payment CLE entry no.
-        // directly in "Applied Cust. Ledger Entry No.". This is the most direct and
-        // version-independent lookup — no secondary DCLE scan needed.
-        // Guard against self-references (BC sets Applied = own CLE entry no. in some paths).
-        if (InvoiceDCLE."Applied Cust. Ledger Entry No." <> 0) and
-           (InvoiceDCLE."Applied Cust. Ledger Entry No." <> InvoiceDCLE."Cust. Ledger Entry No.")
-        then
-            if PaymentCLE.Get(InvoiceDCLE."Applied Cust. Ledger Entry No.") then
-                if PaymentCLE."Document Type" in
-                    ["Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund]
-                then
-                    exit(true);
-
-        // Secondary: find the payment-side Application DCLE created in THIS application only.
-        // Scope by Entry No. > BaselineDCLEEntryNo to exclude historical DCLEs from prior
-        // partial payments on the same invoice — without this scope, Transaction No. = 0
-        // (set by BC on the CLE apply path) would match DCLEs from previous applications,
-        // causing the wrong payment CLE (and therefore wrong posting date) to be resolved.
-        PaymentDCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
-        PaymentDCLE.SetRange("Applied Cust. Ledger Entry No.", InvoiceDCLE."Cust. Ledger Entry No.");
-        PaymentDCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
-        PaymentDCLE.SetRange(Unapplied, false);
-        PaymentDCLE.SetFilter("Cust. Ledger Entry No.", '<>%1', InvoiceDCLE."Cust. Ledger Entry No.");
-        PaymentDCLE.SetFilter(
-            "Initial Document Type", '%1|%2',
-            "Gen. Journal Document Type"::Payment,
-            "Gen. Journal Document Type"::Refund);
-        if PaymentDCLE.FindFirst() then begin
-            if not PaymentCLE.Get(PaymentDCLE."Cust. Ledger Entry No.") then
-                exit(false);
-            exit(PaymentCLE."Document Type" in
-                ["Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund]);
-        end;
-
-        // Fallback: payment DCLE not yet inserted — use "Closed by Entry No." on the invoice CLE.
-        if InvoiceCLE."Closed by Entry No." = 0 then
-            exit(false);
-        if not PaymentCLE.Get(InvoiceCLE."Closed by Entry No.") then
-            exit(false);
-        exit(PaymentCLE."Document Type" in
-            ["Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund]);
-    end;
-
     // ── Public: already-settled amount lookup ────────────────────────────────
 
     /// <summary>
@@ -1003,7 +994,12 @@ codeunit 51106 "Settlement Entry Mgt."
                     LineAmt := Round(LineAmtInclVAT * SalesInvLine.Amount / SalesInvLine."Amount Including VAT")
                 else
                     LineAmt := LineAmtInclVAT;
-                LineDiscount := Round(LineRemainingInclVAT * CashDiscountAmtLCY / TotalRemainingInclVAT);
+                // Distribute the excl. VAT cash discount proportionally to each line's excl. VAT amount.
+                // Using SalesInvLine.Amount (excl. VAT) / TotalAmtInclVAT gives the correct excl. VAT
+                // share per line — consistent with how RemainingDiscount is initialised.
+                // Example: 3 equal lines, CashDiscount=107.10 (incl. VAT), TotalInclVAT=3570:
+                //   Round(1000 * 107.10 / 3570) = 30.00 per line  ✓  (not 35.70 from incl./incl.)
+                LineDiscount := Round(SalesInvLine.Amount * CashDiscountAmtLCY / TotalAmtInclVAT);
                 RemainingAmt -= LineAmt;
                 RemainingAmtInclVAT -= LineAmtInclVAT;
                 RemainingDiscount -= LineDiscount;
