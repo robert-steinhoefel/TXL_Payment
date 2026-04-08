@@ -635,11 +635,14 @@ codeunit 51106 "Settlement Entry Mgt."
         Customer: Record Customer;
     begin
         Customer.Get(InvoiceCLE."Customer No.");
+        // Insert an entry for every line, including 0-amount lines.
+        // Consistent with CreateSalesLineEntries (full-close path): 0-amount entries provide
+        // an explicit audit trail showing the line was considered and received no allocation
+        // in this payment event. Absence of an entry would be ambiguous in Power BI reporting.
         if TempBuffer.FindSet() then
             repeat
-                if TempBuffer."Alloc. Amt Incl. VAT (LCY)" <> 0 then
-                    InsertPartialSalesSettlementEntry(
-                        TempBuffer, InvoiceCLE, PostingDate, BankLedgEntry, Customer, AssignmentID, TransactionNo, PaymentCLEEntryNo);
+                InsertPartialSalesSettlementEntry(
+                    TempBuffer, InvoiceCLE, PostingDate, BankLedgEntry, Customer, AssignmentID, TransactionNo, PaymentCLEEntryNo);
             until TempBuffer.Next() = 0;
     end;
 
