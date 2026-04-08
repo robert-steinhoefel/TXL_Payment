@@ -94,7 +94,6 @@ table 51106 "Settlement Entry"
             Caption = 'Cash Discount Amount (LCY)';
             AutoFormatType = 1;
         }
-
         // ── Original Line Amounts ─────────────────────────────────────────────
         // Snapshot of the source invoice/credit memo line amounts at the time the
         // Settlement Entry is created. Stored here so reporting can compare what
@@ -118,6 +117,42 @@ table 51106 "Settlement Entry"
             Caption = 'Non-Deductible VAT Amount (LCY)';
             DataClassification = CustomerContent;
             AutoFormatType = 1;
+        }
+        // Cash Discount incl. VAT — companion to field 24 (excl. VAT).
+        field(114; "Cash Discount Amt Incl. VAT (LCY)"; Decimal)
+        {
+            Caption = 'Cash Discount Amount Incl. VAT (LCY)';
+            DataClassification = CustomerContent;
+            AutoFormatType = 1;
+        }
+        // Total Settled Amt (LCY) = Settlement Amt (LCY) + Cash Discount Amt (LCY).
+        // Denormalised field for the Sales Invoice Line "Settled Amt (LCY)" FlowField —
+        // BC CalcFormula cannot sum two fields in one expression.
+        field(117; "Total Settled Amt Incl. VAT (LCY)"; Decimal)
+        {
+            Caption = 'Total Settled Amount Incl. VAT (LCY)';
+            DataClassification = CustomerContent;
+            AutoFormatType = 1;
+        }
+        field(118; "Total Settled Amt (LCY)"; Decimal)
+        {
+            Caption = 'Total Settled Amount (LCY)';
+            DataClassification = CustomerContent;
+            AutoFormatType = 1;
+        }
+        // ── Fully Settled Flags ───────────────────────────────────────────────
+        // Stored booleans maintained by SettlementEntryMgt after every insert/reversal.
+        // Updated on ALL Settlement Entries for the affected line/document so Power BI
+        // and the API page can filter on current settlement state without joins.
+        field(115; "Line Fully Settled"; Boolean)
+        {
+            Caption = 'Line Fully Settled';
+            DataClassification = CustomerContent;
+        }
+        field(116; "Invoice Fully Settled"; Boolean)
+        {
+            Caption = 'Invoice Fully Settled';
+            DataClassification = CustomerContent;
         }
 
         // ── Payment Reference ─────────────────────────────────────────────────

@@ -36,7 +36,7 @@ using Microsoft.Finance.GeneralLedger.Account;
 codeunit 51106 "Settlement Entry Mgt."
 {
     Permissions =
-        tabledata "Settlement Entry" = ri,
+        tabledata "Settlement Entry" = rim,
         tabledata "Sales Invoice Line" = rm,
         tabledata "Cust. Ledger Entry" = r,
         tabledata "Detailed Cust. Ledg. Entry" = r,
@@ -681,6 +681,10 @@ codeunit 51106 "Settlement Entry Mgt."
         SettlementEntry."Settlement Amt (LCY)" := LineAmt;
         SettlementEntry."Settlement Amt Incl. VAT (LCY)" := LineAmtInclVAT;
         SettlementEntry."Cash Discount Amt (LCY)" := 0;
+        SettlementEntry."Cash Discount Amt Incl. VAT (LCY)" := 0;
+        // Cash discount is always 0 for partial payments — user allocates cash only.
+        SettlementEntry."Total Settled Amt (LCY)" := LineAmt;
+        SettlementEntry."Total Settled Amt Incl. VAT (LCY)" := LineAmtInclVAT;
 
         SettlementEntry."Original Line Amt (LCY)" := TempBuffer."Original Amt (LCY)";
         SettlementEntry."Orig. Line Amt Incl. VAT (LCY)" := TempBuffer."Orig. Amt Incl. VAT (LCY)";
@@ -742,6 +746,8 @@ codeunit 51106 "Settlement Entry Mgt."
         // Remaining Amount on Payment CLE is negative (unused AR credit) → negate for positive amount.
         SettlementEntry."Settlement Amt (LCY)" := -PaymentCLE."Remaining Amount";
         SettlementEntry."Settlement Amt Incl. VAT (LCY)" := -PaymentCLE."Remaining Amount";
+        SettlementEntry."Total Settled Amt (LCY)" := -PaymentCLE."Remaining Amount";
+        SettlementEntry."Total Settled Amt Incl. VAT (LCY)" := -PaymentCLE."Remaining Amount";
 
         SettlementEntry."CV No." := CustomerNo;
         SettlementEntry."CV Name" := Customer.Name;
@@ -845,8 +851,11 @@ codeunit 51106 "Settlement Entry Mgt."
         SettlementEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
         SettlementEntry.SetRange("Document No.", DocumentNo);
         SettlementEntry.SetRange("Document Line No.", DocumentLineNo);
-        SettlementEntry.CalcSums("Settlement Amt Incl. VAT (LCY)");
-        exit(SettlementEntry."Settlement Amt Incl. VAT (LCY)");
+        // Sum "Total Settled Amt Incl. VAT (LCY)" which includes cash discount incl. VAT,
+        // so that a prior cash-discounted payment correctly reduces the remaining distributable
+        // amount for subsequent partial payments on the same line.
+        SettlementEntry.CalcSums("Total Settled Amt Incl. VAT (LCY)");
+        exit(SettlementEntry."Total Settled Amt Incl. VAT (LCY)");
     end;
 
     // ── Private: amount helpers ──────────────────────────────────────────────
@@ -1055,6 +1064,15 @@ codeunit 51106 "Settlement Entry Mgt."
         SettlementEntry."Settlement Amt (LCY)" := LineAmt;
         SettlementEntry."Settlement Amt Incl. VAT (LCY)" := LineAmtInclVAT;
         SettlementEntry."Cash Discount Amt (LCY)" := LineDiscount;
+        // Cash discount incl. VAT: back-calculate from excl. VAT using line VAT ratio.
+        if SalesInvLine.Amount <> 0 then
+            SettlementEntry."Cash Discount Amt Incl. VAT (LCY)" :=
+                Round(LineDiscount * SalesInvLine."Amount Including VAT" / SalesInvLine.Amount)
+        else
+            SettlementEntry."Cash Discount Amt Incl. VAT (LCY)" := LineDiscount;
+        SettlementEntry."Total Settled Amt (LCY)" := LineAmt + LineDiscount;
+        SettlementEntry."Total Settled Amt Incl. VAT (LCY)" :=
+            LineAmtInclVAT + SettlementEntry."Cash Discount Amt Incl. VAT (LCY)";
 
         SettlementEntry."Original Line Amt (LCY)" := SalesInvLine.Amount;
         SettlementEntry."Orig. Line Amt Incl. VAT (LCY)" := SalesInvLine."Amount Including VAT";
@@ -1126,6 +1144,7 @@ codeunit 51106 "Settlement Entry Mgt."
         SalesInvLine.CalcFields("Settled Amt (LCY)");
         SalesInvLine."Outstanding Amt (LCY)" := SalesInvLine.Amount - SalesInvLine."Settled Amt (LCY)";
         SalesInvLine.Modify();
+        UpdateFullySettledFlags(SalesInvLine."Document No.", SalesInvLine."Line No.");
     end;
 
     local procedure UpdateSalesInvLineOutstandingAmtByLineNo(DocumentNo: Code[20]; LineNo: Integer)
@@ -1135,5 +1154,68 @@ codeunit 51106 "Settlement Entry Mgt."
         if not SalesInvLine.Get(DocumentNo, LineNo) then
             exit;
         UpdateSalesInvLineOutstandingAmt(SalesInvLine);
+    end;
+
+    /// <summary>
+    /// Updates "Line Fully Settled" and "Invoice Fully Settled" on ALL Settlement Entries
+    /// for the affected line and document after every insert or reversal.
+    ///
+    /// Line Fully Settled  = Outstanding Amt (LCY) <= 0 for this specific line.
+    /// Invoice Fully Settled = ALL lines of the invoice have Outstanding Amt (LCY) <= 0.
+    ///
+    /// Both flags are stored on every Settlement Entry (not just the latest) so Power BI
+    /// and the API can filter on current settlement state without joins or recalculation.
+    /// Reversals in Epic 5 must also call UpdateSalesInvLineOutstandingAmt to trigger this.
+    /// </summary>
+    local procedure UpdateFullySettledFlags(DocumentNo: Code[20]; LineNo: Integer)
+    var
+        SalesInvLine: Record "Sales Invoice Line";
+        AllLines: Record "Sales Invoice Line";
+        SettlementEntry: Record "Settlement Entry";
+        LineFullySettled: Boolean;
+        InvoiceFullySettled: Boolean;
+    begin
+        // ── Line Fully Settled ───────────────────────────────────────────────
+        if not SalesInvLine.Get(DocumentNo, LineNo) then
+            exit;
+        LineFullySettled := SalesInvLine."Outstanding Amt (LCY)" <= 0;
+
+        // Update all entries for this line
+        SettlementEntry.SetRange("Document Type", "Gen. Journal Document Type"::Invoice);
+        SettlementEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        SettlementEntry.SetRange("Document No.", DocumentNo);
+        SettlementEntry.SetRange("Document Line No.", LineNo);
+        if SettlementEntry.FindSet(true) then
+            repeat
+                if SettlementEntry."Line Fully Settled" <> LineFullySettled then begin
+                    SettlementEntry."Line Fully Settled" := LineFullySettled;
+                    SettlementEntry.Modify();
+                end;
+            until SettlementEntry.Next() = 0;
+
+        // ── Invoice Fully Settled ────────────────────────────────────────────
+        // Check all non-zero lines of the invoice — invoice is fully settled only
+        // when every line has Outstanding Amt <= 0.
+        AllLines.SetRange("Document No.", DocumentNo);
+        AllLines.SetFilter(Amount, '<>0');
+        InvoiceFullySettled := true;
+        if AllLines.FindSet() then
+            repeat
+                if AllLines."Outstanding Amt (LCY)" > 0 then
+                    InvoiceFullySettled := false;
+            until (AllLines.Next() = 0) or not InvoiceFullySettled;
+
+        // Update all entries for the whole document
+        SettlementEntry.Reset();
+        SettlementEntry.SetRange("Document Type", "Gen. Journal Document Type"::Invoice);
+        SettlementEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        SettlementEntry.SetRange("Document No.", DocumentNo);
+        if SettlementEntry.FindSet(true) then
+            repeat
+                if SettlementEntry."Invoice Fully Settled" <> InvoiceFullySettled then begin
+                    SettlementEntry."Invoice Fully Settled" := InvoiceFullySettled;
+                    SettlementEntry.Modify();
+                end;
+            until SettlementEntry.Next() = 0;
     end;
 }

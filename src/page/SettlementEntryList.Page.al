@@ -116,6 +116,20 @@ page 51100 "Settlement Entry List"
                     Visible = true;
                 }
 
+                // ── Settlement Status ────────────────────────────────────────
+                field("Line Fully Settled"; Rec."Line Fully Settled")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Indicates whether the invoice line has been fully settled across all payments.';
+                    Visible = false;
+                }
+                field("Invoice Fully Settled"; Rec."Invoice Fully Settled")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Indicates whether all lines of the invoice have been fully settled.';
+                    Visible = false;
+                }
+
                 // ── Assignment ───────────────────────────────────────────────
                 field("Assignment ID"; Rec."Assignment ID")
                 {

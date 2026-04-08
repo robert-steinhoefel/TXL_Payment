@@ -14,7 +14,26 @@ tableextension 51106 "SalesInvoiceLine TableExt" extends "Sales Invoice Line"
         {
             Caption = 'Settled Amount (LCY)';
             FieldClass = FlowField;
-            CalcFormula = Sum("Settlement Entry"."Settlement Amt (LCY)"
+            // Sums "Total Settled Amt (LCY)" = Settlement Amt + Cash Discount Amt (both excl. VAT).
+            // BC CalcFormula cannot sum two fields in one expression, so SettlementEntryMgt
+            // maintains that combined field. Includes cash discount so that a discount-closed
+            // invoice correctly shows Outstanding Amt = 0.
+            CalcFormula = Sum("Settlement Entry"."Total Settled Amt (LCY)"
+                WHERE("Document Type" = CONST(Invoice),
+                      "Transaction Type" = CONST(Sales),
+                      "Document No." = FIELD("Document No."),
+                      "Document Line No." = FIELD("Line No.")));
+            Editable = false;
+            AutoFormatType = 1;
+        }
+        field(51102; "Settled Amt Incl. VAT (LCY)"; Decimal)
+        {
+            Caption = 'Settled Amount Incl. VAT (LCY)';
+            FieldClass = FlowField;
+            // Sums "Total Settled Amt Incl. VAT (LCY)" which = Settlement Amt Incl. VAT +
+            // Cash Discount Amt Incl. VAT per entry. BC CalcFormula cannot sum two fields
+            // in one expression, so SettlementEntryMgt maintains that combined field.
+            CalcFormula = Sum("Settlement Entry"."Total Settled Amt Incl. VAT (LCY)"
                 WHERE("Document Type" = CONST(Invoice),
                       "Transaction Type" = CONST(Sales),
                       "Document No." = FIELD("Document No."),
