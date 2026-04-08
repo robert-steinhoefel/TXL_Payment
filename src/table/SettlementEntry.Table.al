@@ -149,9 +149,9 @@ table 51106 "Settlement Entry"
             Caption = 'Line Fully Settled';
             DataClassification = CustomerContent;
         }
-        field(116; "Invoice Fully Settled"; Boolean)
+        field(116; "Document Fully Settled"; Boolean)
         {
-            Caption = 'Invoice Fully Settled';
+            Caption = 'Document Fully Settled';
             DataClassification = CustomerContent;
         }
 

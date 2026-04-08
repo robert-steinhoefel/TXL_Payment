@@ -26,21 +26,6 @@ tableextension 51106 "SalesInvoiceLine TableExt" extends "Sales Invoice Line"
             Editable = false;
             AutoFormatType = 1;
         }
-        field(51102; "Settled Amt Incl. VAT (LCY)"; Decimal)
-        {
-            Caption = 'Settled Amount Incl. VAT (LCY)';
-            FieldClass = FlowField;
-            // Sums "Total Settled Amt Incl. VAT (LCY)" which = Settlement Amt Incl. VAT +
-            // Cash Discount Amt Incl. VAT per entry. BC CalcFormula cannot sum two fields
-            // in one expression, so SettlementEntryMgt maintains that combined field.
-            CalcFormula = Sum("Settlement Entry"."Total Settled Amt Incl. VAT (LCY)"
-                WHERE("Document Type" = CONST(Invoice),
-                      "Transaction Type" = CONST(Sales),
-                      "Document No." = FIELD("Document No."),
-                      "Document Line No." = FIELD("Line No.")));
-            Editable = false;
-            AutoFormatType = 1;
-        }
 
         // Story 1.4: Outstanding Amount (LCY)
         // BC CalcFormulas do not support arithmetic between two Sum() expressions across tables,
@@ -55,6 +40,22 @@ tableextension 51106 "SalesInvoiceLine TableExt" extends "Sales Invoice Line"
         {
             Caption = 'Outstanding Amount (LCY)';
             DataClassification = CustomerContent;
+            Editable = false;
+            AutoFormatType = 1;
+        }
+
+        field(51102; "Settled Amt Incl. VAT (LCY)"; Decimal)
+        {
+            Caption = 'Settled Amount Incl. VAT (LCY)';
+            FieldClass = FlowField;
+            // Sums "Total Settled Amt Incl. VAT (LCY)" which = Settlement Amt Incl. VAT +
+            // Cash Discount Amt Incl. VAT per entry. BC CalcFormula cannot sum two fields
+            // in one expression, so SettlementEntryMgt maintains that combined field.
+            CalcFormula = Sum("Settlement Entry"."Total Settled Amt Incl. VAT (LCY)"
+                WHERE("Document Type" = CONST(Invoice),
+                      "Transaction Type" = CONST(Sales),
+                      "Document No." = FIELD("Document No."),
+                      "Document Line No." = FIELD("Line No.")));
             Editable = false;
             AutoFormatType = 1;
         }

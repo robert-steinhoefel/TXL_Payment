@@ -22,18 +22,36 @@ tableextension 51107 "SalesCrMemoLine TableExt" extends "Sales Cr.Memo Line"
         }
 
         // Story 1.4: Settled Amount (LCY)
-        // FlowField: sum of all Settlement Entries created for this credit memo line.
-        // Credit memo settlement entries carry negative amounts by convention (Spike 5.3.1 decision:
-        // amounts are stored as they come from the source table — credit memo amounts are negative in BC).
+        // FlowField: sum of Total Settled Amt (LCY) for all Settlement Entries for this line.
+        // Uses Total Settled Amt (same as Sales Invoice Line) so that cash discounts are
+        // included — Outstanding Amt = Amount - Settled Amt reaches 0 when the credit memo
+        // is fully applied even when a payment discount was granted.
+        // SalesCrMemoLine.Amount is positive in BC (the credit granted to the customer).
         field(51102; "Settled Amt (LCY)"; Decimal)
         {
             Caption = 'Settled Amount (LCY)';
             FieldClass = FlowField;
-            CalcFormula = Sum("Settlement Entry"."Settlement Amt (LCY)"
+            CalcFormula = Sum("Settlement Entry"."Total Settled Amt (LCY)"
                 WHERE("Document Type" = CONST("Credit Memo"),
                       "Transaction Type" = CONST(Sales),
                       "Document No." = FIELD("Document No."),
                       "Document Line No." = FIELD("Line No.")));
+            Editable = false;
+            AutoFormatType = 1;
+        }
+
+        // Story 5.3: Outstanding Amount (LCY)
+        // Stored decimal maintained by SettlementEntryMgt after every credit memo settlement
+        // entry insert or reversal — mirrors the same field on Sales Invoice Line.
+        // Formula: Amount - Settled Amt (LCY). SalesCrMemoLine.Amount is positive (the credit
+        // granted to the customer), so Outstanding starts at Amount and decreases toward 0 as
+        // the credit memo is applied. Fully settled = Outstanding <= 0.
+        // Cannot be a FlowField: BC CalcFormulas do not support arithmetic between Sum()
+        // expressions across tables (same constraint as Sales Invoice Line).
+        field(51103; "Outstanding Amt (LCY)"; Decimal)
+        {
+            Caption = 'Outstanding Amount (LCY)';
+            DataClassification = CustomerContent;
             Editable = false;
             AutoFormatType = 1;
         }

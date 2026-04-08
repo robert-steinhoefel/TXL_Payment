@@ -1,5 +1,6 @@
 namespace P3.TXL.Payment.Settlement;
 
+using Microsoft.Finance.GeneralLedger.Journal;
 using Microsoft.Sales.Customer;
 using Microsoft.Sales.History;
 using Microsoft.Sales.Receivables;
@@ -51,11 +52,11 @@ page 51101 "Payment Allocation"
                     ToolTip = 'Specifies the customer name.';
                     Editable = false;
                 }
-                field(InvoiceDocNo; InvoiceDocNo)
+                field(DocumentNo; DocumentNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Invoice No.';
-                    ToolTip = 'Specifies the invoice document number being partially settled.';
+                    Caption = 'Document No.';
+                    ToolTip = 'Specifies the invoice or credit memo document number being partially settled.';
                     Editable = false;
                 }
                 field(ApplicationAmtLCY; ApplicationAmtLCY)
@@ -213,7 +214,7 @@ page 51101 "Payment Allocation"
 
     trigger OnOpenPage()
     begin
-        LoadInvoiceLines();
+        LoadDocumentLines();
         RemainingNonZero := Abs(ApplicationAmtLCY - CalcTotalAllocated()) > 0.005;
     end;
 
@@ -227,14 +228,15 @@ page 51101 "Payment Allocation"
     /// <param name="NewPostingDate">The posting date of the payment application.</param>
     /// <param name="NewBankDocNo">The bank statement document number that triggered this payment.</param>
     /// <param name="NewPaymentRef">The payment reference text from the bank statement.</param>
-    procedure SetContext(NewInvoiceCLE: Record "Cust. Ledger Entry"; NewApplicationAmtLCY: Decimal; NewPostingDate: Date; NewBankDocNo: Code[20]; NewPaymentRef: Text[100])
+    procedure SetContext(NewDocumentCLE: Record "Cust. Ledger Entry"; NewApplicationAmtLCY: Decimal; NewPostingDate: Date; NewBankDocNo: Code[20]; NewPaymentRef: Text[100])
     var
         Customer: Record Customer;
     begin
-        InvoiceCLE := NewInvoiceCLE;
-        InvoiceDocNo := NewInvoiceCLE."Document No.";
-        CustomerNo := NewInvoiceCLE."Customer No.";
-        if Customer.Get(NewInvoiceCLE."Customer No.") then
+        DocumentCLE := NewDocumentCLE;
+        DocumentNo := NewDocumentCLE."Document No.";
+        IsCrMemo := NewDocumentCLE."Document Type" = "Gen. Journal Document Type"::"Credit Memo";
+        CustomerNo := NewDocumentCLE."Customer No.";
+        if Customer.Get(NewDocumentCLE."Customer No.") then
             CustomerName := Customer.Name;
         ApplicationAmtLCY := NewApplicationAmtLCY;
         PostingDate := NewPostingDate;
@@ -270,12 +272,13 @@ page 51101 "Payment Allocation"
     // ── Private ───────────────────────────────────────────────────────────────
 
     var
-        InvoiceCLE: Record "Cust. Ledger Entry";
+        DocumentCLE: Record "Cust. Ledger Entry";
         Applied: Boolean;
+        IsCrMemo: Boolean;
         RemainingNonZero: Boolean;
         BankDocNo: Code[20];
         CustomerNo: Code[20];
-        InvoiceDocNo: Code[20];
+        DocumentNo: Code[20];
         PostingDate: Date;
         ApplicationAmtLCY: Decimal;
         CustomerName: Text[100];
@@ -284,7 +287,18 @@ page 51101 "Payment Allocation"
         AllocationExceedsLineRemainingErr: Label 'The entered amount exceeds the remaining amount for this line (%1). A line cannot be allocated more than its outstanding balance.', Comment = '%1 = remaining amount for the line';
 
     /// <summary>
-    /// Loads the invoice lines from the posted sales invoice into the page's temporary source table.
+    /// Dispatches to LoadInvoiceLines or LoadCrMemoLines based on document type.
+    /// </summary>
+    local procedure LoadDocumentLines()
+    begin
+        if IsCrMemo then
+            LoadCrMemoLines()
+        else
+            LoadInvoiceLines();
+    end;
+
+    /// <summary>
+    /// Loads invoice lines into the page's temporary source table.
     /// Only lines with a non-zero amount are included.
     /// </summary>
     local procedure LoadInvoiceLines()
@@ -292,9 +306,9 @@ page 51101 "Payment Allocation"
         SalesInvLine: Record "Sales Invoice Line";
         SettlementEntryMgt: Codeunit "Settlement Entry Mgt.";
     begin
-        if InvoiceDocNo = '' then
+        if DocumentNo = '' then
             exit;
-        SalesInvLine.SetRange("Document No.", InvoiceDocNo);
+        SalesInvLine.SetRange("Document No.", DocumentNo);
         SalesInvLine.SetFilter(Amount, '<>0');
         if not SalesInvLine.FindSet() then
             exit;
@@ -305,12 +319,47 @@ page 51101 "Payment Allocation"
             Rec."G/L Account No." := CopyStr(SalesInvLine."No.", 1, MaxStrLen(Rec."G/L Account No."));
             Rec."Original Amt (LCY)" := SalesInvLine.Amount;
             Rec."Orig. Amt Incl. VAT (LCY)" := SalesInvLine."Amount Including VAT";
-            Rec."Already Settled Amt (LCY)" := SettlementEntryMgt.GetAlreadySettledAmtInclVAT(InvoiceDocNo, SalesInvLine."Line No.");
+            Rec."Already Settled Amt (LCY)" := SettlementEntryMgt.GetAlreadySettledAmtInclVAT(DocumentNo, SalesInvLine."Line No.");
             Rec."Global Dimension 1 Code" := SalesInvLine."Shortcut Dimension 1 Code";
             Rec."Global Dimension 2 Code" := SalesInvLine."Shortcut Dimension 2 Code";
             Rec."Dimension Set ID" := SalesInvLine."Dimension Set ID";
             Rec.Insert();
         until SalesInvLine.Next() = 0;
+    end;
+
+    /// <summary>
+    /// Loads credit memo lines into the page's temporary source table.
+    /// Amounts are stored as absolute values (positive) so the allocation page can use
+    /// the same positive-value logic as for invoices. InsertPartialCrMemoSettlementEntry
+    /// negates them back to the BC CM sign convention when creating Settlement Entries.
+    /// Only lines with a non-zero amount are included.
+    /// </summary>
+    local procedure LoadCrMemoLines()
+    var
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        SettlementEntryMgt: Codeunit "Settlement Entry Mgt.";
+    begin
+        if DocumentNo = '' then
+            exit;
+        SalesCrMemoLine.SetRange("Document No.", DocumentNo);
+        SalesCrMemoLine.SetFilter(Amount, '<>0');
+        if not SalesCrMemoLine.FindSet() then
+            exit;
+        repeat
+            Rec.Init();
+            Rec."Line No." := SalesCrMemoLine."Line No.";
+            Rec.Description := CopyStr(SalesCrMemoLine.Description, 1, MaxStrLen(Rec.Description));
+            if SalesCrMemoLine.Type = SalesCrMemoLine.Type::"G/L Account" then
+                Rec."G/L Account No." := CopyStr(SalesCrMemoLine."No.", 1, MaxStrLen(Rec."G/L Account No."));
+            // Absolute values — BC stores CM amounts as negative; negate for positive display.
+            Rec."Original Amt (LCY)" := Abs(SalesCrMemoLine.Amount);
+            Rec."Orig. Amt Incl. VAT (LCY)" := Abs(SalesCrMemoLine."Amount Including VAT");
+            Rec."Already Settled Amt (LCY)" := SettlementEntryMgt.GetAlreadySettledCrMemoAmtInclVAT(DocumentNo, SalesCrMemoLine."Line No.");
+            Rec."Global Dimension 1 Code" := SalesCrMemoLine."Shortcut Dimension 1 Code";
+            Rec."Global Dimension 2 Code" := SalesCrMemoLine."Shortcut Dimension 2 Code";
+            Rec."Dimension Set ID" := SalesCrMemoLine."Dimension Set ID";
+            Rec.Insert();
+        until SalesCrMemoLine.Next() = 0;
     end;
 
     /// <summary>

@@ -12,8 +12,8 @@ enum 51103 "Settlement Entry Type"
     {
         Caption = 'Unallocated';
     }
-    // value(2; Reversal)        // Epic 5: Reversal entries (payment unapply / invoice cancellation).
-    // {
-    //     Caption = 'Reversal';
-    // }
+    value(2; Reversal)
+    {
+        Caption = 'Reversal';
+    }
 }

@@ -38,6 +38,7 @@ codeunit 51106 "Settlement Entry Mgt."
     Permissions =
         tabledata "Settlement Entry" = rim,
         tabledata "Sales Invoice Line" = rm,
+        tabledata "Sales Cr.Memo Line" = rm,
         tabledata "Cust. Ledger Entry" = r,
         tabledata "Detailed Cust. Ledg. Entry" = r,
         tabledata "Bank Account Ledger Entry" = r,
@@ -101,34 +102,38 @@ codeunit 51106 "Settlement Entry Mgt."
     /// </summary>
     procedure HandlePaymentApplicationDCLE(PaymentDCLE: Record "Detailed Cust. Ledg. Entry"; PostingDate: Date)
     var
-        InvoiceCLE: Record "Cust. Ledger Entry";
+        AppliedCLE: Record "Cust. Ledger Entry";
     begin
-        // Guard: if entries were already created by the invoice-DCLE path, skip.
-        // This fires when both sides close (full payment / apply-from-invoice direction).
+        // Guard: if entries were already created by the primary handler (invoice/CM-DCLE path), skip.
         if SettlementEntriesExistForTransaction(PaymentDCLE."Transaction No.", PaymentDCLE."Cust. Ledger Entry No.") then
             exit;
 
-        // The payment DCLE knows exactly which CLE was applied against via "Applied Cust. Ledger
-        // Entry No." — use a direct Get instead of a Transaction No. + Remaining Amount filter.
-        // This is direction-independent and does not depend on CLE update order.
+        // The payment/refund DCLE knows exactly which CLE was applied against.
         if PaymentDCLE."Applied Cust. Ledger Entry No." = 0 then
             exit;
-        if not InvoiceCLE.Get(PaymentDCLE."Applied Cust. Ledger Entry No.") then
-            exit;
-        if InvoiceCLE."Document Type" <> "Gen. Journal Document Type"::Invoice then
+        if not AppliedCLE.Get(PaymentDCLE."Applied Cust. Ledger Entry No.") then
             exit;
 
-        // Only handle partial payments — fully-settled invoices are handled by the invoice-DCLE
-        // path (ProcessInvoiceCLEForSettlement). "Open" is a stored Boolean; no CalcFields needed.
-        if not InvoiceCLE.Open then
+        // Only handle partial applications — fully-settled documents are handled by their own
+        // DCLE path. "Open" is a stored Boolean; no CalcFields needed.
+        if not AppliedCLE.Open then
             exit;
 
-        // PaymentDCLE."Amount (LCY)" is positive when the payment closes (remaining → 0).
-        // Pass the payment CLE entry no. so HandlePartialPayment can find the bank entry via
-        // the original payment-posting Transaction No. (not the application transaction).
-        HandlePartialPayment(
-            InvoiceCLE, PaymentDCLE."Amount (LCY)", PostingDate,
-            PaymentDCLE."Transaction No.", PaymentDCLE."Cust. Ledger Entry No.");
+        case AppliedCLE."Document Type" of
+            "Gen. Journal Document Type"::Invoice:
+                // PaymentDCLE."Amount (LCY)" is positive when the payment closes (remaining → 0).
+                // Pass payment CLE entry no. so HandlePartialPayment resolves the bank entry via
+                // the original payment-posting Transaction No. (not the application transaction).
+                HandlePartialPayment(
+                    AppliedCLE, PaymentDCLE."Amount (LCY)", PostingDate,
+                    PaymentDCLE."Transaction No.", PaymentDCLE."Cust. Ledger Entry No.");
+            "Gen. Journal Document Type"::"Credit Memo":
+                // Refund DCLE applied against a CM: mirror the invoice partial payment path.
+                // Reads the pre-collected allocation from Pmt. Alloc. Context.
+                HandlePartialCrMemoSettlement(
+                    AppliedCLE, PostingDate,
+                    PaymentDCLE."Transaction No.", PaymentDCLE."Cust. Ledger Entry No.");
+        end;
     end;
 
     /// <summary>
@@ -142,13 +147,15 @@ codeunit 51106 "Settlement Entry Mgt."
     /// handler); payment-side DCLEs are processed second as a safety net, relying on the
     /// SettlementEntriesExistForTransaction guard to skip already-handled applications.
     ///
-    /// Refund DCLEs are excluded — handled in Epic 9.
+    /// Refund DCLEs applied to credit memos are handled here (Story 5.3 partial CM support).
     /// </summary>
     procedure ProcessNewApplicationDCLEs(BaselineDCLEEntryNo: Integer)
     var
         DCLE: Record "Detailed Cust. Ledg. Entry";
         InvoiceCLE: Record "Cust. Ledger Entry";
+        CrMemoCLE: Record "Cust. Ledger Entry";
         HandledInvoiceCLEs: List of [Integer];
+        HandledCrMemoCLEs: List of [Integer];
     begin
         // ── Invoice-side DCLEs (primary handler) ───────────────────────────
         DCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
@@ -169,18 +176,50 @@ codeunit 51106 "Settlement Entry Mgt."
                     end;
             until DCLE.Next() = 0;
 
-        // ── Payment-side DCLEs (safety net) ─────────────────────────────────
-        // SettlementEntriesExistForTransaction guards against double-processing when
-        // Transaction No. is non-zero (gen journal path). For CLE apply path,
-        // Transaction No. may be 0 (guard is bypassed by design), so HandledInvoiceCLEs
-        // provides an in-process dedup: skip any invoice already handled by the invoice loop.
+        // ── Credit memo DCLEs (Epic 5 — Story 5.3, full + partial) ──────────
+        // Full closure: CM CLE closes (Remaining Amount → 0) → CreateCreditMemoSettlementEntries.
+        // Partial: CM CLE stays Open → HandlePartialCrMemoSettlement (pre-collected allocation).
+        // HandledCrMemoCLEs provides in-process dedup for the CLE apply path (Transaction No. = 0).
         DCLE.Reset();
         DCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
         DCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
-        DCLE.SetRange("Initial Document Type", "Gen. Journal Document Type"::Payment);
+        DCLE.SetRange("Initial Document Type", "Gen. Journal Document Type"::"Credit Memo");
+        DCLE.SetRange(Unapplied, false);
         if DCLE.FindSet() then
             repeat
-                if not HandledInvoiceCLEs.Contains(DCLE."Applied Cust. Ledger Entry No.") then
+                if CrMemoCLE.Get(DCLE."Cust. Ledger Entry No.") then
+                    if CrMemoCLE."Document Type" = "Gen. Journal Document Type"::"Credit Memo" then begin
+                        if CrMemoCLE.Open then begin
+                            if not HandledCrMemoCLEs.Contains(CrMemoCLE."Entry No.") then begin
+                                HandlePartialCrMemoSettlement(
+                                    CrMemoCLE, DCLE."Posting Date",
+                                    DCLE."Transaction No.", DCLE."Applied Cust. Ledger Entry No.");
+                                HandledCrMemoCLEs.Add(CrMemoCLE."Entry No.");
+                            end;
+                        end else
+                            CreateCreditMemoSettlementEntries(DCLE, DCLE."Posting Date", BaselineDCLEEntryNo);
+                    end;
+            until DCLE.Next() = 0;
+
+        // ── Payment/Refund-side DCLEs (safety net) ──────────────────────────
+        // SettlementEntriesExistForTransaction guards against double-processing when
+        // Transaction No. is non-zero (gen journal path). For CLE apply path,
+        // Transaction No. may be 0 (guard is bypassed by design), so HandledInvoiceCLEs /
+        // HandledCrMemoCLEs provide in-process dedup for already-handled documents.
+        // Payment DCLEs → partial invoice safety net.
+        // Refund DCLEs → partial CM safety net (mirrors the Payment → Invoice pattern).
+        DCLE.Reset();
+        DCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
+        DCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+        DCLE.SetFilter("Initial Document Type", '%1|%2',
+            "Gen. Journal Document Type"::Payment,
+            "Gen. Journal Document Type"::Refund);
+        DCLE.SetRange(Unapplied, false);
+        if DCLE.FindSet() then
+            repeat
+                if not HandledInvoiceCLEs.Contains(DCLE."Applied Cust. Ledger Entry No.") and
+                   not HandledCrMemoCLEs.Contains(DCLE."Applied Cust. Ledger Entry No.")
+                then
                     HandlePaymentApplicationDCLE(DCLE, DCLE."Posting Date");
             until DCLE.Next() = 0;
     end;
@@ -424,21 +463,38 @@ codeunit 51106 "Settlement Entry Mgt."
     var
         BatchLine: Record "Gen. Journal Line";
         InvoiceCLE: Record "Cust. Ledger Entry";
+        CrMemoCLE: Record "Cust. Ledger Entry";
     begin
+        // ── Invoice partial payments ───────────────────────────────────────
         BatchLine.SetRange("Journal Template Name", GenJnlLine."Journal Template Name");
         BatchLine.SetRange("Journal Batch Name", GenJnlLine."Journal Batch Name");
         BatchLine.SetRange("Account Type", BatchLine."Account Type"::Customer);
         BatchLine.SetRange("Applies-to Doc. Type", "Gen. Journal Document Type"::Invoice);
         BatchLine.SetFilter("Applies-to Doc. No.", '<>%1', '');
-        if not BatchLine.FindSet() then
-            exit;
+        if BatchLine.FindSet() then
+            repeat
+                if FindInvoiceCLEForJnlLine(BatchLine, InvoiceCLE) then
+                    if IsPartialApplication(BatchLine, InvoiceCLE) then
+                        PreparePartialPaymentAllocation(
+                            InvoiceCLE, Abs(BatchLine."Amount (LCY)"), BatchLine."Posting Date");
+            until BatchLine.Next() = 0;
 
-        repeat
-            if FindInvoiceCLEForJnlLine(BatchLine, InvoiceCLE) then
-                if IsPartialApplication(BatchLine, InvoiceCLE) then
-                    PreparePartialPaymentAllocation(
-                        InvoiceCLE, Abs(BatchLine."Amount (LCY)"), BatchLine."Posting Date");
-        until BatchLine.Next() = 0;
+        // ── Credit memo partial refunds ────────────────────────────────────
+        // Mirrors the invoice scan: scan for refund journal lines that partially apply
+        // against a credit memo (amount < CM remaining) and open the allocation page.
+        BatchLine.Reset();
+        BatchLine.SetRange("Journal Template Name", GenJnlLine."Journal Template Name");
+        BatchLine.SetRange("Journal Batch Name", GenJnlLine."Journal Batch Name");
+        BatchLine.SetRange("Account Type", BatchLine."Account Type"::Customer);
+        BatchLine.SetRange("Applies-to Doc. Type", "Gen. Journal Document Type"::"Credit Memo");
+        BatchLine.SetFilter("Applies-to Doc. No.", '<>%1', '');
+        if BatchLine.FindSet() then
+            repeat
+                if FindCrMemoCLEForJnlLine(BatchLine, CrMemoCLE) then
+                    if IsPartialCrMemoApplication(BatchLine, CrMemoCLE) then
+                        PreparePartialPaymentAllocation(
+                            CrMemoCLE, Abs(BatchLine."Amount (LCY)"), BatchLine."Posting Date");
+            until BatchLine.Next() = 0;
     end;
 
     /// <summary>
@@ -478,13 +534,14 @@ codeunit 51106 "Settlement Entry Mgt."
     var
         AllocContext: Codeunit "Pmt. Alloc. Context";
         InvoiceCLE: Record "Cust. Ledger Entry";
+        CrMemoCLE: Record "Cust. Ledger Entry";
         ApplicationAmt: Decimal;
     begin
         if CustomerNo = '' then
             exit;
 
-        // Apply-from-invoice direction: invoice CLE is passed directly as driving entry.
-        // Entry No. <> 0 guards against an empty/uninitialized record.
+        // ── Apply-from-invoice direction ─────────────────────────────────────
+        // Invoice CLE is passed directly as driving entry.
         if (CustLedgEntry."Entry No." <> 0) and
            (CustLedgEntry."Document Type" = "Gen. Journal Document Type"::Invoice) and
            CustLedgEntry.Open
@@ -504,34 +561,79 @@ codeunit 51106 "Settlement Entry Mgt."
             exit;
         end;
 
-        // Apply-from-payment direction: find open invoice CLEs with Amount to Apply set.
+        // ── Apply-from-credit-memo direction ─────────────────────────────────
+        // Mirrors apply-from-invoice: CM CLE is the driving entry; Refund CLEs are being applied.
+        // Remaining Amount is negative for CMs; Abs() gives the outstanding balance.
+        if (CustLedgEntry."Entry No." <> 0) and
+           (CustLedgEntry."Document Type" = "Gen. Journal Document Type"::"Credit Memo") and
+           CustLedgEntry.Open
+        then begin
+            CustLedgEntry.CalcFields("Remaining Amount");
+            ApplicationAmt := CalcTotalRefundAmtToApply(CustomerNo);
+            if (CustLedgEntry."Remaining Amount" < 0) and
+               (ApplicationAmt > 0) and
+               (ApplicationAmt < Abs(CustLedgEntry."Remaining Amount") - Abs(CustLedgEntry."Remaining Pmt. Disc. Possible") - 0.005)
+            then begin
+                PreparePartialPaymentAllocation(CustLedgEntry, ApplicationAmt, PostingDate);
+                // Store the applying refund CLE entry no. so HandlePartialCrMemoSettlement can
+                // resolve the bank entry (same reason as apply-from-invoice for payment CLEs).
+                AllocContext.StorePaymentCLE(CustLedgEntry."Entry No.", FindApplyingRefundCLEEntryNo(CustomerNo));
+            end;
+            exit;
+        end;
+
+        // ── Apply-from-payment/refund direction ──────────────────────────────
+        // Scan open invoice CLEs with Amount to Apply set for partial invoice payments.
         InvoiceCLE.SetRange("Customer No.", CustomerNo);
         InvoiceCLE.SetRange("Document Type", "Gen. Journal Document Type"::Invoice);
         InvoiceCLE.SetRange(Open, true);
         InvoiceCLE.SetFilter("Amount to Apply", '<>0');
-        if not InvoiceCLE.FindSet() then
-            exit;
-        repeat
-            InvoiceCLE.CalcFields("Remaining Amount");
-            if InvoiceCLE."Remaining Amount" > 0 then begin
-                ApplicationAmt := Abs(InvoiceCLE."Amount to Apply");
-                // BC defaults "Amount to Apply" on the invoice to its full remaining amount,
-                // regardless of how much the payment CLE can actually cover. When they are equal,
-                // the partial check below fails even though the payment may only cover a fraction.
-                // Fall back to the payment CLE's Remaining Amount as the effective applied amount.
-                // NOTE: "Amount to Apply" on the payment CLE is 0 when applying FROM the payment
-                // page — the page sets Amount to Apply only on the invoice CLEs, not the payment.
-                // "Remaining Amount" on the payment CLE reflects the actual available credit.
-                if ApplicationAmt >= InvoiceCLE."Remaining Amount" - InvoiceCLE."Remaining Pmt. Disc. Possible" - 0.005 then begin
-                    CustLedgEntry.CalcFields("Remaining Amount");
-                    ApplicationAmt := Abs(CustLedgEntry."Remaining Amount");
+        if InvoiceCLE.FindSet() then
+            repeat
+                InvoiceCLE.CalcFields("Remaining Amount");
+                if InvoiceCLE."Remaining Amount" > 0 then begin
+                    ApplicationAmt := Abs(InvoiceCLE."Amount to Apply");
+                    // BC defaults "Amount to Apply" on the invoice to its full remaining amount,
+                    // regardless of how much the payment CLE can actually cover. When they are equal,
+                    // the partial check below fails even though the payment may only cover a fraction.
+                    // Fall back to the payment CLE's Remaining Amount as the effective applied amount.
+                    // NOTE: "Amount to Apply" on the payment CLE is 0 when applying FROM the payment
+                    // page — the page sets Amount to Apply only on the invoice CLEs, not the payment.
+                    // "Remaining Amount" on the payment CLE reflects the actual available credit.
+                    if ApplicationAmt >= InvoiceCLE."Remaining Amount" - InvoiceCLE."Remaining Pmt. Disc. Possible" - 0.005 then begin
+                        CustLedgEntry.CalcFields("Remaining Amount");
+                        ApplicationAmt := Abs(CustLedgEntry."Remaining Amount");
+                    end;
+                    if (ApplicationAmt > 0) and
+                       (ApplicationAmt < InvoiceCLE."Remaining Amount" - InvoiceCLE."Remaining Pmt. Disc. Possible" - 0.005)
+                    then
+                        PreparePartialPaymentAllocation(InvoiceCLE, ApplicationAmt, PostingDate);
                 end;
-                if (ApplicationAmt > 0) and
-                   (ApplicationAmt < InvoiceCLE."Remaining Amount" - InvoiceCLE."Remaining Pmt. Disc. Possible" - 0.005)
-                then
-                    PreparePartialPaymentAllocation(InvoiceCLE, ApplicationAmt, PostingDate);
-            end;
-        until InvoiceCLE.Next() = 0;
+            until InvoiceCLE.Next() = 0;
+
+        // Scan open CM CLEs with Amount to Apply set for partial CM refund applications.
+        // Mirrors the invoice scan above; amounts are negative so Abs() is used throughout.
+        CrMemoCLE.SetRange("Customer No.", CustomerNo);
+        CrMemoCLE.SetRange("Document Type", "Gen. Journal Document Type"::"Credit Memo");
+        CrMemoCLE.SetRange(Open, true);
+        CrMemoCLE.SetFilter("Amount to Apply", '<>0');
+        if CrMemoCLE.FindSet() then
+            repeat
+                CrMemoCLE.CalcFields("Remaining Amount");
+                if CrMemoCLE."Remaining Amount" < 0 then begin
+                    ApplicationAmt := Abs(CrMemoCLE."Amount to Apply");
+                    // Same fallback logic as invoices: if Amount to Apply equals full remaining,
+                    // use the Refund CLE's remaining amount as the effective applied amount.
+                    if ApplicationAmt >= Abs(CrMemoCLE."Remaining Amount") - Abs(CrMemoCLE."Remaining Pmt. Disc. Possible") - 0.005 then begin
+                        CustLedgEntry.CalcFields("Remaining Amount");
+                        ApplicationAmt := Abs(CustLedgEntry."Remaining Amount");
+                    end;
+                    if (ApplicationAmt > 0) and
+                       (ApplicationAmt < Abs(CrMemoCLE."Remaining Amount") - Abs(CrMemoCLE."Remaining Pmt. Disc. Possible") - 0.005)
+                    then
+                        PreparePartialPaymentAllocation(CrMemoCLE, ApplicationAmt, PostingDate);
+                end;
+            until CrMemoCLE.Next() = 0;
     end;
 
     /// <summary>
@@ -562,6 +664,15 @@ codeunit 51106 "Settlement Entry Mgt."
         exit(InvoiceCLE.FindFirst());
     end;
 
+    local procedure FindCrMemoCLEForJnlLine(GenJnlLine: Record "Gen. Journal Line"; var CrMemoCLE: Record "Cust. Ledger Entry"): Boolean
+    begin
+        CrMemoCLE.SetRange("Customer No.", GenJnlLine."Account No.");
+        CrMemoCLE.SetRange("Document Type", "Gen. Journal Document Type"::"Credit Memo");
+        CrMemoCLE.SetRange("Document No.", GenJnlLine."Applies-to Doc. No.");
+        CrMemoCLE.SetRange(Open, true);
+        exit(CrMemoCLE.FindFirst());
+    end;
+
     local procedure IsPartialApplication(GenJnlLine: Record "Gen. Journal Line"; var InvoiceCLE: Record "Cust. Ledger Entry"): Boolean
     begin
         InvoiceCLE.CalcFields("Remaining Amount");
@@ -571,6 +682,15 @@ codeunit 51106 "Settlement Entry Mgt."
         // discount is not treated as partial — the discount closes the remaining gap.
         // Consistent with the threshold used in ScanForCLEPartialPayments.
         exit(Abs(GenJnlLine."Amount (LCY)") < InvoiceCLE."Remaining Amount" - InvoiceCLE."Remaining Pmt. Disc. Possible" - 0.005);
+    end;
+
+    local procedure IsPartialCrMemoApplication(GenJnlLine: Record "Gen. Journal Line"; var CrMemoCLE: Record "Cust. Ledger Entry"): Boolean
+    begin
+        CrMemoCLE.CalcFields("Remaining Amount");
+        if CrMemoCLE."Remaining Amount" >= 0 then // CM remaining is negative when open
+            exit(false);
+        // Abs(refund amount) < Abs(CM remaining) - discount - epsilon → partial.
+        exit(Abs(GenJnlLine."Amount (LCY)") < Abs(CrMemoCLE."Remaining Amount") - Abs(CrMemoCLE."Remaining Pmt. Disc. Possible") - 0.005);
     end;
 
     /// <summary>
@@ -780,6 +900,41 @@ codeunit 51106 "Settlement Entry Mgt."
         exit(0);
     end;
 
+    /// <summary>
+    /// Sums the absolute "Amount to Apply" of all Refund CLEs marked for application
+    /// for the given customer. Used when applying FROM a credit memo CLE (apply-from-CM
+    /// direction) where the CM's own "Amount to Apply" is 0 and the Refund CLEs carry
+    /// the applied amounts. Refund amounts are negative; Abs() gives the positive total.
+    /// </summary>
+    local procedure CalcTotalRefundAmtToApply(CustomerNo: Code[20]): Decimal
+    var
+        RefundCLE: Record "Cust. Ledger Entry";
+    begin
+        RefundCLE.SetRange("Customer No.", CustomerNo);
+        RefundCLE.SetRange("Document Type", "Gen. Journal Document Type"::Refund);
+        RefundCLE.SetFilter("Amount to Apply", '<>0');
+        RefundCLE.CalcSums("Amount to Apply");
+        exit(Abs(RefundCLE."Amount to Apply"));
+    end;
+
+    /// <summary>
+    /// Returns the entry no. of the first Refund CLE with "Amount to Apply" set for
+    /// the given customer. Called at pre-scan time (apply-from-CM direction) to store
+    /// the Refund CLE so HandlePartialCrMemoSettlement can resolve the bank entry.
+    /// Returns 0 if none is found.
+    /// </summary>
+    local procedure FindApplyingRefundCLEEntryNo(CustomerNo: Code[20]): Integer
+    var
+        RefundCLE: Record "Cust. Ledger Entry";
+    begin
+        RefundCLE.SetRange("Customer No.", CustomerNo);
+        RefundCLE.SetRange("Document Type", "Gen. Journal Document Type"::Refund);
+        RefundCLE.SetFilter("Amount to Apply", '<>0');
+        if RefundCLE.FindFirst() then
+            exit(RefundCLE."Entry No.");
+        exit(0);
+    end;
+
     // ── Private: DCLE field resolution ──────────────────────────────────────
 
     /// <summary>
@@ -856,6 +1011,505 @@ codeunit 51106 "Settlement Entry Mgt."
         // amount for subsequent partial payments on the same line.
         SettlementEntry.CalcSums("Total Settled Amt Incl. VAT (LCY)");
         exit(SettlementEntry."Total Settled Amt Incl. VAT (LCY)");
+    end;
+
+    // ── Public: Epic 5 — Reversals ───────────────────────────────────────────
+
+    /// <summary>
+    /// Called from EventSubscriber when a customer ledger application is unapplied.
+    /// The DCLE passed is the Application DCLE that was marked Unapplied = true.
+    /// Identifies the invoice and the payment from the DCLE fields, then creates
+    /// reversal Settlement Entries for all non-reversed entries of that application.
+    /// Fires twice for full-payment applications (once per side) — the second fire
+    /// finds nothing to reverse (originals already marked Reversed = true) and exits.
+    /// Only invoice-side and payment-side DCLEs are handled; other types are ignored.
+    /// </summary>
+    procedure CreateReversalEntriesForUnapplication(UnappliedDCLE: Record "Detailed Cust. Ledg. Entry")
+    var
+        InvoiceCLE: Record "Cust. Ledger Entry";
+        DocumentNo: Code[20];
+        PaymentCLEEntryNo: Integer;
+    begin
+        if UnappliedDCLE."Entry Type" <> "Detailed CV Ledger Entry Type"::Application then
+            exit;
+        // Note: do NOT check UnappliedDCLE.Unapplied here.
+        // OnAfterPostUnapplyCustLedgEntry fires from PostUnApplyCustomerCommit BEFORE Commit —
+        // the Unapplied = true write is in-flight in the same transaction, but the DCLE record
+        // variable passed to the event may still show Unapplied = false. The event name and
+        // Entry Type = Application are the only guards needed.
+
+        case UnappliedDCLE."Initial Document Type" of
+            "Gen. Journal Document Type"::Invoice:
+                begin
+                    // Invoice-side DCLE: "Cust. Ledger Entry No." = invoice CLE
+                    if not InvoiceCLE.Get(UnappliedDCLE."Cust. Ledger Entry No.") then
+                        exit;
+                    DocumentNo := InvoiceCLE."Document No.";
+                    // "Applied Cust. Ledger Entry No." = the payment CLE that closed the invoice.
+                    // May be 0 for cash-discount self-reference — treated as "reverse all" below.
+                    PaymentCLEEntryNo := UnappliedDCLE."Applied Cust. Ledger Entry No.";
+                    if PaymentCLEEntryNo = InvoiceCLE."Entry No." then
+                        PaymentCLEEntryNo := 0; // self-reference guard
+                end;
+            "Gen. Journal Document Type"::"Credit Memo":
+                begin
+                    // Credit memo DCLE: "Cust. Ledger Entry No." = credit memo CLE.
+                    // "Applied Cust. Ledger Entry No." = the Refund CLE that applied to the CM.
+                    // Settlement entries store the Refund CLE entry no. as "Source Payment CLE Entry No."
+                    // (consistent with invoice pattern) — pass it as PaymentCLEEntryNo so that
+                    // ReverseDocumentEntries finds both full and partial CM settlement entries.
+                    if not InvoiceCLE.Get(UnappliedDCLE."Cust. Ledger Entry No.") then
+                        exit;
+                    if InvoiceCLE."Document Type" <> "Gen. Journal Document Type"::"Credit Memo" then
+                        exit;
+                    DocumentNo := InvoiceCLE."Document No.";
+                    PaymentCLEEntryNo := UnappliedDCLE."Applied Cust. Ledger Entry No.";
+                    if PaymentCLEEntryNo = InvoiceCLE."Entry No." then
+                        PaymentCLEEntryNo := 0; // self-reference guard
+                end;
+            "Gen. Journal Document Type"::Payment,
+            "Gen. Journal Document Type"::Refund:
+                begin
+                    // Payment/Refund-side DCLE: "Cust. Ledger Entry No." is always the payment CLE.
+                    // "Applied Cust. Ledger Entry No." should be the invoice CLE, but BC may
+                    // leave it as 0 or as a self-reference for partial payments (apply-from-invoice
+                    // direction). In those cases we fall back to a payment-CLE-only filter —
+                    // DocumentNo stays '' and ReverseDocumentEntries skips the document filter.
+                    // For refunds applied to credit memos: Applied CLE is the CM CLE — not an invoice,
+                    // so DocumentNo stays '' and no entries are found (CM reversal is handled by the
+                    // Credit Memo case above when that DCLE fires).
+                    PaymentCLEEntryNo := UnappliedDCLE."Cust. Ledger Entry No.";
+                    if (UnappliedDCLE."Applied Cust. Ledger Entry No." <> 0) and
+                       (UnappliedDCLE."Applied Cust. Ledger Entry No." <> UnappliedDCLE."Cust. Ledger Entry No.")
+                    then
+                        if InvoiceCLE.Get(UnappliedDCLE."Applied Cust. Ledger Entry No.") then
+                            if InvoiceCLE."Document Type" = "Gen. Journal Document Type"::Invoice then
+                                DocumentNo := InvoiceCLE."Document No.";
+                    // DocumentNo may still be '' here — ReverseDocumentEntries handles that.
+                end;
+            else
+                exit;
+        end;
+
+        ReverseDocumentEntries(DocumentNo, PaymentCLEEntryNo, UnappliedDCLE."Posting Date");
+    end;
+
+
+
+    // ── Private: reversal core ───────────────────────────────────────────────
+
+    /// <summary>
+    /// Finds all non-reversed, non-reversal Settlement Entries for DocumentNo (invoice or CM)
+    /// and creates a reversal entry for each. When PaymentCLEEntryNo is non-zero, the search
+    /// is narrowed to entries from that specific payment/refund application (unapply scenario).
+    /// When PaymentCLEEntryNo = 0, all entries for the document are reversed (cancellation).
+    /// Fallback: if PaymentCLEEntryNo is set but finds no matches, retries with Document No.
+    /// only — guards against rare cases where the stored Source Payment CLE does not match the
+    /// unapplication DCLE's Applied CLE (e.g. BC self-references on CM-side DCLEs).
+    /// Uses FindSet(true) to hold write locks throughout the modify-during-iteration loop.
+    /// </summary>
+    local procedure ReverseDocumentEntries(DocumentNo: Code[20]; PaymentCLEEntryNo: Integer; PostingDate: Date)
+    var
+        OriginalEntry: Record "Settlement Entry";
+    begin
+        // Require at least one filter to avoid accidentally reversing unrelated entries.
+        if (DocumentNo = '') and (PaymentCLEEntryNo = 0) then
+            exit;
+        SetReverseDocumentFilters(OriginalEntry, DocumentNo, PaymentCLEEntryNo);
+        // FindSet(true) = write-locked cursor — required because CreateReversalEntry calls
+        // OriginalEntry.Modify() inside the loop (sets Reversed = true). Without the write
+        // lock, modifying a filtered field mid-iteration can cause the cursor to skip records.
+        if not OriginalEntry.FindSet(true) then begin
+            // Fallback: if the specific Source Payment CLE filter found nothing and we have
+            // a known Document No., retry without the CLE filter. This handles rare scenarios
+            // where the unapplication DCLE's "Applied CLE" does not match the Source Payment
+            // CLE stored in the forward entries (e.g. BC self-reference on CM-side DCLE).
+            // Only safe when DocumentNo is set — prevents too-broad reversals.
+            if (PaymentCLEEntryNo = 0) or (DocumentNo = '') then
+                exit;
+            SetReverseDocumentFilters(OriginalEntry, DocumentNo, 0);
+            if not OriginalEntry.FindSet(true) then
+                exit;
+        end;
+        repeat
+            CreateReversalEntry(OriginalEntry, PostingDate);
+        until OriginalEntry.Next() = 0;
+    end;
+
+    local procedure SetReverseDocumentFilters(var OriginalEntry: Record "Settlement Entry"; DocumentNo: Code[20]; PaymentCLEEntryNo: Integer)
+    begin
+        OriginalEntry.Reset();
+        OriginalEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        // DocumentNo = '' means the payment-side DCLE could not resolve the invoice —
+        // skip the document filter and rely solely on Source Payment CLE Entry No.
+        if DocumentNo <> '' then
+            OriginalEntry.SetRange("Document No.", DocumentNo);
+        OriginalEntry.SetRange("Reversal Entry", false);
+        OriginalEntry.SetRange(Reversed, false);
+        if PaymentCLEEntryNo <> 0 then
+            OriginalEntry.SetRange("Source Payment CLE Entry No.", PaymentCLEEntryNo);
+    end;
+
+    /// <summary>
+    /// Creates one reversal Settlement Entry mirroring OriginalEntry with negated amounts.
+    /// Sets Reversal Entry = true and Original Entry No. on the new entry.
+    /// Marks the original entry Reversed = true and sets its Reversal Entry No.
+    /// Calls UpdateSalesInvLineOutstandingAmt so Outstanding Amt and fully-settled
+    /// flags stay in sync after the reversal.
+    /// </summary>
+    local procedure CreateReversalEntry(var OriginalEntry: Record "Settlement Entry"; PostingDate: Date)
+    var
+        ReversalEntry: Record "Settlement Entry";
+    begin
+        ReversalEntry.Init();
+        ReversalEntry."Transaction Type" := OriginalEntry."Transaction Type";
+        ReversalEntry."Document Type" := OriginalEntry."Document Type";
+        ReversalEntry."Settlement Entry Type" := "Settlement Entry Type"::Reversal;
+        ReversalEntry."Document No." := OriginalEntry."Document No.";
+        ReversalEntry."Document Line No." := OriginalEntry."Document Line No.";
+
+        ReversalEntry."Assignment ID" := GenerateAssignmentID(OriginalEntry."CV No.", PostingDate);
+        ReversalEntry."Settlement Date" := PostingDate;
+
+        // Negate all amount fields — reversal carries exactly opposite signs.
+        ReversalEntry."Settlement Amt (LCY)" := -OriginalEntry."Settlement Amt (LCY)";
+        ReversalEntry."Settlement Amt Incl. VAT (LCY)" := -OriginalEntry."Settlement Amt Incl. VAT (LCY)";
+        ReversalEntry."Cash Discount Amt (LCY)" := -OriginalEntry."Cash Discount Amt (LCY)";
+        ReversalEntry."Cash Discount Amt Incl. VAT (LCY)" := -OriginalEntry."Cash Discount Amt Incl. VAT (LCY)";
+        ReversalEntry."Total Settled Amt (LCY)" := -OriginalEntry."Total Settled Amt (LCY)";
+        ReversalEntry."Total Settled Amt Incl. VAT (LCY)" := -OriginalEntry."Total Settled Amt Incl. VAT (LCY)";
+
+        // Snapshots stay unchanged — they represent the original billed amounts, not the reversal.
+        ReversalEntry."Original Line Amt (LCY)" := OriginalEntry."Original Line Amt (LCY)";
+        ReversalEntry."Orig. Line Amt Incl. VAT (LCY)" := OriginalEntry."Orig. Line Amt Incl. VAT (LCY)";
+        ReversalEntry."Non-Deductible VAT Amt (LCY)" := OriginalEntry."Non-Deductible VAT Amt (LCY)";
+
+        ReversalEntry."Bank Statement Document No." := OriginalEntry."Bank Statement Document No.";
+        ReversalEntry."CV No." := OriginalEntry."CV No.";
+        ReversalEntry."CV Name" := OriginalEntry."CV Name";
+
+        ReversalEntry."Global Dimension 1 Code" := OriginalEntry."Global Dimension 1 Code";
+        ReversalEntry."Global Dimension 2 Code" := OriginalEntry."Global Dimension 2 Code";
+        ReversalEntry."Shortcut Dimension 3 Code" := OriginalEntry."Shortcut Dimension 3 Code";
+        ReversalEntry."Shortcut Dimension 4 Code" := OriginalEntry."Shortcut Dimension 4 Code";
+        ReversalEntry."Shortcut Dimension 5 Code" := OriginalEntry."Shortcut Dimension 5 Code";
+        ReversalEntry."Shortcut Dimension 6 Code" := OriginalEntry."Shortcut Dimension 6 Code";
+        ReversalEntry."Shortcut Dimension 7 Code" := OriginalEntry."Shortcut Dimension 7 Code";
+        ReversalEntry."Shortcut Dimension 8 Code" := OriginalEntry."Shortcut Dimension 8 Code";
+        ReversalEntry."Dimension Set ID" := OriginalEntry."Dimension Set ID";
+
+        ReversalEntry."G/L Account No." := OriginalEntry."G/L Account No.";
+        ReversalEntry."G/L Account Name" := OriginalEntry."G/L Account Name";
+        ReversalEntry."Grant Number" := OriginalEntry."Grant Number";
+        ReversalEntry.Description := OriginalEntry.Description;
+
+        // Reversal-specific tracking fields.
+        ReversalEntry."Reversal Entry" := true;
+        ReversalEntry."Original Entry No." := OriginalEntry."Entry No.";
+
+        ReversalEntry."Source Transaction No." := OriginalEntry."Source Transaction No.";
+        ReversalEntry."Source Payment CLE Entry No." := OriginalEntry."Source Payment CLE Entry No.";
+        ReversalEntry."Created By" := CopyStr(UserId(), 1, MaxStrLen(ReversalEntry."Created By"));
+        ReversalEntry."Created DateTime" := CurrentDateTime();
+
+        ReversalEntry.Insert(true);
+
+        // Back-link: mark original as reversed and store the reversal entry no.
+        OriginalEntry.Reversed := true;
+        OriginalEntry."Reversal Entry No." := ReversalEntry."Entry No.";
+        OriginalEntry.Modify();
+
+        // Update Outstanding Amt and fully-settled flags for the affected document line.
+        case OriginalEntry."Document Type" of
+            "Gen. Journal Document Type"::Invoice:
+                UpdateSalesInvLineOutstandingAmtByLineNo(OriginalEntry."Document No.", OriginalEntry."Document Line No.");
+            "Gen. Journal Document Type"::"Credit Memo":
+                UpdateSalesCrMemoLineOutstandingAmtByLineNo(OriginalEntry."Document No.", OriginalEntry."Document Line No.");
+        end;
+    end;
+
+    // ── Public: Epic 5 — Credit Memos ───────────────────────────────────────
+
+    /// <summary>
+    /// Called from ProcessNewApplicationDCLEs when a credit memo CLE is fully closed.
+    /// Mirrors ProcessInvoiceCLEForSettlement: scans ALL refund-side Application DCLEs for
+    /// this CM within the current batch and creates one set of Settlement Entries per refund,
+    /// distributing each refund's amount proportionally across CM lines based on their
+    /// remaining (not yet settled) balance — so that a closing refund after a prior partial
+    /// settlement only covers what is still outstanding.
+    /// Cash discount is applied only when exactly one refund closes the CM (like invoices).
+    /// </summary>
+    procedure CreateCreditMemoSettlementEntries(CrMemoDCLE: Record "Detailed Cust. Ledg. Entry"; PostingDate: Date; BaselineDCLEEntryNo: Integer)
+    var
+        CrMemoCLE: Record "Cust. Ledger Entry";
+        RefundDCLE: Record "Detailed Cust. Ledg. Entry";
+        RefundCLE: Record "Cust. Ledger Entry";
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        BankLedgEntry: Record "Bank Account Ledger Entry";
+        Customer: Record Customer;
+        AssignmentID: Code[50];
+        TotalAmtExclVAT: Decimal;
+        TotalAmtInclVAT: Decimal;
+        TotalLines: Integer;
+        CashDiscountAmtLCY: Decimal;
+        RefundAmtLCY: Decimal;
+        RefundDCLECount: Integer;
+    begin
+        if not CrMemoCLE.Get(CrMemoDCLE."Cust. Ledger Entry No.") then
+            exit;
+        if CrMemoCLE."Document Type" <> "Gen. Journal Document Type"::"Credit Memo" then
+            exit;
+        if CrMemoCLE.Open then
+            exit;
+
+        SalesCrMemoLine.SetRange("Document No.", CrMemoCLE."Document No.");
+        SalesCrMemoLine.SetFilter(Amount, '<>0');
+        if SalesCrMemoLine.IsEmpty() then
+            exit;
+        TotalLines := SalesCrMemoLine.Count();
+        if SalesCrMemoLine.FindSet() then
+            repeat
+                TotalAmtExclVAT += SalesCrMemoLine.Amount;
+                TotalAmtInclVAT += SalesCrMemoLine."Amount Including VAT";
+            until SalesCrMemoLine.Next() = 0;
+        if TotalAmtInclVAT = 0 then
+            exit;
+
+        if not Customer.Get(CrMemoCLE."Customer No.") then
+            exit;
+
+        // ── Find all refund-side Application DCLEs for this CM ───────────────
+        // Mirrors the invoice path: scan refund-side DCLEs whose Applied CLE = this CM CLE.
+        RefundDCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
+        RefundDCLE.SetRange("Applied Cust. Ledger Entry No.", CrMemoCLE."Entry No.");
+        RefundDCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+        RefundDCLE.SetRange(Unapplied, false);
+        RefundDCLE.SetFilter("Initial Document Type", '%1|%2',
+            "Gen. Journal Document Type"::Payment,
+            "Gen. Journal Document Type"::Refund);
+        if not RefundDCLE.FindSet() then begin
+            // Fallback for Skonto / CD applications where BC uses self-referencing Applied CLE:
+            // use the Refund CLE resolved directly from the CM-side DCLE.
+            if (CrMemoDCLE."Applied Cust. Ledger Entry No." = 0) or
+               (CrMemoDCLE."Applied Cust. Ledger Entry No." = CrMemoDCLE."Cust. Ledger Entry No.")
+            then
+                exit;
+            RefundDCLE.Reset();
+            RefundDCLE.SetFilter("Entry No.", '>%1', BaselineDCLEEntryNo);
+            RefundDCLE.SetRange("Cust. Ledger Entry No.", CrMemoDCLE."Applied Cust. Ledger Entry No.");
+            RefundDCLE.SetRange("Entry Type", "Detailed CV Ledger Entry Type"::Application);
+            RefundDCLE.SetRange(Unapplied, false);
+            RefundDCLE.SetFilter("Initial Document Type", '%1|%2',
+                "Gen. Journal Document Type"::Payment,
+                "Gen. Journal Document Type"::Refund);
+            if not RefundDCLE.FindSet() then
+                exit;
+        end;
+
+        RefundDCLECount := RefundDCLE.Count();
+
+        // Cash discount: only when exactly one refund closes the CM — cannot unambiguously
+        // split a discount across multiple simultaneous refunds (mirrors invoice behaviour).
+        if RefundDCLECount = 1 then
+            CashDiscountAmtLCY := -CrMemoCLE."Pmt. Disc. Given (LCY)"
+        else
+            CashDiscountAmtLCY := 0;
+
+        // ── One set of Settlement Entries per refund ─────────────────────────
+        RefundDCLE.FindSet();
+        repeat
+            if not RefundCLE.Get(RefundDCLE."Cust. Ledger Entry No.") then
+                continue;
+            if not (RefundCLE."Document Type" in
+                ["Gen. Journal Document Type"::Payment, "Gen. Journal Document Type"::Refund])
+            then
+                continue;
+
+            // Dedup: skip if entries already created for this (transaction, refund CLE) pair.
+            if SettlementEntriesExistForTransaction(CrMemoDCLE."Transaction No.", RefundCLE."Entry No.") then
+                continue;
+
+            // Refund amount for this application: negate the refund-side DCLE then subtract discount.
+            // Sign asymmetry vs. the invoice path: for Invoice+Payment the payment-side DCLE
+            // Amount is POSITIVE (it reduces the payment's negative balance toward 0), so it can
+            // be used directly. For CM+Refund the refund-side DCLE Amount is NEGATIVE (it reduces
+            // the refund's positive balance toward 0), so it must be negated first.
+            // BC inflates the DCLE Amount to include the discount effect — same as invoices.
+            RefundAmtLCY := -RefundDCLE."Amount (LCY)" - CashDiscountAmtLCY;
+
+            BankLedgEntry := GetBankLedgEntryByPaymentCLE(RefundCLE);
+            if BankLedgEntry."Entry No." = 0 then
+                BankLedgEntry := GetBankLedgEntryByTransactionNo(CrMemoDCLE."Transaction No.");
+
+            AssignmentID := GenerateAssignmentID(CrMemoCLE."Customer No.", PostingDate);
+
+            SalesCrMemoLine.FindSet(); // reset cursor — filters preserved from above
+            CreateCreditMemoLineEntries(
+                SalesCrMemoLine, TotalLines, CrMemoCLE, PostingDate, BankLedgEntry, Customer,
+                TotalAmtExclVAT, TotalAmtInclVAT,
+                RefundAmtLCY, CashDiscountAmtLCY, AssignmentID, CrMemoDCLE."Transaction No.", RefundCLE."Entry No.");
+        until RefundDCLE.Next() = 0;
+    end;
+
+    /// <summary>
+    /// Distributes one refund's amount proportionally across all non-zero CM lines,
+    /// accounting for amounts already settled by prior entries (partial payments or
+    /// earlier refunds in the same batch). Mirrors CreateSalesLineEntries for invoices.
+    /// TotalLines and the SalesCrMemoLine cursor (filters set, FindSet already called)
+    /// are provided by the caller to avoid duplicate queries.
+    /// </summary>
+    local procedure CreateCreditMemoLineEntries(
+        var SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        TotalLines: Integer;
+        CrMemoCLE: Record "Cust. Ledger Entry";
+        PostingDate: Date;
+        BankLedgEntry: Record "Bank Account Ledger Entry";
+        Customer: Record Customer;
+        TotalAmtExclVAT: Decimal;
+        TotalAmtInclVAT: Decimal;
+        RefundAmtLCY: Decimal;
+        CashDiscountAmtLCY: Decimal;
+        AssignmentID: Code[50];
+        TransactionNo: Integer;
+        PaymentCLEEntryNo: Integer)
+    var
+        SalesCrMemoLine2: Record "Sales Cr.Memo Line";
+        TotalRemainingInclVAT: Decimal;
+        LineCount: Integer;
+        LineRemainingInclVAT: Decimal;
+        LineAmtInclVAT: Decimal;
+        LineAmt: Decimal;
+        LineDiscount: Decimal;
+        RemainingAmt: Decimal;
+        RemainingAmtInclVAT: Decimal;
+        RemainingDiscount: Decimal;
+    begin
+        // Pre-pass: compute total remaining (original minus already settled) across all lines.
+        // Lines with prior partial settlements contribute only their outstanding share,
+        // ensuring the proportional distribution reflects what each line still needs.
+        // CalcFields / CalcSums see entries inserted earlier in the same transaction, so
+        // multiple simultaneous refunds processed sequentially each get their own correct share.
+        SalesCrMemoLine2.SetRange("Document No.", CrMemoCLE."Document No.");
+        SalesCrMemoLine2.SetFilter(Amount, '<>0');
+        if SalesCrMemoLine2.FindSet() then
+            repeat
+                TotalRemainingInclVAT +=
+                    SalesCrMemoLine2."Amount Including VAT" -
+                    GetAlreadySettledCrMemoAmtInclVAT(SalesCrMemoLine2."Document No.", SalesCrMemoLine2."Line No.");
+            until SalesCrMemoLine2.Next() = 0;
+        // Fallback: no prior partial settlements — use original total (first / only refund).
+        if TotalRemainingInclVAT <= 0 then
+            TotalRemainingInclVAT := TotalAmtInclVAT;
+
+        RemainingAmt := Round(RefundAmtLCY * TotalAmtExclVAT / TotalAmtInclVAT);
+        RemainingAmtInclVAT := RefundAmtLCY;
+        RemainingDiscount := Round(CashDiscountAmtLCY * TotalAmtExclVAT / TotalAmtInclVAT);
+
+        repeat
+            LineCount += 1;
+            if LineCount = TotalLines then begin
+                LineAmt := RemainingAmt;
+                LineAmtInclVAT := RemainingAmtInclVAT;
+                LineDiscount := RemainingDiscount;
+            end else begin
+                // Distribute proportionally to each line's remaining (original minus already settled).
+                LineRemainingInclVAT :=
+                    SalesCrMemoLine."Amount Including VAT" -
+                    GetAlreadySettledCrMemoAmtInclVAT(SalesCrMemoLine."Document No.", SalesCrMemoLine."Line No.");
+                LineAmtInclVAT := Round(LineRemainingInclVAT * RefundAmtLCY / TotalRemainingInclVAT);
+                if SalesCrMemoLine."Amount Including VAT" <> 0 then
+                    LineAmt := Round(LineAmtInclVAT * SalesCrMemoLine.Amount / SalesCrMemoLine."Amount Including VAT")
+                else
+                    LineAmt := LineAmtInclVAT;
+                // Distribute cash discount proportionally to each line's excl. VAT amount.
+                LineDiscount := Round(SalesCrMemoLine.Amount * CashDiscountAmtLCY / TotalAmtInclVAT);
+                RemainingAmt -= LineAmt;
+                RemainingAmtInclVAT -= LineAmtInclVAT;
+                RemainingDiscount -= LineDiscount;
+            end;
+
+            InsertCreditMemoSettlementEntry(
+                SalesCrMemoLine, CrMemoCLE, PostingDate, BankLedgEntry, Customer,
+                AssignmentID, TransactionNo, PaymentCLEEntryNo,
+                LineAmt, LineAmtInclVAT, LineDiscount);
+        until SalesCrMemoLine.Next() = 0;
+    end;
+
+    local procedure InsertCreditMemoSettlementEntry(
+        var SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        CrMemoCLE: Record "Cust. Ledger Entry";
+        PostingDate: Date;
+        BankLedgEntry: Record "Bank Account Ledger Entry";
+        Customer: Record Customer;
+        AssignmentID: Code[50];
+        TransactionNo: Integer;
+        PaymentCLEEntryNo: Integer;
+        LineAmt: Decimal;
+        LineAmtInclVAT: Decimal;
+        LineCashDiscountLCY: Decimal)
+    var
+        SettlementEntry: Record "Settlement Entry";
+        GLAccount: Record "G/L Account";
+        LineCashDiscountInclVATLCY: Decimal;
+    begin
+        // Back-calculate cash discount incl. VAT using the line's VAT ratio.
+        if SalesCrMemoLine.Amount <> 0 then
+            LineCashDiscountInclVATLCY :=
+                Round(LineCashDiscountLCY * SalesCrMemoLine."Amount Including VAT" / SalesCrMemoLine.Amount)
+        else
+            LineCashDiscountInclVATLCY := LineCashDiscountLCY;
+
+        SettlementEntry.Init();
+
+        SettlementEntry."Transaction Type" := "Settlement Transaction Type"::Sales;
+        SettlementEntry."Document Type" := "Gen. Journal Document Type"::"Credit Memo";
+        SettlementEntry."Document No." := SalesCrMemoLine."Document No.";
+        SettlementEntry."Document Line No." := SalesCrMemoLine."Line No.";
+
+        SettlementEntry."Assignment ID" := AssignmentID;
+        SettlementEntry."Settlement Date" := PostingDate;
+        // Mirrors the invoice pattern exactly:
+        //   Settlement Amt    = actual cash refunded (LineAmt, already net of discount because
+        //                       RefundAmtLCY = -RefundDCLE."Amount (LCY)" - CashDiscountAmtLCY).
+        //   Cash Discount Amt = the discount portion stored separately.
+        //   Total Settled Amt = Settlement + Discount = full line amount — closes the CM line.
+        SettlementEntry."Settlement Amt (LCY)" := LineAmt;
+        SettlementEntry."Settlement Amt Incl. VAT (LCY)" := LineAmtInclVAT;
+        SettlementEntry."Cash Discount Amt (LCY)" := LineCashDiscountLCY;
+        SettlementEntry."Cash Discount Amt Incl. VAT (LCY)" := LineCashDiscountInclVATLCY;
+        SettlementEntry."Total Settled Amt (LCY)" := LineAmt + LineCashDiscountLCY;
+        SettlementEntry."Total Settled Amt Incl. VAT (LCY)" := LineAmtInclVAT + LineCashDiscountInclVATLCY;
+
+        SettlementEntry."Original Line Amt (LCY)" := SalesCrMemoLine.Amount;
+        SettlementEntry."Orig. Line Amt Incl. VAT (LCY)" := SalesCrMemoLine."Amount Including VAT";
+
+        SettlementEntry."Bank Statement Document No." := BankLedgEntry."Document No.";
+        SettlementEntry."CV No." := CrMemoCLE."Customer No.";
+        SettlementEntry."CV Name" := Customer.Name;
+
+        SettlementEntry."Global Dimension 1 Code" := SalesCrMemoLine."Shortcut Dimension 1 Code";
+        SettlementEntry."Global Dimension 2 Code" := SalesCrMemoLine."Shortcut Dimension 2 Code";
+        SettlementEntry."Dimension Set ID" := SalesCrMemoLine."Dimension Set ID";
+        PopulateShortcutDimensions(SettlementEntry, SalesCrMemoLine."Dimension Set ID");
+
+        if SalesCrMemoLine.Type = SalesCrMemoLine.Type::"G/L Account" then begin
+            SettlementEntry."G/L Account No." := SalesCrMemoLine."No.";
+            if GLAccount.Get(SalesCrMemoLine."No.") then
+                SettlementEntry."G/L Account Name" := GLAccount.Name;
+        end;
+
+        SettlementEntry.Description :=
+            CopyStr(SalesCrMemoLine.Description, 1, MaxStrLen(SettlementEntry.Description));
+
+        SettlementEntry."Source Transaction No." := TransactionNo;
+        SettlementEntry."Source Payment CLE Entry No." := PaymentCLEEntryNo;
+        SettlementEntry."Created By" := CopyStr(UserId(), 1, MaxStrLen(SettlementEntry."Created By"));
+        SettlementEntry."Created DateTime" := CurrentDateTime();
+
+        SettlementEntry.Insert(true);
+
+        // Update Outstanding Amt and fully-settled flags for the affected credit memo line.
+        UpdateSalesCrMemoLineOutstandingAmt(SalesCrMemoLine);
     end;
 
     // ── Private: amount helpers ──────────────────────────────────────────────
@@ -1137,6 +1791,175 @@ codeunit 51106 "Settlement Entry Mgt."
         until DimSetEntry.Next() = 0;
     end;
 
+    // ── Public: already-settled amount lookup (Credit Memo) ─────────────────────
+
+    /// <summary>
+    /// Returns the net already-settled amount (incl. VAT, LCY, absolute value) for a
+    /// specific credit memo line. Sums ALL Settlement Entries including reversals (which
+    /// cancel their originals). Returns absolute value so the allocation page can use the
+    /// same positive-value logic as for invoice lines.
+    /// </summary>
+    procedure GetAlreadySettledCrMemoAmtInclVAT(DocumentNo: Code[20]; DocumentLineNo: Integer): Decimal
+    var
+        SettlementEntry: Record "Settlement Entry";
+    begin
+        SettlementEntry.SetRange("Document Type", "Gen. Journal Document Type"::"Credit Memo");
+        SettlementEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        SettlementEntry.SetRange("Document No.", DocumentNo);
+        SettlementEntry.SetRange("Document Line No.", DocumentLineNo);
+        SettlementEntry.CalcSums("Total Settled Amt Incl. VAT (LCY)");
+        // CM forward entries carry positive Total Settled Amt (SalesCrMemoLine.Amount is positive).
+        // Reversal entries carry negative amounts. Net = forward - reversal = outstanding portion.
+        // Abs() ensures the result is always a non-negative magnitude for the caller.
+        exit(Abs(SettlementEntry."Total Settled Amt Incl. VAT (LCY)"));
+    end;
+
+    // ── Private: partial CM settlement ──────────────────────────────────────────
+
+    /// <summary>
+    /// Called from ProcessNewApplicationDCLEs (CM DCLE loop) and HandlePaymentApplicationDCLE
+    /// (Refund DCLE safety net) when a CM CLE is partially settled (remains Open after
+    /// the refund application). Mirrors HandlePartialPayment for invoices.
+    /// Reads the pre-collected allocation from Pmt. Alloc. Context, then creates
+    /// Settlement Entries for each CM line.
+    /// </summary>
+    local procedure HandlePartialCrMemoSettlement(CrMemoCLE: Record "Cust. Ledger Entry"; PostingDate: Date; TransactionNo: Integer; RefundCLEEntryNo: Integer)
+    var
+        AllocContext: Codeunit "Pmt. Alloc. Context";
+        TempBuffer: Record "Pmt. Alloc. Line Buffer" temporary;
+        RefundCLE: Record "Cust. Ledger Entry";
+        BankLedgEntry: Record "Bank Account Ledger Entry";
+        AssignmentID: Code[50];
+    begin
+        // Allocation must have been pre-collected by ScanBatchForPartialPayments or
+        // ScanForCLEPartialPayments before the write transaction. Exit silently if missing —
+        // mirrors HandlePartialPayment behaviour (no rollback possible post-commit).
+        if not AllocContext.TryGetAllocation(CrMemoCLE."Entry No.", TempBuffer) then
+            exit;
+        AllocContext.ClearAllocation(CrMemoCLE."Entry No.");
+        if TempBuffer.IsEmpty() then
+            exit;
+
+        // Resolve the Refund CLE for bank entry lookup.
+        // For apply-from-CM direction, the Refund CLE was stored at pre-scan time.
+        if (RefundCLEEntryNo = 0) or (RefundCLEEntryNo = CrMemoCLE."Entry No.") then
+            RefundCLEEntryNo := AllocContext.GetPaymentCLE(CrMemoCLE."Entry No.");
+        AllocContext.ClearPaymentCLE(CrMemoCLE."Entry No.");
+
+        if RefundCLEEntryNo <> 0 then begin
+            if RefundCLE.Get(RefundCLEEntryNo) then
+                BankLedgEntry := GetBankLedgEntryByPaymentCLE(RefundCLE);
+        end else
+            BankLedgEntry := GetBankLedgEntryByTransactionNo(TransactionNo);
+
+        // Settlement Date = the refund's own posting date when resolvable.
+        if RefundCLE."Entry No." <> 0 then
+            PostingDate := RefundCLE."Posting Date";
+
+        AssignmentID := GenerateAssignmentID(CrMemoCLE."Customer No.", PostingDate);
+        CreatePartialCrMemoLineEntries(TempBuffer, CrMemoCLE, PostingDate, BankLedgEntry, AssignmentID, TransactionNo, RefundCLE."Entry No.");
+    end;
+
+    local procedure CreatePartialCrMemoLineEntries(
+        var TempBuffer: Record "Pmt. Alloc. Line Buffer" temporary;
+        CrMemoCLE: Record "Cust. Ledger Entry";
+        PostingDate: Date;
+        BankLedgEntry: Record "Bank Account Ledger Entry";
+        AssignmentID: Code[50];
+        TransactionNo: Integer;
+        RefundCLEEntryNo: Integer)
+    var
+        Customer: Record Customer;
+    begin
+        Customer.Get(CrMemoCLE."Customer No.");
+        if TempBuffer.FindSet() then
+            repeat
+                InsertPartialCrMemoSettlementEntry(
+                    TempBuffer, CrMemoCLE, PostingDate, BankLedgEntry, Customer,
+                    AssignmentID, TransactionNo, RefundCLEEntryNo);
+            until TempBuffer.Next() = 0;
+    end;
+
+    /// <summary>
+    /// Creates one Settlement Entry for a CM line from a partial refund allocation.
+    /// TempBuffer holds absolute (positive) amounts — CM sign convention (negative) is
+    /// restored by negating: LineAmt := -TempBuffer."Alloc. Amt Incl. VAT (LCY)" etc.
+    /// No cash discount for partial CM allocations — user allocates refund cash only.
+    /// Source Payment CLE Entry No. = RefundCLEEntryNo (consistent with full CM settlements).
+    /// </summary>
+    local procedure InsertPartialCrMemoSettlementEntry(
+        TempBuffer: Record "Pmt. Alloc. Line Buffer";
+        CrMemoCLE: Record "Cust. Ledger Entry";
+        PostingDate: Date;
+        BankLedgEntry: Record "Bank Account Ledger Entry";
+        Customer: Record Customer;
+        AssignmentID: Code[50];
+        TransactionNo: Integer;
+        RefundCLEEntryNo: Integer)
+    var
+        SettlementEntry: Record "Settlement Entry";
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        GLAccount: Record "G/L Account";
+        LineAmt: Decimal;
+        LineAmtInclVAT: Decimal;
+    begin
+        SettlementEntry.Init();
+        SettlementEntry."Transaction Type" := "Settlement Transaction Type"::Sales;
+        SettlementEntry."Document Type" := "Gen. Journal Document Type"::"Credit Memo";
+        SettlementEntry."Document No." := CrMemoCLE."Document No.";
+        SettlementEntry."Document Line No." := TempBuffer."Line No.";
+
+        SettlementEntry."Assignment ID" := AssignmentID;
+        SettlementEntry."Settlement Date" := PostingDate;
+
+        // TempBuffer stores absolute (positive) values from the allocation page.
+        // SalesCrMemoLine.Amount is positive in BC (the credit granted), so no sign flip needed.
+        LineAmtInclVAT := TempBuffer."Alloc. Amt Incl. VAT (LCY)";
+        // Back-calculate excl. VAT amount from the line's original VAT ratio.
+        if TempBuffer."Orig. Amt Incl. VAT (LCY)" <> 0 then
+            LineAmt := Round(LineAmtInclVAT * TempBuffer."Original Amt (LCY)" / TempBuffer."Orig. Amt Incl. VAT (LCY)")
+        else
+            LineAmt := LineAmtInclVAT;
+
+        // No cash discount for partial CM allocations — user allocates refund cash only.
+        // Total Settled Amt = Settlement Amt (no discount component).
+        SettlementEntry."Settlement Amt (LCY)" := LineAmt;
+        SettlementEntry."Settlement Amt Incl. VAT (LCY)" := LineAmtInclVAT;
+        SettlementEntry."Cash Discount Amt (LCY)" := 0;
+        SettlementEntry."Cash Discount Amt Incl. VAT (LCY)" := 0;
+        SettlementEntry."Total Settled Amt (LCY)" := LineAmt;
+        SettlementEntry."Total Settled Amt Incl. VAT (LCY)" := LineAmtInclVAT;
+
+        // TempBuffer stores positive abs values; SalesCrMemoLine.Amount is also positive.
+        SettlementEntry."Original Line Amt (LCY)" := TempBuffer."Original Amt (LCY)";
+        SettlementEntry."Orig. Line Amt Incl. VAT (LCY)" := TempBuffer."Orig. Amt Incl. VAT (LCY)";
+
+        SettlementEntry."Bank Statement Document No." := BankLedgEntry."Document No.";
+        SettlementEntry."CV No." := CrMemoCLE."Customer No.";
+        SettlementEntry."CV Name" := Customer.Name;
+
+        SettlementEntry."Global Dimension 1 Code" := TempBuffer."Global Dimension 1 Code";
+        SettlementEntry."Global Dimension 2 Code" := TempBuffer."Global Dimension 2 Code";
+        SettlementEntry."Dimension Set ID" := TempBuffer."Dimension Set ID";
+        PopulateShortcutDimensions(SettlementEntry, TempBuffer."Dimension Set ID");
+
+        SettlementEntry."G/L Account No." := TempBuffer."G/L Account No.";
+        if GLAccount.Get(TempBuffer."G/L Account No.") then
+            SettlementEntry."G/L Account Name" := GLAccount.Name;
+
+        SettlementEntry.Description := CopyStr(TempBuffer.Description, 1, MaxStrLen(SettlementEntry.Description));
+
+        SettlementEntry."Source Transaction No." := TransactionNo;
+        SettlementEntry."Source Payment CLE Entry No." := RefundCLEEntryNo;
+        SettlementEntry."Created By" := CopyStr(UserId(), 1, MaxStrLen(SettlementEntry."Created By"));
+        SettlementEntry."Created DateTime" := CurrentDateTime();
+        SettlementEntry.Insert(true);
+
+        // Update Outstanding Amt and fully-settled flags for the affected credit memo line.
+        if SalesCrMemoLine.Get(CrMemoCLE."Document No.", TempBuffer."Line No.") then
+            UpdateSalesCrMemoLineOutstandingAmt(SalesCrMemoLine);
+    end;
+
     // ── Private: outstanding amount maintenance ───────────────────────────────
 
     local procedure UpdateSalesInvLineOutstandingAmt(var SalesInvLine: Record "Sales Invoice Line")
@@ -1157,11 +1980,98 @@ codeunit 51106 "Settlement Entry Mgt."
     end;
 
     /// <summary>
-    /// Updates "Line Fully Settled" and "Invoice Fully Settled" on ALL Settlement Entries
+    /// Credit memo mirror of UpdateSalesInvLineOutstandingAmt.
+    /// Outstanding Amt (LCY) = Amount - Settled Amt (LCY).
+    /// SalesCrMemoLine.Amount is positive (the credit granted to the customer), so Outstanding
+    /// starts at Amount and decreases toward 0 as the CM is applied.
+    /// Fully settled = Outstanding <= 0 (mirrors the invoice pattern).
+    /// </summary>
+    local procedure UpdateSalesCrMemoLineOutstandingAmt(var SalesCrMemoLine: Record "Sales Cr.Memo Line")
+    begin
+        SalesCrMemoLine.CalcFields("Settled Amt (LCY)");
+        SalesCrMemoLine."Outstanding Amt (LCY)" := SalesCrMemoLine.Amount - SalesCrMemoLine."Settled Amt (LCY)";
+        SalesCrMemoLine.Modify();
+        UpdateCrMemoFullySettledFlags(SalesCrMemoLine."Document No.", SalesCrMemoLine."Line No.");
+    end;
+
+    local procedure UpdateSalesCrMemoLineOutstandingAmtByLineNo(DocumentNo: Code[20]; LineNo: Integer)
+    var
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+    begin
+        if not SalesCrMemoLine.Get(DocumentNo, LineNo) then
+            exit;
+        UpdateSalesCrMemoLineOutstandingAmt(SalesCrMemoLine);
+    end;
+
+    /// <summary>
+    /// Credit memo mirror of UpdateFullySettledFlags.
+    /// Line Fully Settled     = Outstanding Amt (LCY) >= 0 (negative amount has been fully covered).
+    /// Document Fully Settled = ALL non-zero lines of the credit memo have Outstanding Amt >= 0.
+    /// Both flags are written to every Settlement Entry for the affected line/document.
+    /// </summary>
+    local procedure UpdateCrMemoFullySettledFlags(DocumentNo: Code[20]; LineNo: Integer)
+    var
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        AllLines: Record "Sales Cr.Memo Line";
+        SettlementEntry: Record "Settlement Entry";
+        LineFullySettled: Boolean;
+        DocumentFullySettled: Boolean;
+    begin
+        // ── Line Fully Settled ───────────────────────────────────────────────
+        // SalesCrMemoLine.Amount is positive; Outstanding starts at Amount and falls toward 0.
+        // Fully settled = Outstanding <= 0.01 — allow up to 1 cent rounding error from
+        // proportional distribution across multiple simultaneous refunds.
+        if not SalesCrMemoLine.Get(DocumentNo, LineNo) then
+            exit;
+        LineFullySettled := SalesCrMemoLine."Outstanding Amt (LCY)" <= 0.01;
+
+        SettlementEntry.SetRange("Document Type", "Gen. Journal Document Type"::"Credit Memo");
+        SettlementEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        SettlementEntry.SetRange("Document No.", DocumentNo);
+        SettlementEntry.SetRange("Document Line No.", LineNo);
+        if SettlementEntry.FindSet(true) then
+            repeat
+                if SettlementEntry."Line Fully Settled" <> LineFullySettled then begin
+                    SettlementEntry."Line Fully Settled" := LineFullySettled;
+                    SettlementEntry.Modify();
+                end;
+            until SettlementEntry.Next() = 0;
+
+        // ── Document Fully Settled ───────────────────────────────────────────
+        // All non-zero lines must have Outstanding <= 0 (positive Amount fully covered).
+        // Use CalcFields("Settled Amt (LCY)") rather than the stored Outstanding Amt field:
+        // lines that have never had a settlement entry carry Outstanding Amt = 0 (default),
+        // which would falsely pass the check for partial allocations that skip some lines.
+        AllLines.SetRange("Document No.", DocumentNo);
+        AllLines.SetFilter(Amount, '<>0');
+        DocumentFullySettled := true;
+        if AllLines.FindSet() then
+            repeat
+                AllLines.CalcFields("Settled Amt (LCY)");
+                // Allow up to 1 cent rounding error from proportional distribution.
+                if AllLines.Amount - AllLines."Settled Amt (LCY)" > 0.01 then
+                    DocumentFullySettled := false;
+            until (AllLines.Next() = 0) or not DocumentFullySettled;
+
+        SettlementEntry.Reset();
+        SettlementEntry.SetRange("Document Type", "Gen. Journal Document Type"::"Credit Memo");
+        SettlementEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        SettlementEntry.SetRange("Document No.", DocumentNo);
+        if SettlementEntry.FindSet(true) then
+            repeat
+                if SettlementEntry."Document Fully Settled" <> DocumentFullySettled then begin
+                    SettlementEntry."Document Fully Settled" := DocumentFullySettled;
+                    SettlementEntry.Modify();
+                end;
+            until SettlementEntry.Next() = 0;
+    end;
+
+    /// <summary>
+    /// Updates "Line Fully Settled" and "Document Fully Settled" on ALL Settlement Entries
     /// for the affected line and document after every insert or reversal.
     ///
     /// Line Fully Settled  = Outstanding Amt (LCY) <= 0 for this specific line.
-    /// Invoice Fully Settled = ALL lines of the invoice have Outstanding Amt (LCY) <= 0.
+    /// Document Fully Settled = ALL lines of the invoice have Outstanding Amt (LCY) <= 0.
     ///
     /// Both flags are stored on every Settlement Entry (not just the latest) so Power BI
     /// and the API can filter on current settlement state without joins or recalculation.
@@ -1173,12 +2083,14 @@ codeunit 51106 "Settlement Entry Mgt."
         AllLines: Record "Sales Invoice Line";
         SettlementEntry: Record "Settlement Entry";
         LineFullySettled: Boolean;
-        InvoiceFullySettled: Boolean;
+        DocumentFullySettled: Boolean;
     begin
         // ── Line Fully Settled ───────────────────────────────────────────────
+        // Allow up to 1 cent rounding error from proportional distribution across
+        // multiple simultaneous payments (mirrors the CM path tolerance).
         if not SalesInvLine.Get(DocumentNo, LineNo) then
             exit;
-        LineFullySettled := SalesInvLine."Outstanding Amt (LCY)" <= 0;
+        LineFullySettled := SalesInvLine."Outstanding Amt (LCY)" <= 0.01;
 
         // Update all entries for this line
         SettlementEntry.SetRange("Document Type", "Gen. Journal Document Type"::Invoice);
@@ -1193,17 +2105,19 @@ codeunit 51106 "Settlement Entry Mgt."
                 end;
             until SettlementEntry.Next() = 0;
 
-        // ── Invoice Fully Settled ────────────────────────────────────────────
+        // ── Document Fully Settled ────────────────────────────────────────────
         // Check all non-zero lines of the invoice — invoice is fully settled only
         // when every line has Outstanding Amt <= 0.
+        // Allow up to 1 cent rounding error from proportional distribution across
+        // multiple simultaneous payments (mirrors the CM path tolerance).
         AllLines.SetRange("Document No.", DocumentNo);
         AllLines.SetFilter(Amount, '<>0');
-        InvoiceFullySettled := true;
+        DocumentFullySettled := true;
         if AllLines.FindSet() then
             repeat
-                if AllLines."Outstanding Amt (LCY)" > 0 then
-                    InvoiceFullySettled := false;
-            until (AllLines.Next() = 0) or not InvoiceFullySettled;
+                if AllLines."Outstanding Amt (LCY)" > 0.01 then
+                    DocumentFullySettled := false;
+            until (AllLines.Next() = 0) or not DocumentFullySettled;
 
         // Update all entries for the whole document
         SettlementEntry.Reset();
@@ -1212,8 +2126,8 @@ codeunit 51106 "Settlement Entry Mgt."
         SettlementEntry.SetRange("Document No.", DocumentNo);
         if SettlementEntry.FindSet(true) then
             repeat
-                if SettlementEntry."Invoice Fully Settled" <> InvoiceFullySettled then begin
-                    SettlementEntry."Invoice Fully Settled" := InvoiceFullySettled;
+                if SettlementEntry."Document Fully Settled" <> DocumentFullySettled then begin
+                    SettlementEntry."Document Fully Settled" := DocumentFullySettled;
                     SettlementEntry.Modify();
                 end;
             until SettlementEntry.Next() = 0;

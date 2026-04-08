@@ -129,4 +129,24 @@ codeunit 51100 "Event Subscriber"
         if BankAccountLedgerEntry.FindFirst() then
             SetBankLedgerEntry.GetAndProcessLedgerEntries(BankAccountLedgerEntry, LedgerEntry);
     end;
+
+    /// <summary>
+    /// Story 5.1: Fires inside CustEntry-Apply Posted Entries.PostUnApplyCustomerCommit()
+    /// after the unapplication GL entries have been written (before Commit, so our reversal
+    /// entries are included in the same transaction). DetailedCustLedgEntry is the Application
+    /// DCLE being unapplied — Entry Type = Application is guaranteed by the posting routine.
+    /// Delegates reversal-entry creation to SettlementEntryMgt.
+    /// </summary>
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"CustEntry-Apply Posted Entries", 'OnAfterPostUnapplyCustLedgEntry', '', false, false)]
+    local procedure OnAfterPostUnapplyCustLedgEntry(
+        GenJournalLine: Record "Gen. Journal Line";
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry")
+    var
+        SettlementEntryMgt: Codeunit "Settlement Entry Mgt.";
+    begin
+        SettlementEntryMgt.CreateReversalEntriesForUnapplication(DetailedCustLedgEntry);
+    end;
+
+
 }

@@ -123,10 +123,10 @@ page 51100 "Settlement Entry List"
                     ToolTip = 'Indicates whether the invoice line has been fully settled across all payments.';
                     Visible = false;
                 }
-                field("Invoice Fully Settled"; Rec."Invoice Fully Settled")
+                field("Document Fully Settled"; Rec."Document Fully Settled")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Indicates whether all lines of the invoice have been fully settled.';
+                    ToolTip = 'Indicates whether all lines of the document have been fully settled.';
                     Visible = false;
                 }
 
