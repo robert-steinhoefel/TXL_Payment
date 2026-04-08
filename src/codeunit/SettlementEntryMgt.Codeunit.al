@@ -201,6 +201,7 @@ codeunit 51106 "Settlement Entry Mgt."
         TotalAmtInclVAT: Decimal;
         TotalLines: Integer;
         PaymentDCLECount: Integer;
+        IsFallbackScan: Boolean;
     begin
         if InvoiceCLE."Document Type" <> "Gen. Journal Document Type"::Invoice then
             exit;
@@ -279,6 +280,10 @@ codeunit 51106 "Settlement Entry Mgt."
                 "Gen. Journal Document Type"::Refund);
             if not PaymentDCLE.FindSet() then
                 exit; // Still nothing → credit memo or unrecognized → Epic 5
+            // In the fallback path the payment-side DCLE carries the FULL payment amount
+            // (one DCLE covers all invoices in this application). Use the invoice-side DCLE
+            // amount instead, which is always the exact per-invoice portion.
+            IsFallbackScan := true;
         end;
 
         PaymentDCLECount := PaymentDCLE.Count();
@@ -304,13 +309,18 @@ codeunit 51106 "Settlement Entry Mgt."
             then
                 continue;
 
-            // For cash discount, BC's Skonto DCLEs increase the payment CLE's effective
-            // credit before the Application DCLE fires, so PaymentDCLE."Amount (LCY)"
-            // = actual cash + discount. Subtracting CashDiscountAmtLCY gives actual cash:
-            // - no discount: CashDiscountAmtLCY=0 → no change ✓
-            // - with discount (single payment): DCLE amount = cash + discount, minus discount = cash ✓
-            // - with discount (multi-payment, CashDiscountAmtLCY=0): each DCLE amount = cash ✓
-            PaymentAmtLCY := PaymentDCLE."Amount (LCY)" - CashDiscountAmtLCY;
+            // Primary path: each payment DCLE carries the exact per-invoice cash amount.
+            //   Subtract CashDiscountAmtLCY because Skonto DCLEs inflate Amount (LCY)
+            //   to include the discount before the Application DCLE fires.
+            // Fallback path: the payment DCLE is a self-reference with the FULL payment
+            //   amount across all invoices — not usable per-invoice. Use the invoice-side
+            //   DCLE amount instead, which is always the exact per-invoice portion.
+            //   CashDiscountAmtLCY is still subtracted for the cash-discount single-invoice
+            //   case (InvoiceDCLE amount = cash + discount on the AR side).
+            if IsFallbackScan then
+                PaymentAmtLCY := -InvoiceDCLE."Amount (LCY)" - CashDiscountAmtLCY
+            else
+                PaymentAmtLCY := PaymentDCLE."Amount (LCY)" - CashDiscountAmtLCY;
             BankLedgEntry := GetBankLedgEntryByPaymentCLE(PaymentCLE);
             AssignmentID := GenerateAssignmentID(InvoiceCLE."Customer No.", PaymentCLE."Posting Date");
 
