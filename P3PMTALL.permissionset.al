@@ -23,5 +23,9 @@ permissionset 51100 "P3.PMT-ALL"
         codeunit "Settlement Entry Mgt." = X,
         page "Payment Allocation" = X,
         page "Settlement Entry API" = X,
-        page "Settlement Entry List" = X;
+        page "Settlement Entry List" = X
+#if TEST
+        , codeunit "Settlement Test Data" = X
+#endif
+        ;
 }

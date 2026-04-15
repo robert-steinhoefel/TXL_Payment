@@ -221,6 +221,47 @@ page 51100 "Settlement Entry List"
         }
     }
 
+    actions
+    {
+        area(Processing)
+        {
+#if TEST
+            action(CreateTestData)
+            {
+                ApplicationArea = All;
+                Caption = 'Create Test Data';
+                Image = SuggestLines;
+                ToolTip = 'Deletes all existing test entries (Assignment ID starting with TST-) and recreates the 8 standard Power BI test scenarios.';
+                trigger OnAction()
+                var
+                    TestData: Codeunit "Settlement Test Data";
+                begin
+                    if not Confirm('This will delete all existing test data (TST-*) and recreate %1 scenarios.\\\Do you want to continue?', false, 8) then
+                        exit;
+                    TestData.CreateAllTestScenarios();
+                    Message('%1 test scenarios created successfully.', 8);
+                end;
+            }
+            action(DeleteTestData)
+            {
+                ApplicationArea = All;
+                Caption = 'Delete Test Data';
+                Image = Delete;
+                ToolTip = 'Deletes all test settlement entries (Assignment ID starting with TST-).';
+                trigger OnAction()
+                var
+                    TestData: Codeunit "Settlement Test Data";
+                begin
+                    if not Confirm('This will delete all test data (TST-*). Do you want to continue?') then
+                        exit;
+                    TestData.DeleteTestData();
+                    Message('Test data deleted.');
+                end;
+            }
+#endif
+        }
+    }
+
     trigger OnOpenPage()
     begin
         Rec.Ascending(false);
