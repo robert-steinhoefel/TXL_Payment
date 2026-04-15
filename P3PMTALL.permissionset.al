@@ -16,5 +16,12 @@ permissionset 51100 "P3.PMT-ALL"
         query "Bank Account Ledger Entries" = X,
         codeunit Installation = X,
         tabledata "Settlement Entry" = RIMD,
-        table "Settlement Entry" = X;
+        table "Settlement Entry" = X,
+        tabledata "Pmt. Alloc. Line Buffer" = RIMD,
+        table "Pmt. Alloc. Line Buffer" = X,
+        codeunit "Pmt. Alloc. Context" = X,
+        codeunit "Settlement Entry Mgt." = X,
+        page "Payment Allocation" = X,
+        page "Settlement Entry API" = X,
+        page "Settlement Entry List" = X;
 }
