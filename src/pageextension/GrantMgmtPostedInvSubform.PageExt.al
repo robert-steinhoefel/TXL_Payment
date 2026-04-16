@@ -1,12 +1,13 @@
 namespace P3.TXL.Payment.Settlement;
 
+using Microsoft.Finance.GeneralLedger.Journal;
 using Microsoft.Sales.History;
 
 // Story 8.1: Extend the Grant Management "Call for Funds" posted invoice line list (page 50211)
 // with payment information from Settlement Entry.
 // Source table is Sales Invoice Line — the same table already extended by SalesInvoiceLine.TableExt.al,
 // so Settled Amt, Latest Settlement Date, and Latest Bank Doc. No. are all available directly on Rec.
-pageextension 51112 "Grant Mgmt. Posted Inv. Subform" extends PostedSalesInvSubformViewPage
+pageextension 51112 "Grant Mgmt Posted Inv. Subform" extends PostedSalesInvSubformViewPage
 {
     layout
     {
@@ -15,7 +16,7 @@ pageextension 51112 "Grant Mgmt. Posted Inv. Subform" extends PostedSalesInvSubf
             field("Settled Amt (LCY)"; Rec."Settled Amt (LCY)")
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Settled Amount', DEU = 'Bezahlter Betrag';
+                Caption = 'Settled Amount';
                 ToolTip = 'Specifies the total net settled amount (excl. VAT) for this invoice line across all payments.';
                 Editable = false;
                 DrillDown = true;
@@ -36,21 +37,21 @@ pageextension 51112 "Grant Mgmt. Posted Inv. Subform" extends PostedSalesInvSubf
             field("Latest Settlement Date"; Rec."Latest Settlement Date")
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Latest Payment Date', DEU = 'Letztes Zahlungsdatum';
+                Caption = 'Latest Payment Date';
                 ToolTip = 'Specifies the date of the most recent payment settlement for this invoice line.';
                 Editable = false;
             }
             field("Latest Bank Doc. No."; Rec."Latest Bank Doc. No.")
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Latest Bank Doc. No.', DEU = 'Letztes Bankbelegdatum';
+                Caption = 'Latest Bank Doc. No.';
                 ToolTip = 'Specifies the bank statement document number of the most recent settlement. Cleared if all settlements for this line have been reversed.';
                 Editable = false;
             }
             field(PaymentStatus; PaymentStatusTxt)
             {
                 ApplicationArea = All;
-                CaptionML = ENU = 'Payment Status', DEU = 'Zahlungsstatus';
+                Caption = 'Payment Status';
                 ToolTip = 'Specifies the payment status of this invoice line: Open (no payments), Partial (partly paid), or Paid (fully settled).';
                 Editable = false;
                 StyleExpr = PaymentStatusStyle;
