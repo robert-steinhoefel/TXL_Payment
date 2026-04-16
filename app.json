@@ -19,7 +19,9 @@
     }
   ],
   "screenshots": [],
-  "resources": "res",
+  "resourceFolders": [
+    "./res"
+  ],
   "platform": "27.0.0.0",
   "application": "27.5.0.0",
   "idRanges": [

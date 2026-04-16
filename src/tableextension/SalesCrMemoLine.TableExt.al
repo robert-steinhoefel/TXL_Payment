@@ -55,5 +55,27 @@ tableextension 51107 "SalesCrMemoLine TableExt" extends "Sales Cr.Memo Line"
             Editable = false;
             AutoFormatType = 1;
         }
+
+        // Story 8.2: Latest Settlement Date — most recent non-reversal settlement date for this CM line.
+        field(51104; "Latest Settlement Date"; Date)
+        {
+            Caption = 'Latest Settlement Date';
+            FieldClass = FlowField;
+            CalcFormula = Max("Settlement Entry"."Settlement Date"
+                WHERE("Document Type" = CONST("Credit Memo"),
+                      "Transaction Type" = CONST(Sales),
+                      "Document No." = FIELD("Document No."),
+                      "Document Line No." = FIELD("Line No."),
+                      "Reversal Entry" = CONST(false)));
+            Editable = false;
+        }
+
+        // Story 8.2: Latest Bank Document No. — stored, maintained by SettlementEntryMgt.
+        field(51105; "Latest Bank Doc. No."; Code[20])
+        {
+            Caption = 'Latest Bank Doc. No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }

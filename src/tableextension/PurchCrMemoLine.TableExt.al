@@ -38,5 +38,40 @@ tableextension 51109 "PurchCrMemoLine TableExt" extends "Purch. Cr. Memo Line"
             Editable = false;
             AutoFormatType = 1;
         }
+
+        // Story 8.2: Outstanding Amount (LCY)
+        // Stored decimal maintained by SettlementEntryMgt after every purchase credit memo
+        // settlement entry insert or reversal — mirrors the same field on Purch. Inv. Line.
+        // Will show 0 until Epic 9 adds purchase credit memo settlement creation.
+        field(51103; "Outstanding Amt (LCY)"; Decimal)
+        {
+            Caption = 'Outstanding Amount (LCY)';
+            DataClassification = CustomerContent;
+            Editable = false;
+            AutoFormatType = 1;
+        }
+
+        // Story 8.2: Latest Settlement Date — most recent non-reversal settlement date for this purchase CM line.
+        field(51104; "Latest Settlement Date"; Date)
+        {
+            Caption = 'Latest Settlement Date';
+            FieldClass = FlowField;
+            CalcFormula = Max("Settlement Entry"."Settlement Date"
+                WHERE("Document Type" = CONST("Credit Memo"),
+                      "Transaction Type" = CONST(Purchase),
+                      "Document No." = FIELD("Document No."),
+                      "Document Line No." = FIELD("Line No."),
+                      "Reversal Entry" = CONST(false)));
+            Editable = false;
+        }
+
+        // Story 8.2: Latest Bank Document No. — stored, maintained by SettlementEntryMgt.
+        // Will remain blank until Epic 9 adds purchase credit memo settlement creation.
+        field(51105; "Latest Bank Doc. No."; Code[20])
+        {
+            Caption = 'Latest Bank Doc. No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }

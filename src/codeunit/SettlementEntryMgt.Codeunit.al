@@ -2002,11 +2002,29 @@ codeunit 51106 "Settlement Entry Mgt."
     /// SalesCrMemoLine.Amount is positive (the credit granted to the customer), so Outstanding
     /// starts at Amount and decreases toward 0 as the CM is applied.
     /// Fully settled = Outstanding <= 0 (mirrors the invoice pattern).
+    /// Story 8.2: Also maintains Latest Bank Doc. No. from the most recent active settlement entry.
     /// </summary>
     local procedure UpdateSalesCrMemoLineOutstandingAmt(var SalesCrMemoLine: Record "Sales Cr.Memo Line")
+    var
+        LatestEntry: Record "Settlement Entry";
     begin
         SalesCrMemoLine.CalcFields("Settled Amt (LCY)");
         SalesCrMemoLine."Outstanding Amt (LCY)" := SalesCrMemoLine.Amount - SalesCrMemoLine."Settled Amt (LCY)";
+
+        // Story 8.2: Maintain Latest Bank Doc. No. — bank statement document number from
+        // the most recent active (non-reversed, non-reversal) settlement entry for this CM line.
+        // Cleared when all settlements for the line have been reversed.
+        LatestEntry.SetRange("Document Type", "Gen. Journal Document Type"::"Credit Memo");
+        LatestEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        LatestEntry.SetRange("Document No.", SalesCrMemoLine."Document No.");
+        LatestEntry.SetRange("Document Line No.", SalesCrMemoLine."Line No.");
+        LatestEntry.SetRange("Reversal Entry", false);
+        LatestEntry.SetRange(Reversed, false);
+        if LatestEntry.FindLast() then
+            SalesCrMemoLine."Latest Bank Doc. No." := LatestEntry."Bank Statement Document No."
+        else
+            SalesCrMemoLine."Latest Bank Doc. No." := '';
+
         SalesCrMemoLine.Modify();
         UpdateCrMemoFullySettledFlags(SalesCrMemoLine."Document No.", SalesCrMemoLine."Line No.");
     end;

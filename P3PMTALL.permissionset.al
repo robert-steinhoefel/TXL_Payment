@@ -2,6 +2,7 @@ namespace P3.TXL.Payment.System;
 
 using P3.TXL.Payment.BankAccount;
 using P3.TXL.Payment.Customer;
+using P3.TXL.Payment.Documentation;
 using P3.TXL.Payment.Vendor;
 using P3.TXL.Payment.Settlement;
 
@@ -24,7 +25,9 @@ permissionset 51100 "P3.PMT-ALL"
         page "Payment Allocation" = X,
         page "Settlement Entry API" = X,
         page "Settlement Entry List" = X,
-        codeunit "Payment Info Calculator" = X
+        codeunit "Payment Info Calculator" = X,
+        codeunit "Doc Viewer" = X,
+        page "HTML Renderer" = X
 #if TEST
         , codeunit "Settlement Test Data" = X
 #endif

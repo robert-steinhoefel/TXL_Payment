@@ -33,5 +33,31 @@ tableextension 51108 "PurchInvLine TableExt" extends "Purch. Inv. Line"
             Editable = false;
             AutoFormatType = 1;
         }
+
+        // Story 8.2: Latest Settlement Date (Purchase mirror of SalesInvoiceLine field 51103).
+        // Excludes reversal entries so the date reflects the last genuine payment.
+        // Will remain blank until Epic 9 adds purchase settlement creation.
+        field(51103; "Latest Settlement Date"; Date)
+        {
+            Caption = 'Latest Settlement Date';
+            FieldClass = FlowField;
+            CalcFormula = Max("Settlement Entry"."Settlement Date"
+                WHERE("Document Type" = CONST(Invoice),
+                      "Transaction Type" = CONST(Purchase),
+                      "Document No." = FIELD("Document No."),
+                      "Document Line No." = FIELD("Line No."),
+                      "Reversal Entry" = CONST(false)));
+            Editable = false;
+        }
+
+        // Story 8.2: Latest Bank Document No. (Purchase mirror of SalesInvoiceLine field 51104).
+        // Stored field maintained by SettlementEntryMgt purchase path (Epic 9).
+        // Will remain blank until Epic 9 adds purchase settlement creation.
+        field(51104; "Latest Bank Doc. No."; Code[20])
+        {
+            Caption = 'Latest Bank Doc. No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }
