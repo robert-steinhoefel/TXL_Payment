@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Settlement Entry API &lpar;&DiacriticalGrave;settlementEntries&DiacriticalGrave;&rpar;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="settlement-entry-api-settlemententries">Settlement Entry API (<code>settlementEntries</code>)</h1>
+<p>OData API page (page 51102) exposing <strong>Settlement Entry</strong> (table 51106) for Power BI and external consumers.</p>
+<h2 id="endpoint">Endpoint</h2>
+<pre><code>GET /api/p3group/txlPayment/v1.0/companies({id})/settlementEntries
+</code></pre>
+<ul>
+<li><strong>Authentication:</strong> OAuth 2.0 (BC SaaS) or Basic Auth (on-prem)</li>
+<li><strong>Read-only:</strong> INSERT / MODIFY / DELETE are disabled</li>
+</ul>
+<h2 id="key-field">Key Field</h2>
+<p><code>entryNo</code> (<code>Entry No.</code>, integer, auto-increment) is the OData primary key (<code>ODataKeyFields</code>).
+Each row represents one Settlement Entry: a single payment allocation of a specific amount
+against a specific document line.</p>
+<h2 id="classification-fields">Classification Fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>transactionType</code></td>
+<td><code>Sales</code> | <code>Purchase</code></td>
+</tr>
+<tr>
+<td><code>documentType</code></td>
+<td><code>Invoice</code> | <code>Credit Memo</code></td>
+</tr>
+<tr>
+<td><code>settlementEntryType</code></td>
+<td><code>Normal</code> | <code>Unallocated</code> | <code>Reversal</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Normal</strong> — standard entry created on payment/application.</li>
+<li><strong>Unallocated</strong> — overpayment remainder not yet linked to a document line;
+<code>documentNo</code> is intentionally blank for these rows.</li>
+<li><strong>Reversal</strong> — created when a payment or CM application is unapplied;
+amounts carry the <strong>opposite sign</strong> of the original entry.
+Use <code>reversalEntry = true</code> and <code>originalEntryNo</code> to join back to the reversed entry.</li>
+</ul>
+<h2 id="document-reference">Document Reference</h2>
+<p><code>documentNo</code> / <code>documentLineNo</code> identify the posted invoice or credit memo line
+that this settlement entry belongs to.</p>
+<h2 id="amounts-all-lcy">Amounts (all LCY)</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>settlementAmt</code> / <code>settlementAmtInclVat</code></td>
+<td>Portion of the payment allocated to this line</td>
+</tr>
+<tr>
+<td><code>cashDiscountAmt</code> / <code>cashDiscountAmtInclVat</code></td>
+<td>Cash discount distributed to this line</td>
+</tr>
+<tr>
+<td><code>originalLineAmt</code> / <code>originalLineAmtInclVat</code></td>
+<td>Snapshot of the source document line amount at entry creation (for variance reporting)</td>
+</tr>
+<tr>
+<td><code>nonDeductibleVatAmt</code></td>
+<td>Non-deductible VAT portion of the line</td>
+</tr>
+<tr>
+<td><code>totalSettledAmtInclVat</code> / <code>totalSettledAmt</code></td>
+<td><code>settlementAmt + cashDiscountAmt</code> — denormalised for the FlowField sum on the source document table</td>
+</tr>
+</tbody>
+</table>
+<p>Reversal entries carry <strong>negative</strong> amounts; net of original + reversal = 0.</p>
+<h2 id="fully-settled-flags">Fully Settled Flags</h2>
+<ul>
+<li><code>lineFullySettled</code> — <code>true</code> once the total settled amount for this document line reaches
+the original line amount (within a ±0.01 rounding tolerance).</li>
+<li><code>documentFullySettled</code> — <code>true</code> once the invoice/credit memo CLE <code>Remaining Amount</code> reaches 0.</li>
+</ul>
+<p>Both flags are written on <strong>all</strong> Settlement Entries for the affected line/document after every
+insert or reversal, so Power BI can filter on current settlement state without aggregating.</p>
+<blockquote>
+<p><strong>Known gap:</strong> For a CM applied before a payment (separate transactions), the CM entries get
+<code>documentFullySettled = false</code> at creation time and are never back-updated when the payment
+later closes the document. Payment entries are always reliable.</p>
+</blockquote>
+<h2 id="dimensions">Dimensions</h2>
+<p>All 8 shortcut dimension <strong>codes</strong> (<code>globalDimension1Code</code> … <code>shortcutDimension8Code</code>) are stored
+directly on the record — no joins or CalcFields required. OData <code>$filter</code> on any dimension code
+is index-backed.</p>
+<p>Dimension <strong>names</strong> are not stored here. To resolve a code to its display name:</p>
+<ul>
+<li>Join against the standard BC <code>dimensionValues</code> API endpoint using the dimension code as key, or</li>
+<li>Build a Power BI lookup table from that endpoint.</li>
+</ul>
+<p><code>dimensionSetId</code> is included as a bridge to the standard Dimension Set Entry API for consumers
+that need to enumerate all dimension values beyond the 8 shortcuts.</p>
+<h2 id="gl-account">G/L Account</h2>
+<p><code>glAccountNo</code> / <code>glAccountName</code> — G/L account and its name, snapshotted at entry creation.</p>
+<h2 id="customer--vendor">Customer / Vendor</h2>
+<p><code>cvNo</code> / <code>cvName</code> — customer or vendor number and name (snapshot; does not update on rename).
+Disambiguate using <code>transactionType</code>: <code>Sales</code> → customer, <code>Purchase</code> → vendor.</p>
+<h2 id="reversal-chain">Reversal Chain</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reversalEntry</code></td>
+<td><code>true</code> if this row is a reversal of another entry</td>
+</tr>
+<tr>
+<td><code>originalEntryNo</code></td>
+<td><code>entryNo</code> of the entry being reversed (0 if not a reversal)</td>
+</tr>
+<tr>
+<td><code>reversed</code></td>
+<td><code>true</code> on the original entry once it has been reversed</td>
+</tr>
+<tr>
+<td><code>reversalEntryNo</code></td>
+<td><code>entryNo</code> of the reversal entry (0 if not yet reversed)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="delta-queries--incremental-refresh">Delta Queries / Incremental Refresh</h2>
+<p><code>ChangeTrackingAllowed = true</code> enables OData <code>$deltatoken</code>. Power BI incremental refresh
+can request only rows created or modified since the previous refresh instead of reloading
+the full table. Use <code>systemModifiedAt</code> as the incremental refresh boundary.</p>
+<h2 id="system-fields">System Fields</h2>
+<p><code>systemId</code>, <code>systemCreatedAt</code>, <code>systemModifiedAt</code>, <code>systemCreatedBy</code>, <code>systemModifiedBy</code>
+are exposed automatically by the BC OData layer for all custom-table API pages —
+no explicit field declarations needed.</p>
+<h2 id="omitted-fields">Omitted Fields</h2>
+<p><code>sourceTransactionNo</code> / <code>sourcePaymentCLEEntryNo</code> — internal deduplication guards used by
+<code>SettlementEntryMgt</code>; not relevant for reporting.</p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>

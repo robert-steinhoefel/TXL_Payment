@@ -1,5 +1,5 @@
 namespace P3.TXL.Payment.Settlement;
-
+using P3.TXL.Payment.Documentation;
 using Microsoft.Finance.GeneralLedger.Journal;
 
 // Story 1.5: Settlement Entry List page.
@@ -225,6 +225,58 @@ page 51100 "Settlement Entry List"
     {
         area(Processing)
         {
+            group(Documentation)
+            {
+                Caption = 'Documentation';
+                Image = Help;
+
+                /// <summary>Opens the user guide for the TXL Payment Cameralistic extension in the BC HTML viewer.</summary>
+                action(DocUserGuide)
+                {
+                    Caption = 'User Guide';
+                    ToolTip = 'Opens the user guide for the TXL Payment Cameralistic extension.';
+                    Image = Help;
+                    ApplicationArea = All;
+
+                    trigger OnAction()
+                    var
+                        DocViewer: Codeunit "Doc Viewer";
+                    begin
+                        DocViewer.ShowDocument('user-guide.html');
+                    end;
+                }
+                /// <summary>Opens the API reference documentation for the settlement entries OData API in the BC HTML viewer.</summary>
+                action(DocApiReference)
+                {
+                    Caption = 'API Reference';
+                    ToolTip = 'Opens the API reference documentation for the settlement entries OData API.';
+                    Image = XMLFile;
+                    ApplicationArea = All;
+
+                    trigger OnAction()
+                    var
+                        DocViewer: Codeunit "Doc Viewer";
+                    begin
+                        DocViewer.ShowDocument('Settlement-Entry-API.html');
+                    end;
+                }
+                /// <summary>Opens the developer/partner guide in the BC HTML viewer.</summary>
+                action(DocDeveloperGuide)
+                {
+                    Caption = 'Developer Guide';
+                    ToolTip = 'Opens the technical developer and partner guide.';
+                    Image = Setup;
+                    ApplicationArea = All;
+
+                    trigger OnAction()
+                    var
+                        DocViewer: Codeunit "Doc Viewer";
+                    begin
+                        DocViewer.ShowDocument('developer-guide.html');
+                    end;
+                }
+            }
+
 #if TEST
             action(CreateTestData)
             {

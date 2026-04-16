@@ -19,10 +19,10 @@ against a specific document line.
 
 ## Classification Fields
 
-| Field | Values |
-|---|---|
-| `transactionType` | `Sales` \| `Purchase` |
-| `documentType` | `Invoice` \| `Credit Memo` |
+| Field                 | Values                                  |
+| --------------------- | --------------------------------------- |
+| `transactionType`     | `Sales` \| `Purchase`                   |
+| `documentType`        | `Invoice` \| `Credit Memo`              |
 | `settlementEntryType` | `Normal` \| `Unallocated` \| `Reversal` |
 
 - **Normal** — standard entry created on payment/application.
@@ -39,12 +39,12 @@ that this settlement entry belongs to.
 
 ## Amounts (all LCY)
 
-| Field | Content |
-|---|---|
-| `settlementAmt` / `settlementAmtInclVat` | Portion of the payment allocated to this line |
-| `cashDiscountAmt` / `cashDiscountAmtInclVat` | Cash discount distributed to this line |
-| `originalLineAmt` / `originalLineAmtInclVat` | Snapshot of the source document line amount at entry creation (for variance reporting) |
-| `nonDeductibleVatAmt` | Non-deductible VAT portion of the line |
+| Field                                        | Content                                                                                             |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `settlementAmt` / `settlementAmtInclVat`     | Portion of the payment allocated to this line                                                       |
+| `cashDiscountAmt` / `cashDiscountAmtInclVat` | Cash discount distributed to this line                                                              |
+| `originalLineAmt` / `originalLineAmtInclVat` | Snapshot of the source document line amount at entry creation (for variance reporting)              |
+| `nonDeductibleVatAmt`                        | Non-deductible VAT portion of the line                                                              |
 | `totalSettledAmtInclVat` / `totalSettledAmt` | `settlementAmt + cashDiscountAmt` — denormalised for the FlowField sum on the source document table |
 
 Reversal entries carry **negative** amounts; net of original + reversal = 0.
@@ -86,12 +86,12 @@ Disambiguate using `transactionType`: `Sales` → customer, `Purchase` → vendo
 
 ## Reversal Chain
 
-| Field | Content |
-|---|---|
-| `reversalEntry` | `true` if this row is a reversal of another entry |
+| Field             | Content                                                     |
+| ----------------- | ----------------------------------------------------------- |
+| `reversalEntry`   | `true` if this row is a reversal of another entry           |
 | `originalEntryNo` | `entryNo` of the entry being reversed (0 if not a reversal) |
-| `reversed` | `true` on the original entry once it has been reversed |
-| `reversalEntryNo` | `entryNo` of the reversal entry (0 if not yet reversed) |
+| `reversed`        | `true` on the original entry once it has been reversed      |
+| `reversalEntryNo` | `entryNo` of the reversal entry (0 if not yet reversed)     |
 
 ## Delta Queries / Incremental Refresh
 
