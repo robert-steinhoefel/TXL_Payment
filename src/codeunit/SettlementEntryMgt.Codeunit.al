@@ -1963,9 +1963,26 @@ codeunit 51106 "Settlement Entry Mgt."
     // ── Private: outstanding amount maintenance ───────────────────────────────
 
     local procedure UpdateSalesInvLineOutstandingAmt(var SalesInvLine: Record "Sales Invoice Line")
+    var
+        LatestEntry: Record "Settlement Entry";
     begin
         SalesInvLine.CalcFields("Settled Amt (LCY)");
         SalesInvLine."Outstanding Amt (LCY)" := SalesInvLine.Amount - SalesInvLine."Settled Amt (LCY)";
+
+        // Story 8.1: Maintain Latest Bank Doc. No. — the bank statement document number from
+        // the most recent active (non-reversed, non-reversal) settlement entry for this line.
+        // Cleared when all settlements for the line have been reversed.
+        LatestEntry.SetRange("Document Type", "Gen. Journal Document Type"::Invoice);
+        LatestEntry.SetRange("Transaction Type", "Settlement Transaction Type"::Sales);
+        LatestEntry.SetRange("Document No.", SalesInvLine."Document No.");
+        LatestEntry.SetRange("Document Line No.", SalesInvLine."Line No.");
+        LatestEntry.SetRange("Reversal Entry", false);
+        LatestEntry.SetRange(Reversed, false);
+        if LatestEntry.FindLast() then
+            SalesInvLine."Latest Bank Doc. No." := LatestEntry."Bank Statement Document No."
+        else
+            SalesInvLine."Latest Bank Doc. No." := '';
+
         SalesInvLine.Modify();
         UpdateFullySettledFlags(SalesInvLine."Document No.", SalesInvLine."Line No.");
     end;

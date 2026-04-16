@@ -59,5 +59,34 @@ tableextension 51106 "SalesInvoiceLine TableExt" extends "Sales Invoice Line"
             Editable = false;
             AutoFormatType = 1;
         }
+
+        // Story 8.1: Latest Settlement Date
+        // FlowField: the most recent non-reversal settlement date for this invoice line.
+        // Excludes reversal entries so the date reflects the last genuine payment, not a reversal event.
+        field(51103; "Latest Settlement Date"; Date)
+        {
+            Caption = 'Latest Settlement Date';
+            FieldClass = FlowField;
+            CalcFormula = Max("Settlement Entry"."Settlement Date"
+                WHERE("Document Type" = CONST(Invoice),
+                      "Transaction Type" = CONST(Sales),
+                      "Document No." = FIELD("Document No."),
+                      "Document Line No." = FIELD("Line No."),
+                      "Reversal Entry" = CONST(false)));
+            Editable = false;
+        }
+
+        // Story 8.1: Latest Bank Document No.
+        // Stored field: the bank statement document number from the most recent settlement.
+        // Cannot be a FlowField (Max is not supported on Code fields in BC CalcFormulas).
+        // Maintained by SettlementEntryMgt:
+        //   - Set to the Bank Statement Document No. when a new settlement is created.
+        //   - Cleared when the last settlement for this line is reversed.
+        field(51104; "Latest Bank Doc. No."; Code[20])
+        {
+            Caption = 'Latest Bank Doc. No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }

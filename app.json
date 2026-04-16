@@ -10,7 +10,14 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [],
+  "dependencies": [
+    {
+      "id": "0685d555-41a1-48f2-9e53-624fd3b2fc48",
+      "publisher": "P3 Group GmbH",
+      "name": "P3 Group MEGABAU",
+      "version": "27.0.0.0"
+    }
+  ],
   "screenshots": [],
   "platform": "27.0.0.0",
   "application": "27.5.0.0",
