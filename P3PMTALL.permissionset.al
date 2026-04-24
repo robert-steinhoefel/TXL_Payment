@@ -26,6 +26,7 @@ permissionset 51100 "P3.PMT-ALL"
         page "Settlement Entry API" = X,
         page "Settlement Entry List" = X,
         codeunit "Payment Info Calculator" = X,
+        codeunit "Settlement Navigate Handler" = X,
         codeunit "Doc Viewer" = X,
         page "HTML Renderer" = X
 #if TEST
