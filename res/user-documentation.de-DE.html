@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>TXL Payment &ndash; Anwenderdokumentation</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="txl-payment--anwenderdokumentation">TXL Payment – Anwenderdokumentation</h1>
+<h2 id="überblick">Überblick</h2>
+<p>Die TXL-Payment-Erweiterung ergänzt Microsoft Dynamics 365 Business Central um eine kameralistische Zahlungsabwicklung. Statt Zahlungen nur auf Belegkopfebene zu erfassen, wird jede Zahlung bis auf die einzelne Rechnungs- oder Gutschriftzeile heruntergebrochen. Finance-Teams erhalten damit eine genaue, zeilenweise Übersicht darüber, was wann und durch welche Bankbuchung beglichen wurde – ohne die Standard-Anwendungslogik von Business Central zu ersetzen.</p>
+<blockquote>
+<p><strong>Aktueller Umfang:</strong> Diese Erweiterung deckt ausschließlich den <strong>Verkaufsbereich (Debitoren)</strong> ab. Verrechnungsposten werden für gebuchte Verkaufsrechnungen und Verkaufsgutschriften erstellt.</p>
+</blockquote>
+<p>Die Erweiterung fügt zwei zentrale Seiten hinzu:</p>
+<ul>
+<li><strong>Verrechnungsposten</strong> – ein dauerhaftes, schreibgeschütztes Prüfprotokoll jedes Zahlungszuordnungsvorgangs</li>
+<li><strong>Manuelle Zahlungszuordnung</strong> – ein modaler Dialog, der bei Teilzahlungen erscheint und eine manuelle Verteilung auf die Zeilen ermöglicht</li>
+</ul>
+<hr>
+<h2 id="verrechnungsposten">Verrechnungsposten</h2>
+<h3 id="was-die-seite-zeigt">Was die Seite zeigt</h3>
+<p>Die Seite Verrechnungsposten listet alle von der Erweiterung erstellten Verrechnungsdatensätze auf. Jede Zeile steht für die Zuordnung einer Zahlung (oder Gutschriftsanwendung oder Stornierung) auf eine einzelne Zeile einer gebuchten Verkaufsrechnung oder Verkaufsgutschrift. In der aktuellen Version erscheinen hier ausschließlich Belege aus dem Verkaufsbereich.</p>
+<p><strong>Standardmäßig sichtbare Spalten:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Spalte</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verrechnungstyp</td>
+<td><em>Normal</em>, <em>Nicht Zugeordnet</em> (Überzahlungsrest) oder <em>Storno</em></td>
+</tr>
+<tr>
+<td>Transaktionsart</td>
+<td><em>Verkauf</em> oder <em>Einkauf</em> – welche Seite des Hauptbuchs betroffen ist. In der aktuellen Version werden ausschließlich Posten mit der Transaktionsart <em>Verkauf</em> erstellt.</td>
+</tr>
+<tr>
+<td>Belegart</td>
+<td><em>Rechnung</em> oder <em>Gutschrift</em></td>
+</tr>
+<tr>
+<td>Belegnr.</td>
+<td>Nummer der gebuchten Rechnung oder Gutschrift</td>
+</tr>
+<tr>
+<td>Debitor/Kreditor Nr.</td>
+<td>Debitor zum Zeitpunkt der Verrechnung</td>
+</tr>
+<tr>
+<td>Debitor/Kreditor Name</td>
+<td>Snapshot des Debitorennamens zum Verrechnungszeitpunkt</td>
+</tr>
+<tr>
+<td>Verrechnungsdatum</td>
+<td>Buchungsdatum der Zahlung, die die Verrechnung ausgelöst hat</td>
+</tr>
+<tr>
+<td>Verrechnungsbetrag</td>
+<td>Auf diese Zeile abgerechneter Nettobetrag <em>ohne</em> MwSt.</td>
+</tr>
+<tr>
+<td>Urspr. Zeilenbetrag</td>
+<td>Snapshot des Rechnungszeilenbetrags (ohne MwSt.) zum Verrechnungszeitpunkt</td>
+</tr>
+<tr>
+<td>Urspr. Zeilenbetrag inkl. MwSt.</td>
+<td>Snapshot des Rechnungszeilenbetrags <em>mit</em> MwSt.</td>
+</tr>
+<tr>
+<td>Nicht abzugsfähiger MwSt.-Betrag</td>
+<td>Nicht abzugsfähiger MwSt.-Anteil dieser Zeile zum Verrechnungszeitpunkt</td>
+</tr>
+<tr>
+<td>Stornoposten</td>
+<td>Markiert, wenn dieser Posten einen früheren Verrechnungsposten storniert</td>
+</tr>
+<tr>
+<td>Storniert</td>
+<td>Markiert, wenn dieser Originalposten bereits storniert wurde</td>
+</tr>
+<tr>
+<td>Kontoauszug Belegnr.</td>
+<td>Verweis auf den Kontoauszugsbeleg, über den die Zahlung eingegangen ist</td>
+</tr>
+<tr>
+<td>Beschreibung</td>
+<td>Freitext-Beschreibung der Verrechnung</td>
+</tr>
+</tbody>
+</table>
+<p>Weitere Spalten (standardmäßig ausgeblendet, können über <em>Spalten auswählen</em> eingeblendet werden):</p>
+<table>
+<thead>
+<tr>
+<th>Spalte</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zuordnungs-ID</td>
+<td>Fasst alle Verrechnungsposten desselben Zahlungsvorgangs zusammen. Format: <code>{Debitor Nr.}-{JJMMTT}-{LfdNr.}</code>, z. B. <code>CUST001-260312-001</code></td>
+</tr>
+<tr>
+<td>Verrechnungsbetrag inkl. MwSt.</td>
+<td>Abgerechneter Betrag inklusive MwSt.</td>
+</tr>
+<tr>
+<td>Skontobetrag</td>
+<td>Gewährtes Skonto auf dieser Verrechnung (ohne MwSt.)</td>
+</tr>
+<tr>
+<td>Skontobetrag inkl. MwSt.</td>
+<td>Gewährtes Skonto inklusive MwSt.</td>
+</tr>
+<tr>
+<td>Zeile vollständig verrechnet</td>
+<td>Zeigt an, dass diese Rechnungszeile vollständig bezahlt wurde</td>
+</tr>
+<tr>
+<td>Beleg vollständig verrechnet</td>
+<td>Zeigt an, dass alle Zeilen des Belegs vollständig bezahlt wurden</td>
+</tr>
+<tr>
+<td>Sachkontonr. / Sachkontoname</td>
+<td>Erlös- oder Aufwandskonto aus der Rechnungszeile</td>
+</tr>
+<tr>
+<td>Fördermittel Bescheidnr.</td>
+<td>Förderreferenz für die öffentliche Fördermittelbuchhaltung</td>
+</tr>
+<tr>
+<td>Erstellt von / Erstellt am</td>
+<td>Prüfinformation zu Ersteller und Zeitpunkt</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="wie-verrechnungsposten-entstehen">Wie Verrechnungsposten entstehen</h3>
+<p>Verrechnungsposten werden von der Erweiterung automatisch erstellt, sobald Business Central eine Zahlung gegen eine Rechnung ausgleicht. Sie werden nicht manuell angelegt. Es gibt drei Szenarien:</p>
+<h4 id="vollständige-verrechnung">Vollständige Verrechnung</h4>
+<p>Wenn eine Zahlung eine Rechnung genau ausgleicht (oder geringfügig überzahlt), sodass die Rechnung vollständig geschlossen wird, verteilt die Erweiterung die Zahlung proportional auf alle Rechnungszeilen. Pro Zeile wird ein Verrechnungsposten geschrieben.</p>
+<p><em>Proportionale Verteilung</em> bedeutet: Jede Zeile erhält einen Anteil der Gesamtzahlung, der ihrem Anteil am Gesamtrechnungsbetrag entspricht. Die letzte Zeile nimmt etwaige Rundungsdifferenzen auf.</p>
+<p>Wurde die Rechnung mit <strong>Skonto</strong> geschlossen, wird der Skontobetrag in den Skonto-Feldern des jeweiligen Verrechnungspostens erfasst. Skonto wird nur dann befüllt, wenn eine einzige Zahlung die Rechnung schließt; bei mehreren Teilzahlungen kann das Skonto keiner einzelnen Zahlung eindeutig zugeordnet werden und bleibt daher leer.</p>
+<h4 id="teilzahlung">Teilzahlung</h4>
+<p>Wenn eine Zahlung nur einen Teil einer Rechnung abdeckt (die Rechnung bleibt nach der Buchung offen), öffnet die Erweiterung die <strong>Manuelle Zahlungszuordnung</strong> unmittelbar vor der Buchung. Weitere Details finden Sie im gleichnamigen Abschnitt weiter unten. Nach Bestätigung der Zuordnung wird pro zugeordneter Zeile ein Verrechnungsposten erstellt.</p>
+<h4 id="gutschriftsanwendung">Gutschriftsanwendung</h4>
+<p>Wenn eine Gutschrift gegen eine Rechnung ausgeglichen wird, behandelt die Erweiterung diesen Vorgang wie eine Zahlung: Für jede durch die Gutschrift gedeckte Rechnungszeile werden Verrechnungsposten erstellt, die die Reduzierung des offenen Saldos widerspiegeln.</p>
+<h4 id="überzahlung-nicht-zugeordneter-posten">Überzahlung (Nicht zugeordneter Posten)</h4>
+<p>Wenn eine Zahlung den Gesamtrechnungsbetrag übersteigt, wird der Überschuss als <strong>Nicht zugeordneter</strong> Verrechnungsposten erfasst. Dieser Posten hat keine Belegnummer – die leere Belegnummer in der Liste ist das visuelle Erkennungszeichen dafür, dass dieser Betrag noch keiner konkreten Zeile zugeordnet wurde. Der Posten teilt dieselbe Zuordnungs-ID wie die übrigen Verrechnungsposten dieses Zahlungsvorgangs und kann bei einer späteren Anwendung verbraucht werden.</p>
+<h4 id="storno-ausgleichsaufhebung">Storno (Ausgleichsaufhebung)</h4>
+<p>Wenn ein Zahlungsausgleich in Business Central rückgängig gemacht wird (über <em>Debitorenposten ausgleichen aufheben</em>), erstellt die Erweiterung automatisch für jeden betroffenen Originalposten einen Storno-Verrechnungsposten. Stornoposten tragen das umgekehrte Vorzeichen der Originale, sodass die Summe aller Posten einer Belegzeile stets den korrekten offenen Nettosaldo ergibt. Die Originalposten werden mit <code>Storniert = Ja</code> markiert, die Stornoposten mit <code>Stornoposten = Ja</code>. Beide bleiben dauerhaft in der Liste erhalten; Posten werden niemals gelöscht.</p>
+<hr>
+<h3 id="die-verrechnungspostenliste-lesen">Die Verrechnungspostenliste lesen</h3>
+<p>Einige praktische Hinweise beim Lesen der Liste:</p>
+<ul>
+<li><strong>Zeilen ohne Belegnummer</strong> sind Nicht zugeordnete Posten (Überzahlungsüberschuss). Sie sind normal und zu erwarten, wenn ein Kunde etwas mehr als den Rechnungsbetrag überweist.</li>
+<li><strong>Negative Beträge</strong> sind Stornoposten. Sie heben die positiven Beträge der ursprünglichen Verrechnung auf. Das Netto aller Posten einer Belegzeile ergibt die aktuelle offene Saldoreduzierung.</li>
+<li><strong>Mehrere Posten zur selben Rechnung</strong> sind normal. Pro Rechnungszeile erscheint eine Zeile, und für jede Folge-Teilzahlung kommen weitere Zeilen hinzu.</li>
+<li>Die <strong>Zuordnungs-ID</strong> verbindet alle Posten eines Zahlungsvorgangs. Filtern oder gruppieren Sie nach dieser Spalte, um alle von einer einzelnen Überweisung betroffenen Zeilen zu sehen.</li>
+</ul>
+<hr>
+<h2 id="manuelle-zahlungszuordnung">Manuelle Zahlungszuordnung</h2>
+<h3 id="wann-sie-erscheint">Wann sie erscheint</h3>
+<p>Die Manuelle Zahlungszuordnung öffnet sich automatisch – als modaler Dialog – unmittelbar bevor eine Teilzahlung gebucht wird. Das System erkennt, dass der Zahlungsbetrag unter dem offenen Restbetrag der Rechnung liegt, und unterbricht die Buchung, um zu fragen, wie die Zahlung auf die einzelnen Rechnungszeilen verteilt werden soll.</p>
+<p>Dies geschieht an zwei Stellen:</p>
+<ul>
+<li>Beim Buchen eines <strong>Buchungsblatts</strong>, das eine auf eine Verkaufsrechnung angewendete Zahlung enthält</li>
+<li>Beim Verwenden von <strong>Debitorenposten ausgleichen</strong>, um eine gebuchte Zahlung manuell gegen eine gebuchte Verkaufsrechnung auszugleichen</li>
+</ul>
+<p>Wird die Seite abgebrochen, wird die gesamte Zahlungsbuchung zurückgerollt. Es wird nichts gebucht, bis eine gültige Zuordnung bestätigt wurde.</p>
+<h3 id="aufbau-der-seite">Aufbau der Seite</h3>
+<p><strong>Kopfbereich:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feld</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Debitor Nr.</td>
+<td>Debitor, zu dem die Rechnung gehört</td>
+</tr>
+<tr>
+<td>Debitor Name</td>
+<td>Name des Debitors</td>
+</tr>
+<tr>
+<td>Belegnr.</td>
+<td>Die teilweise bezahlte Rechnung</td>
+</tr>
+<tr>
+<td>Zahlbetrag</td>
+<td>Der Gesamtbetrag der eingehenden Zahlung inklusive MwSt.</td>
+</tr>
+<tr>
+<td>Gesamtbetrag</td>
+<td>Laufende Summe der bisher auf Zeilen zugeordneten Beträge</td>
+</tr>
+<tr>
+<td>Noch zuzuordnender Betrag</td>
+<td>Differenz zwischen Zahlbetrag und Gesamtbetrag – muss auf null sinken, bevor bestätigt werden kann</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Zeilenbereich (eine Zeile pro Rechnungszeile):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Spalte</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zeilennr.</td>
+<td>Zeilennummer aus der Originalrechnung</td>
+</tr>
+<tr>
+<td>Beschreibung</td>
+<td>Beschreibung aus der Rechnungszeile</td>
+</tr>
+<tr>
+<td>Sachkonto Nr.</td>
+<td>Erlöskonto der Zeile</td>
+</tr>
+<tr>
+<td>Urspr. Betrag</td>
+<td>Rechnungszeilenbetrag ohne MwSt.</td>
+</tr>
+<tr>
+<td>Urspr. Betrag inkl. MwSt.</td>
+<td>Rechnungszeilenbetrag mit MwSt.</td>
+</tr>
+<tr>
+<td>Bereits verrechnet</td>
+<td>Aus früheren Teilzahlungen bereits bezahlter Betrag dieser Zeile (bei erster Zahlung null)</td>
+</tr>
+<tr>
+<td>Zuordnungsbetrag inkl. MwSt.</td>
+<td><strong>Das Eingabefeld.</strong> Tragen Sie hier ein, wie viel dieser Zahlung auf diese Zeile angerechnet werden soll, inklusive MwSt.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="manuelle-zuordnung-eingeben">Manuelle Zuordnung eingeben</h3>
+<ol>
+<li>Prüfen Sie die Spalten <strong>Urspr. Betrag inkl. MwSt.</strong> und <strong>Bereits verrechnet</strong>, um den noch offenen Betrag pro Zeile zu verstehen.</li>
+<li>Tragen Sie in der Spalte <strong>Zuordnungsbetrag inkl. MwSt.</strong> ein, wie viel von dieser Zahlung auf jede Zeile entfallen soll.</li>
+<li>Beobachten Sie das Feld <strong>Noch zuzuordnender Betrag</strong> im Kopfbereich. Es muss exakt null erreichen (oder innerhalb der Rundungstoleranz), bevor Sie bestätigen können.</li>
+<li>Wählen Sie <strong>Zuordnung anwenden</strong>, um zu bestätigen und mit der Buchung fortzufahren.</li>
+</ol>
+<p>Das System berechnet intern den Nettobetrag (ohne MwSt.) aus dem von Ihnen eingegebenen Bruttobetrag anhand des MwSt.-Satzes der Originalrechnungszeile.</p>
+<h3 id="proportional-verteilen">Proportional verteilen</h3>
+<p>Wenn Sie nicht manuell zuordnen möchten, wählen Sie <strong>Proportional verteilen</strong>. Das System berechnet den verbleibenden offenen Saldo pro Zeile (Urspr. Betrag minus bereits verrechnet) und verteilt die Zahlung in denselben Verhältnissen. Die letzte Zeile nimmt etwaige Rundungsdifferenzen auf. Sie können diese Verteilung als Ausgangspunkt nutzen und anschließend einzelne Zeilen vor der Bestätigung noch anpassen.</p>
+<h3 id="abbrechen">Abbrechen</h3>
+<p>Das Wählen von <strong>Abbrechen</strong> verwirft alle eingegebenen Beträge und rollt die gesamte Zahlungsanwendung zurück. Die Buchungsblattszeile oder die manuelle Ausgleichsbuchung wird verworfen; es wird nichts gebucht. Sie können anschließend zum Buchungsblatt oder zur Ausgleichsseite zurückkehren, die Beträge korrigieren und es erneut versuchen.</p>
+<hr>
+<h2 id="statusindikatoren-auf-rechnungszeilen">Statusindikatoren auf Rechnungszeilen</h2>
+<p>Die Erweiterung fügt einen Zahlungsstatus-Indikator zu gebuchten Verkaufsrechnungszeilen hinzu. Der Status wird dynamisch aus den Netto-Verrechnungsbeträgen abgeleitet:</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Offen</strong></td>
+<td>Keine Verrechnungsposten vorhanden, oder alle Verrechnungen wurden storniert</td>
+</tr>
+<tr>
+<td><strong>Teilweise</strong></td>
+<td>Verrechnungsposten vorhanden, aber der offene Saldo wurde noch nicht auf null reduziert</td>
+</tr>
+<tr>
+<td><strong>Bezahlt</strong></td>
+<td>Die Summe aller Verrechnungsbeträge entspricht dem Zeilenbetrag (innerhalb einer Toleranz von 0,01)</td>
+</tr>
+</tbody>
+</table>
+<p>Der Status wird farblich angezeigt: grün für <em>Bezahlt</em>, gelb für <em>Teilweise</em>, kein Farbton für <em>Offen</em>.</p>
+<p>Das Feld <strong>Ausstehender Betrag</strong> auf jeder Rechnungszeile zeigt den verbleibenden numerischen Saldo, berechnet als: <em>Ursprünglicher Zeilenbetrag – Gesamter Netto-Verrechnungsbetrag</em>.</p>
+<hr>
+<h2 id="zuordnungs-id">Zuordnungs-ID</h2>
+<p>Jedem Zahlungsvorgang wird eine eindeutige <strong>Zuordnungs-ID</strong> im Format <code>{Debitor Nr.}-{JJMMTT}-{LfdNr.}</code> zugewiesen, z. B. <code>CUST001-260312-001</code>. Alle durch eine einzige Zahlung erstellten Verrechnungsposten – ob über mehrere Rechnungszeilen oder einschließlich eines Nicht zugeordneten Postens – teilen dieselbe Zuordnungs-ID.</p>
+<p>Verwenden Sie die Zuordnungs-ID, um:</p>
+<ul>
+<li>Alle Verrechnungszeilen einer Banküberweisung zu gruppieren</li>
+<li>In den Power-BI-Berichten nachzuvollziehen, welche Rechnungszeilen durch eine bestimmte Zahlung gedeckt wurden</li>
+<li>Zu verstehen, ob ein Nicht zugeordneter Posten zur selben Banküberweisung wie eine Gruppe normaler Verrechnungen gehört</li>
+</ul>
+<hr>
+<h2 id="häufig-gestellte-fragen">Häufig gestellte Fragen</h2>
+<p><strong>Warum zeigt eine Rechnungszeile „Teilweise&quot;, obwohl ich eine vollständige Zahlung eingegeben habe?</strong>
+Das System berechnet den Status aus dem Netto aller Verrechnungsposten, einschließlich Stornierungen. Wenn eine frühere Verrechnung storniert wurde, ist der Nettosaldo niedriger als erwartet. Prüfen Sie die Verrechnungspostenliste gefiltert nach der Rechnungsnummer, um alle Posten und Stornierungen zu sehen.</p>
+<p><strong>Kann ich Verrechnungsposten bearbeiten?</strong>
+Nein. Verrechnungsposten sind ein unveränderliches Prüfprotokoll. Bei einem fehlerhaften Posten muss die Zahlungsanwendung in Business Central über die Standard-Ausgleichsaufhebungsfunktion rückgängig gemacht werden. Die Erweiterung erstellt dann automatisch die entsprechenden Storno-Verrechnungsposten.</p>
+<p><strong>Warum ist die Kontoauszug Belegnr. bei manchen Posten leer?</strong>
+Dieses Feld wird nur befüllt, wenn das System die Zahlung zum Zeitpunkt der Verrechnungspostenerstellung auf einen konkreten Bankbuchhaltungsposten zurückverfolgen kann. Wird eine Verrechnung über eine manuelle Ausgleichsbuchung erstellt, die nicht direkt mit einer Bankbuchung verknüpft ist, kann das Feld leer bleiben.</p>
+<p><strong>Was passiert, wenn ich die Manuelle Zahlungszuordnung schließe, ohne alle Beträge zuzuordnen?</strong>
+Die Aktion <strong>Zuordnung anwenden</strong> ist nur aktiv, wenn das Feld <strong>Noch zuzuordnender Betrag</strong> null erreicht. Wenn Sie stattdessen auf <strong>Abbrechen</strong> klicken, wird die Buchung vollständig zurückgerollt.</p>
+<p><strong>Können zwei Zahlungen im selben Buchungsblatt-Stapel zugeordnet werden?</strong>
+Ja. Die Manuelle Zahlungszuordnung öffnet sich einmal für jede im Stapel erkannte Teilanwendung. Jede muss einzeln bestätigt werden, bevor die Buchung fortgesetzt wird.</p>
+
+            
+            
+        </body>
+        </html>

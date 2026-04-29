@@ -1,0 +1,2013 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="de-DE" original="P3 Group TXL Payment Cameralistic">
+    <body>
+      <group id="body">
+        <trans-unit id="TableExtension 870791284 - Field 3113451206 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Dimension Set ID</source>
+          <target state="translated">Kreditor/Debitor Dimensionssatz-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Dimension Set ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 2037333831 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Document Type</source>
+          <target state="translated">Kreditor/Debitor Belegart</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Doc Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 2894683269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Document Due Date</source>
+          <target state="translated">Kreditor/Debitor Beleg Fälligkeitsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Doc. Due Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 6029200 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Document No.</source>
+          <target state="translated">Kreditor/Debitor Beleg-Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 827537182 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Global Dimension 1 Code</source>
+          <target state="translated">Kreditor/Debitor Globale Dimension 1 Code</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Global Dimension 1 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 1248707195 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Vendor/Customer Global Dimension 2 Code</source>
+          <target state="translated">Kreditor/Debitor Globale Dimension 2 Code</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field CV Global Dimension 2 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 870791284 - Field 2105177955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1815808370">
+          <source>Source Ledger Entry Type</source>
+          <target state="translated">Quelle Posten Eintragstyp</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Bank Acc. Ledger Entry - Field Ledger Entry Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 3113451206 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Dimension Set ID field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor-/Debitor Dimensionssatz-ID an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control CV Dimension Set ID - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 827537182 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Global Dimension 1 Code field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor/Debitor Globale Dimension 1 Code an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control CV Global Dimension 1 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 1248707195 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Global Dimension 2 Code field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor/Debitor Global Dimension 2 Code an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control CV Global Dimension 2 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 3319631365 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Transaction No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Transaktionsnummer an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Transaction No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 1714107377 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Document Type field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor/Debitorbelegart an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Vend./Cust. Doc Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 4089433211 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Document Due Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Fälligkeitsdatum des Kreditor-/Debitorbelegs an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Vend./Cust. Doc. Due Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2591587468 - Control 602587242 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2591587468">
+          <source>Specifies the value of the Vendor/Customer Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Kreditor-/Debitorbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Bank Account Ledger Entries - Control Vend./Cust. Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2393537757 - Method 3724757915 - NamedType 3160015003" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Found %1 records of %2.</source>
+          <target state="translated">%1 Datensätze von %2 gefunden.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Customer Ledger Entries - Method GetBankLedgerEntry - NamedType ErrorTooManyRecords</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2393537757 - Method 1665861916 - NamedType 133460928" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Too many %1 found to continue processing.</source>
+          <target state="translated">Es wurden zu viele %1 gefunden, um die Verarbeitung fortzusetzen.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Customer Ledger Entries - Method OnRun - NamedType ErrTooManyRecords</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2393537757 - Method 1665861916 - NamedType 3838565358" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No %1 found to continue processing.</source>
+          <target state="translated">Keine %1 gefunden, um die Bearbeitung fortzusetzen.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Customer Ledger Entries - Method OnRun - NamedType ErrNoRecords</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 3102773586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Bank Document No.</source>
+          <target state="translated">Bank Beleg Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Bank Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 1675438334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Bank Posting Date</source>
+          <target state="translated">Bank Buchungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Bank Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 789473408 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Paid</source>
+          <target state="translated">Bezahlt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Paid - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4169390865 - Field 510685278 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2733917450">
+          <source>Payment Cancelled</source>
+          <target state="translated">Zlg. Ausgl. aufgehoben</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension CustLedgerEntry TableExt - Field Pmt Cancelled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1178281356 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>HTML Renderer</source>
+          <target state="translated">HTML-Renderer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page HTML Renderer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 3102773586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Bank Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Bank Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 1675438334 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Bank Posting Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbuchungsdatum an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Bank Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 789473408 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Paid field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bezahlt an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Paid - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 510685278 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Payment Cancelled field.</source>
+          <target state="translated">Gibt den Wert des Feldes "Zahlung storniert" an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Pmt Cancelled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2799020333 - Control 4089433211 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1887905131">
+          <source>Specifies the value of the Vendor/Customer Document Due Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Fälligkeitsdatum des Kreditor-/Debitorbelegs an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension GeneralLedgerEntries PageExt - Control Vend./Cust. Doc. Due Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 3102773586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Bank Document No.</source>
+          <target state="translated">Bank Beleg Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Bank Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 1675438334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Bank Posting Date</source>
+          <target state="translated">Bank Buchungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Bank Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 2894683269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Vendor/Customer Document Due Date</source>
+          <target state="translated">Kreditor/Debitor Beleg Fälligkeitsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field CV Doc. Due Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 789473408 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Paid</source>
+          <target state="translated">Bezahlt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Paid - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3902503500 - Field 510685278 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2825951060">
+          <source>Payment Cancelled</source>
+          <target state="translated">Zlg. Ausgl. aufgehoben</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension GLEntry TableExt - Field Pmt Cancelled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 2848094594 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Specifies the invoice line number that this credit memo line offsets.</source>
+          <target state="translated">Gibt die Rechnungszeilennummer an, die durch diese Gutschriftszeile ausgeglichen wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Applied to Invoice Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 2491212764 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Specifies the posted purchase invoice number that this credit memo line offsets.</source>
+          <target state="translated">Gibt die Nummer der gebuchten Eingangsrechnung an, die durch diese Gutschriftsposition ausgeglichen wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Applied to Invoice No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 3087582600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Specifies the bank statement document number of the most recent settlement.</source>
+          <target state="translated">Gibt die Belegnummer des Kontoauszugs für die neueste Verrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Latest Bank Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 4122707638 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Specifies the date of the most recent settlement for this purchase credit memo line.</source>
+          <target state="translated">Gibt das Datum der letzten Verrechnung für diese Gutschriftsposition an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Latest Settlement Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuestes Zahlungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 1286866511 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Specifies the remaining unapplied amount for this purchase credit memo line (LCY).</source>
+          <target state="translated">Gibt den verbleibenden, noch nicht verrechneten Betrag für diese Gutschriftsposition (MW) an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Outstanding Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 3840466586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Specifies the payment status of this purchase credit memo line: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den Zahlungsstatus dieser Gutschriftsposition an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control PaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 3840466586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control PaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2618934728 - Control 2783956936 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2618934728">
+          <source>Specifies the total settled amount for this purchase credit memo line (LCY).</source>
+          <target state="translated">Gibt den Gesamtbetrag der Verrechnung für diese Gutschriftsposition (MW) an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Cr. Memo Subform - Control Settled Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 3087582600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Specifies the bank statement document number of the most recent settlement.</source>
+          <target state="translated">Gibt die Belegnummer des Kontoauszugs für die neueste Verrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control Latest Bank Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnummer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 4122707638 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Specifies the date of the most recent payment settlement for this purchase invoice line.</source>
+          <target state="translated">Gibt das Datum der letzten Verrechnung für diese Rechnungsposition an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control Latest Settlement Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 1286866511 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Specifies the remaining unpaid amount for this purchase invoice line (LCY).</source>
+          <target state="translated">Gibt den noch ausstehenden Betrag für diese Einkaufsrechnungsposition (MW) an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control Outstanding Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 3840466586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Specifies the payment status of this purchase invoice line: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den Zahlungsstatus dieser Einkaufsrechnungsposition an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control PaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 3840466586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control PaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2410131092 - Control 2783956936 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2410131092">
+          <source>Specifies the total amount settled for this purchase invoice line (LCY).</source>
+          <target state="translated">Gibt den Gesamtbetrag an, der für diese Einkaufsrechnungsposition verrechnet wurde (MW).</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Purch. Invoice Subform - Control Settled Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2015685091 - Control 2077681122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4048657685">
+          <source>Payment Summary</source>
+          <target state="translated">Zahlungsübersicht</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchaseInvoice PageExt - Control PaymentSummary - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2015685091 - Control 874104198 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4048657685">
+          <source>Specifies the date of the most recent payment settlement for this purchase invoice.</source>
+          <target state="translated">Gibt das Datum der letzten Verrechnung für diese Einkaufsrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchaseInvoice PageExt - Control DocLatestSettlementDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2015685091 - Control 874104198 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4048657685">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchaseInvoice PageExt - Control DocLatestSettlementDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2015685091 - Control 370585730 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4048657685">
+          <source>Specifies the overall payment status of this purchase invoice: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den allgemeinen Zahlungsstatus dieser Einkaufsrechnung an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchaseInvoice PageExt - Control DocPaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2015685091 - Control 370585730 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4048657685">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchaseInvoice PageExt - Control DocPaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2015685091 - Control 2194413931 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4048657685">
+          <source>Specifies the net total amount settled across all lines of this purchase invoice (LCY).</source>
+          <target state="translated">Gibt den Netto-Gesamtbetrag an, der über alle Positionen dieser Einkaufsrechnung (MW) verrechnet wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchaseInvoice PageExt - Control DocTotalSettled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2015685091 - Control 2194413931 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4048657685">
+          <source>Total Settled Amount</source>
+          <target state="translated">Verr. Betrag</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchaseInvoice PageExt - Control DocTotalSettled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3014414408 - Control 2077681122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2854365759">
+          <source>Payment Summary</source>
+          <target state="translated">Zahlungsübersicht</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchCrMemo PageExt - Control PaymentSummary - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3014414408 - Control 874104198 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2854365759">
+          <source>Specifies the date of the most recent settlement for this purchase credit memo.</source>
+          <target state="translated">Gibt das Datum der letzten Verrechnung für diese Einkaufsgutschrift an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchCrMemo PageExt - Control DocLatestSettlementDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3014414408 - Control 874104198 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2854365759">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchCrMemo PageExt - Control DocLatestSettlementDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3014414408 - Control 370585730 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2854365759">
+          <source>Specifies the overall payment status of this purchase credit memo: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den allgemeinen Zahlungsstatus dieser Einkaufsgutschrift an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchCrMemo PageExt - Control DocPaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3014414408 - Control 370585730 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2854365759">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchCrMemo PageExt - Control DocPaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3014414408 - Control 2194413931 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2854365759">
+          <source>Specifies the net total amount settled across all lines of this purchase credit memo (LCY).</source>
+          <target state="translated">Gibt den Netto-Gesamtbetrag an, der über alle Positionen dieser Einkaufsgutschrift (MW) verrechnet wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchCrMemo PageExt - Control DocTotalSettled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3014414408 - Control 2194413931 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2854365759">
+          <source>Total Settled Amount</source>
+          <target state="translated">Verr. Betrag</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedPurchCrMemo PageExt - Control DocTotalSettled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 3102773586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Bank Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Bank Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 1675438334 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Bank Posting Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbuchungsdatum an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Bank Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 789473408 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Paid field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bezahlt an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Paid - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3231906147 - Control 510685278 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1567633909">
+          <source>Specifies the value of the Payment Cancelled field.</source>
+          <target state="translated">Gibt den Wert des Feldes "Zahlung storniert" an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension VendorLedgerEntries PageExt - Control Pmt Cancelled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 3102773586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Bank Document No. field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbeleg-Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Bank Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 1675438334 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Bank Posting Date field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bankbuchungsdatum an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Bank Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 789473408 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Paid field.</source>
+          <target state="translated">Gibt den Wert des Feldes Bezahlt an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Paid - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2372215963 - Control 510685278 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2393537757">
+          <source>Specifies the value of the Payment Cancelled field.</source>
+          <target state="translated">Gibt den Wert des Feldes "Zahlung storniert" an.</target>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CustomerLedgerEntries PageExt - Control Pmt Cancelled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 2848094594 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Specifies the invoice line number that this credit memo line offsets.</source>
+          <target state="translated">Gibt die Rechnungszeilennummer an, die durch diese Gutschriftszeile ausgeglichen wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Applied to Invoice Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 2491212764 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Specifies the posted sales invoice number that this credit memo line offsets.</source>
+          <target state="translated">Gibt die Nummer der gebuchten Verkaufsrechnung an, die durch diese Gutschriftsposition ausgeglichen wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Applied to Invoice No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 3087582600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Specifies the bank statement document number of the most recent settlement.</source>
+          <target state="translated">Gibt die Belegnummer des Kontoauszugs für die neueste Verrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Latest Bank Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 4122707638 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Specifies the date of the most recent settlement for this credit memo line.</source>
+          <target state="translated">Gibt das Datum der neuesten Verrechnung für diese Gutschriftsposition an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Latest Settlement Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 1286866511 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Specifies the remaining unapplied amount for this credit memo line (LCY).</source>
+          <target state="translated">Gibt den verbleibenden, noch nicht verrechneten Betrag für diese Gutschriftsposition (MW) an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Outstanding Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 3840466586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Specifies the payment status of this credit memo line: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den Zahlungsstatus dieser Gutschriftsposition an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control PaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 3840466586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control PaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1257057922 - Control 2783956936 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1257057922">
+          <source>Specifies the total settled amount for this credit memo line (LCY).</source>
+          <target state="translated">Gibt den Gesamtbetrag der Verrechnung für diese Gutschriftsposition (MW) an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Cr. Memo Subform - Control Settled Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2420212404 - Control 2077681122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
+          <source>Payment Summary</source>
+          <target state="translated">Zahlungsübersicht</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice - Control PaymentSummary - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2420212404 - Control 874104198 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
+          <source>Specifies the date of the most recent payment settlement for this invoice.</source>
+          <target state="translated">Gibt das Datum der letzten Verrechnung für diese Rechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice - Control DocLatestSettlementDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2420212404 - Control 874104198 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
+          <source>Latest Payment Date</source>
+          <target state="needs-l10n">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice - Control DocLatestSettlementDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2420212404 - Control 370585730 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
+          <source>Specifies the overall payment status of this invoice: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den allgemeinen Zahlungsstatus dieser Rechnung an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice - Control DocPaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2420212404 - Control 370585730 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice - Control DocPaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2420212404 - Control 2194413931 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
+          <source>Specifies the net total amount settled across all lines of this invoice (LCY).</source>
+          <target state="translated">Gibt den Netto-Verrechnungsbetrag an, der über alle Positionen dieser Rechnung (MW) abgerechnet wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice - Control DocTotalSettled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2420212404 - Control 2194413931 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2420212404">
+          <source>Total Settled Amount</source>
+          <target state="translated">Verr. Betrag</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice - Control DocTotalSettled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 3087582600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Specifies the bank statement document number of the most recent settlement.</source>
+          <target state="translated">Gibt die Belegnummer des Kontoauszugs für die neueste Verrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control Latest Bank Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnummer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 4122707638 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Specifies the date of the most recent payment settlement for this invoice line.</source>
+          <target state="translated">Gibt das Datum der neuesten Verrechnung für diese Rechnungsposition an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control Latest Settlement Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 1286866511 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Specifies the remaining unpaid amount for this invoice line (LCY).</source>
+          <target state="translated">Gibt den noch ausstehenden Betrag für diese Rechnungsposition (MW) an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control Outstanding Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 3840466586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Specifies the payment status of this invoice line: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den Zahlungsstatus dieser Rechnungsposition an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control PaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 3840466586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control PaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1379883806 - Control 2783956936 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1379883806">
+          <source>Specifies the total amount settled for this invoice line (LCY).</source>
+          <target state="translated">Gibt den Gesamtbetrag an, der für diese Rechnungsposition verrechnet wurde (MW).</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Sales Invoice Subform - Control Settled Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3481397724 - Control 2077681122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2716593954">
+          <source>Payment Summary</source>
+          <target state="translated">Zahlungsübersicht</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedSalesCrMemo PageExt - Control PaymentSummary - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3481397724 - Control 874104198 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2716593954">
+          <source>Specifies the date of the most recent settlement for this credit memo.</source>
+          <target state="translated">Gibt das Datum der letzten Verrechnung für diese Gutschrift an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedSalesCrMemo PageExt - Control DocLatestSettlementDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3481397724 - Control 874104198 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2716593954">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedSalesCrMemo PageExt - Control DocLatestSettlementDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3481397724 - Control 370585730 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2716593954">
+          <source>Specifies the overall payment status of this credit memo: Open, Partial, or Paid.</source>
+          <target state="translated">Gibt den allgemeinen Zahlungsstatus dieser Gutschrift an: offen, teilweise bezahlt oder bezahlt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedSalesCrMemo PageExt - Control DocPaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3481397724 - Control 370585730 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2716593954">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedSalesCrMemo PageExt - Control DocPaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3481397724 - Control 2194413931 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2716593954">
+          <source>Specifies the net total amount settled across all lines of this credit memo (LCY).</source>
+          <target state="translated">Gibt den Netto-Gesamtbetrag an, der über alle Positionen dieser Gutschrift verrechnet wurde (MW).</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedSalesCrMemo PageExt - Control DocTotalSettled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3481397724 - Control 2194413931 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2716593954">
+          <source>Total Settled Amount</source>
+          <target state="translated">Verr. Betrag</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension PostedSalesCrMemo PageExt - Control DocTotalSettled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Allocation Line Buffer</source>
+          <target state="translated">Zahlungszuordnungzeilen Puffer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 3778735739 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Allocation Amount Incl. VAT (LCY)</source>
+          <target state="translated">Zuordnungsbetrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Alloc. Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 3849581702 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Already Settled Amount (LCY)</source>
+          <target state="translated">Bereits verrechneter Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Already Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Beschreibung</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 3322554545 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dimension Set ID</source>
+          <target state="translated">Dimensions-Satz ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Dimension Set ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 3852983238 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account No.</source>
+          <target state="translated">Sachkonto Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field G/L Account No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 1303377601 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Global Dimension 1 Code</source>
+          <target state="translated">Globaler Dimensionscode 1</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Global Dimension 1 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 1337243520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Global Dimension 2 Code</source>
+          <target state="translated">Globaler Dimensionscode 2</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Global Dimension 2 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 3173817770 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invoice CLE Entry No.</source>
+          <target state="translated">Deb. Posten Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Inv. CLE Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 3320823955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line No.</source>
+          <target state="translated">Zeilennr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 4171230049 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Amount Incl. VAT (LCY)</source>
+          <target state="translated">Ursprünglicher Betrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Orig. Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1118793718 - Field 4201126946 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Amount (LCY)</source>
+          <target state="translated">Ursprünglicher Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Pmt. Alloc. Line Buffer - Field Original Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Entry</source>
+          <target state="translated">Verrechnungsposten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3864382786 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Assignment ID</source>
+          <target state="translated">Zuordnungs-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Assignment ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3435106605 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bank Statement Document No.</source>
+          <target state="translated">Kontoauszug Belegnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Bank Statement Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 1573963957 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cash Discount Amount (LCY)</source>
+          <target state="translated">Skontobetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Cash Discount Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3667573074 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cash Discount Amount Incl. VAT (LCY)</source>
+          <target state="translated">Skontobetrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Cash Discount Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2369664869 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created By</source>
+          <target state="translated">Erstellt von</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Created By - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3572756595 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created DateTime</source>
+          <target state="needs-l10n">Erstellt Datum/Uhrzeit</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Created DateTime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2443061030 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer/Vendor Name</source>
+          <target state="translated">Debitor/Kreditor Name</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field CV Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2616021550 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer/Vendor No.</source>
+          <target state="translated">Debitor/Kreditor Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field CV No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Beschreibung</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3322554545 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dimension Set ID</source>
+          <target state="translated">Dimensions-Satz ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Dimension Set ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2072706994 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Fully Settled</source>
+          <target state="translated">Beleg vollständig verrechnet</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Document Fully Settled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2480638018 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Line No.</source>
+          <target state="translated">Belegzeilennr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Document Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 486908828 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document No.</source>
+          <target state="translated">Belegnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2363328873 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Type</source>
+          <target state="translated">Belegart</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Document Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <target state="translated">Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 63418190 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account Name</source>
+          <target state="translated">Sachkontoname</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field G/L Account Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3852983238 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account No.</source>
+          <target state="translated">Sachkonto Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field G/L Account No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 1303377601 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Global Dimension 1 Code</source>
+          <target state="translated">Globaler Dimensionscode 1</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Global Dimension 1 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 1337243520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Global Dimension 2 Code</source>
+          <target state="translated">Globaler Dimensionscode 2</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Global Dimension 2 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3899186015 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Grant Number</source>
+          <target state="translated">Fördermittel Bescheidnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Grant Number - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 1113794585 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line Fully Settled</source>
+          <target state="translated">Zeile vollständig verrechnet</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Line Fully Settled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 653858365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Non-Deductible VAT Amount (LCY)</source>
+          <target state="translated">Nicht abzugsfähiger MwSt.-Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Non-Deductible VAT Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2243277051 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Line Amount Incl. VAT (LCY)</source>
+          <target state="translated">Urspr. Zeilenbetrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Orig. Line Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2883506638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Entry No.</source>
+          <target state="translated">Urspr. Lfd. Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Original Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 95167516 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Line Amount (LCY)</source>
+          <target state="translated">Urspr. Zeilenbetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Original Line Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3513440339 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Reference</source>
+          <target state="translated">Zahlungsreferenz</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Payment Reference - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 960536736 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reversal Entry</source>
+          <target state="translated">Stornoposten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Reversal Entry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 232671213 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reversal Entry No.</source>
+          <target state="translated">Stornoposten Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Reversal Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3744289816 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reversed</source>
+          <target state="translated">Storniert</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Reversed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3473559222 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Amount (LCY)</source>
+          <target state="translated">Verrechnungsbetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Settlement Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2265093089 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Amount (LCY) including VAT</source>
+          <target state="translated">Verrechnungsbetrag (MW) inkl. MwSt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Settlement Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 317985459 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Date</source>
+          <target state="translated">Verrechnungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 1984046811 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Entry Type</source>
+          <target state="translated">Verrechnungstyp</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Settlement Entry Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 781257514 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 3 Code</source>
+          <target state="translated">Dimensionscode 3</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Shortcut Dimension 3 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2711388939 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 4 Code</source>
+          <target state="translated">Dimensionscode 4</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Shortcut Dimension 4 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 405681708 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 5 Code</source>
+          <target state="translated">Dimensionscode 5</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Shortcut Dimension 5 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 4126842061 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 6 Code</source>
+          <target state="translated">Dimensionscode 6</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Shortcut Dimension 6 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2765633070 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 7 Code</source>
+          <target state="translated">Dimensionscode 7</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Shortcut Dimension 7 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 785667711 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 8 Code</source>
+          <target state="translated">Dimensionscode 8</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Shortcut Dimension 8 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 329585330 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Source Payment CLE Entry No.</source>
+          <target state="translated">Herkunft Deb.-Posten Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Source Payment CLE Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 2863649746 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Source Transaction No.</source>
+          <target state="translated">Herkunft Transaktionsnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Source Transaction No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3321355290 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Settled Amount (LCY)</source>
+          <target state="translated">Verr. Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Total Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 1456845069 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Settled Amount Incl. VAT (LCY)</source>
+          <target state="translated">Verr. Betrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Total Settled Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2075931443 - Field 3773776616 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transaction Type</source>
+          <target state="translated">Transaktionsart</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Settlement Entry - Field Transaction Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1465037467 - NamedType 1219000434" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment allocation cancelled. The payment application has been rolled back and no entries have been posted.</source>
+          <target state="translated">Die Zahlungszuordnung wurde abgebrochen. Der Zahlungsantrag wurde zurückgenommen, und es wurden keine Buchungen vorgenommen.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Settlement Entry Mgt. - NamedType AllocationCancelledErr</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Manual Payment Allocation</source>
+          <target state="translated">Manuelle Zahlungszuordnung</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - NamedType 3132633858" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The entered amount exceeds the remaining amount for this line (%1). A line cannot be allocated more than its outstanding balance.</source>
+          <target state="translated">Der eingegebene Betrag übersteigt den Restbetrag für diese Zeile (%1). Eine Zeile kann nicht mit einem Betrag verrechnet werden, der ihren ausstehenden Saldo übersteigt.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = remaining amount for the line</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - NamedType AllocationExceedsLineRemainingErr</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - NamedType 1841019302" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The total allocated amount (%1) must equal the payment amount (%2) before applying. Adjust the allocation amounts.</source>
+          <target state="translated">Der Gesamtzuordnungsbetrag (%1) muss vor der Anwendung dem Zahlungsbetrag (%2) entsprechen. Passen Sie die Zuordnungsbeträge an.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = total allocated amount, %2 = payment amount</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - NamedType AllocMustMatchPaymentMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3778735739 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Enter how much of the received payment amount (incl. VAT) to allocate to this invoice line.</source>
+          <target state="translated">Geben Sie ein, welcher Betrag der eingegangenen Zahlung (inkl. MwSt.) dieser Rechnungsposition zuzuordnen ist.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Alloc. Amt Incl. VAT (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3778735739 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Allocation Amount Incl. VAT (LCY)</source>
+          <target state="translated">Zutordnungsbetrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Alloc. Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3849581702 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the amount already settled by previous partial payments on this line. Populated in Story 3.2.</source>
+          <target state="translated">Gibt den Betrag an, der durch frühere Teilzahlungen in dieser Zeile bereits verrechnet wurde. Wird in Story 3.2 ausgefüllt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Already Settled Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3849581702 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Already Settled (LCY)</source>
+          <target state="translated">Bereits verrechnet (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Already Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the description from the invoice line.</source>
+          <target state="translated">Gibt die Beschreibung aus der Rechnungsposition an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Beschreibung</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3852983238 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the G/L account number from the invoice line.</source>
+          <target state="translated">Gibt die Sachkontonummer aus der Rechnungsposition an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control G/L Account No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3852983238 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account No.</source>
+          <target state="translated">Sachkonto Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control G/L Account No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3320823955 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the invoice line number.</source>
+          <target state="translated">Gibt die Rechnungszeilennummer an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3320823955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line No.</source>
+          <target state="translated">Zeilennr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 4171230049 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the original invoice line amount incl. VAT.</source>
+          <target state="translated">Gibt den ursprünglichen Rechnungsbetrag inkl. MwSt. an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Orig. Amt Incl. VAT (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 4171230049 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Amount Incl. VAT (LCY)</source>
+          <target state="translated">Urspr. Betrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Orig. Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 4201126946 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the original invoice line amount excl. VAT.</source>
+          <target state="translated">Gibt den ursprünglichen Rechnungsbetrag ohne Mehrwertsteuer an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Original Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 4201126946 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Amount (LCY)</source>
+          <target state="translated">Urspr. Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control Original Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 2077681122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Details</source>
+          <target state="translated">Zahlungsdetails</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control PaymentSummary - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 1048441384 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the total payment amount received (incl. VAT). This is the amount to distribute across invoice lines.</source>
+          <target state="translated">Gibt den insgesamt erhaltenen Zahlungsbetrag (inkl. MwSt.) an. Dieser Betrag ist auf die einzelnen Rechnungspositionen aufzuteilen.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control ApplicationAmtLCY - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 1048441384 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Amount (LCY)</source>
+          <target state="translated">Zahlbetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control ApplicationAmtLCY - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 1881986821 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the customer name.</source>
+          <target state="translated">Gibt den Debitornamen an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control CustomerName - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 1881986821 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer Name</source>
+          <target state="translated">Debitor Name</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control CustomerName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3689535207 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the customer number for the invoice being partially paid.</source>
+          <target state="translated">Gibt die Debitornr. für die Rechnung an, die teilweise bezahlt wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control CustomerNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3689535207 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer No.</source>
+          <target state="translated">Debitor Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control CustomerNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3117834186 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the invoice or credit memo document number being partially settled.</source>
+          <target state="translated">Gibt die Belegnummer der Rechnung oder Gutschrift an, die teilweise beglichen wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control DocumentNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 3117834186 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document No.</source>
+          <target state="translated">Belegnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control DocumentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 683985302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how much of the payment amount still needs to be allocated. Must be 0 before applying.</source>
+          <target state="translated">Gibt an, welcher Anteil des Zahlungsbetrags noch zugewiesen werden muss. Muss vor der Anwendung den Wert 0 haben.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control RemainingToAllocate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 683985302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remaining to Allocate (LCY)</source>
+          <target state="translated">Noch zuzuordnender Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control RemainingToAllocate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 1118304781 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the sum of all allocation amounts entered so far.</source>
+          <target state="translated">Gibt die Summe aller bisher eingegebenen Zuordnungsbeträge an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control TotalAllocated - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Control 1118304781 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Allocated (LCY)</source>
+          <target state="translated">Gesamtbetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Control TotalAllocated - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Action 2612986352 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Validates that the total allocated equals the payment amount and creates Settlement Entries. The application transaction is committed after this.</source>
+          <target state="translated">Überprüft, ob der Gesamtbetrag der Zuordnung mit dem Zahlungsbetrag übereinstimmt, und erstellt Verrechnungsposten. Anschließend wird die Anwendungstransaktion abgeschlossen.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Action ApplyAllocation - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Action 2612986352 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Apply Allocation</source>
+          <target state="translated">Zuordnung anwenden</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Action ApplyAllocation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Action 1803215978 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cancels the allocation. The entire payment application will be rolled back — no G/L entries or customer ledger entries will be posted.</source>
+          <target state="translated">Bricht die Zuordnung ab. Der gesamte Zahlungsantrag wird rückgängig gemacht – es werden weder Sachkontenbuchungen noch Buchungen im Kundenbuch gebucht.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Action CancelAllocation - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Action 1803215978 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="translated">Abbrechen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Action CancelAllocation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Action 524119237 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Distributes the payment amount proportionally across all lines based on their original amounts incl. VAT. The last line absorbs any rounding difference.</source>
+          <target state="translated">Der Zahlungsbetrag wird proportional auf alle Zeilen verteilt, basierend auf deren ursprünglichen Beträgen inkl. MwSt. Die letzte Zeile gleicht etwaige Rundungsdifferenzen aus.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Action DistributeProportionally - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Action 524119237 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Distribute Proportionally</source>
+          <target state="translated">Proportional verteilen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Action DistributeProportionally - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1944911446 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target state="translated">Verarbeiten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Payment Allocation - Action Category_Process - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Entry API</source>
+          <target state="translated">API für Verrechnungsposten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1651802930 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Assignment ID</source>
+          <target state="translated">Zuordnungs-ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control assignmentId - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 452544271 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bank Statement Document No.</source>
+          <target state="translated">Kontoauszug Belegnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control bankStatementDocumentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2855676824 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cash Discount Amount (LCY)</source>
+          <target state="translated">Skontobetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control cashDiscountAmt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 3001563641 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cash Discount Amount Incl. VAT (LCY)</source>
+          <target state="translated">Skontobetrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control cashDiscountAmtInclVat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 661016237 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created By</source>
+          <target state="translated">Erstellt von</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control createdBy - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1363911307 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created DateTime</source>
+          <target state="translated">Erstellt Datum/Uhrzeit</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control createdDateTime - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2026124998 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer/Vendor Name</source>
+          <target state="translated">Debitor/Kreditor Name</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control cvName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1725744280 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer/Vendor No.</source>
+          <target state="translated">Debitor/Kreditor Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control cvNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 4232699882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target state="translated">Beschreibung</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2672970865 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dimension Set ID</source>
+          <target state="translated">Dimensions-Satz ID</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control dimensionSetId - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2972518434 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Fully Settled</source>
+          <target state="translated">Beleg vollständig verrechnet</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control documentFullySettled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2053481236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Line No.</source>
+          <target state="translated">Belegzeilennr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control documentLineNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 73228906 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document No.</source>
+          <target state="translated">Belegnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control documentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 305869689 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document Type</source>
+          <target state="translated">Belegart</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control documentType - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2683860767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <target state="translated">Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control entryNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 24810975 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account Name</source>
+          <target state="translated">Sachkontoname</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control glAccountName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1776223629 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account No.</source>
+          <target state="translated">Sachkonto Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control glAccountNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2895345465 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Global Dimension 1 Code</source>
+          <target state="translated">Globaler Dimensionscode 1</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control globalDimension1Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2945582944 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Global Dimension 2 Code</source>
+          <target state="translated">Globaler Dimensionscode 2</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control globalDimension2Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 323584711 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Grant Number</source>
+          <target state="translated">Fördermittel Bescheidnr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control grantNumber - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 4197299145 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line Fully Settled</source>
+          <target state="translated">Zeile vollständig verrechnet</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control lineFullySettled - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2851928515 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Non-Deductible VAT Amount (LCY)</source>
+          <target state="translated">Nicht abzugsfähiger Mehrwertsteuerbetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control nonDeductibleVatAmt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1714886488 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Entry No.</source>
+          <target state="translated">Ursprüngliche Lfd. Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control originalEntryNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 3598343097 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Line Amount (LCY)</source>
+          <target state="translated">Urspr. Zeilenbetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control originalLineAmt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1221626640 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Original Line Amount Incl. VAT (LCY)</source>
+          <target state="translated">Urspr. Zeilenbetrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control originalLineAmtInclVat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 701498731 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Payment Reference</source>
+          <target state="translated">Zahlungsreferenz</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control paymentReference - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 21307352 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reversal Entry</source>
+          <target state="translated">Stornoposten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control reversalEntry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 993930879 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reversal Entry No.</source>
+          <target state="translated">Stornoposten Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control reversalEntryNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 3274398712 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reversed</source>
+          <target state="translated">Storniert</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control reversed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2132217119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Amount (LCY)</source>
+          <target state="translated">Verrechnungsbetrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control settlementAmt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 3953917466 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Amount Incl. VAT (LCY)</source>
+          <target state="translated">Verrechnungsbetrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control settlementAmtInclVat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1264616435 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Date</source>
+          <target state="translated">Verrechnungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control settlementDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 670993563 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Entry Type</source>
+          <target state="translated">Verrechnungstyp</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control settlementEntryType - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2432886762 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 3 Code</source>
+          <target state="translated">Dimensionscode 3</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control shortcutDimension3Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 3556578179 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 4 Code</source>
+          <target state="translated">Dimensionscode 4</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control shortcutDimension4Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1036061212 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 5 Code</source>
+          <target state="translated">Dimensionscode 5</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control shortcutDimension5Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 3647166709 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 6 Code</source>
+          <target state="translated">Dimensionscode 6</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control shortcutDimension6Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 425895822 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 7 Code</source>
+          <target state="translated">Dimensionscode 7</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control shortcutDimension7Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2097597495 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 8 Code</source>
+          <target state="translated">Dimensionscode 8</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control shortcutDimension8Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 2672559059 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Settled Amount (LCY)</source>
+          <target state="translated">Verr. Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control totalSettledAmt - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 1872714670 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Settled Amount Incl. VAT (LCY)</source>
+          <target state="translated">Verr. Betrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control totalSettledAmtInclVat - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4131258651 - Control 3189546032 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transaction Type</source>
+          <target state="translated">Transaktions Typ</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry API - Control transactionType - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Settlement Entry List</source>
+          <target state="translated">Verrechnungsposten Liste</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3864382786 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the assignment ID grouping all settlements (payments, credit memos, reversals) for the same invoice.</source>
+          <target state="translated">Gibt die Zuordnungs-ID an, unter der alle Zahlungen (Zahlungen, Gutschriften, Stornierungen) für dieselbe Rechnung zusammengefasst sind.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Assignment ID - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3435106605 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the bank statement document number that triggered this settlement.</source>
+          <target state="translated">Gibt die Belegnummer des Kontoauszugs an, der diese Verrechnung ausgelöst hat.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Bank Statement Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 1573963957 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies any cash discount amount (excl. VAT) granted at the time of settlement.</source>
+          <target state="translated">Gibt einen etwaigen Skontobetrag (ohne MwSt.) an, der zum Zeitpunkt der Verrechnung gewährt wird.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Cash Discount Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2369664869 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the user who created this settlement entry.</source>
+          <target state="translated">Gibt den Benutzer an, der diesen Verrechnungssatz angelegt hat.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Created By - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3572756595 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date and time when this settlement entry was created.</source>
+          <target state="translated">Gibt das Datum und die Uhrzeit an, zu denen dieser Verrechnungssatz erstellt wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Created DateTime - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2443061030 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the customer or vendor name as it was at the time of settlement.</source>
+          <target state="translated">Gibt den Namen des Debitor oder Kreditor so an, wie er zum Zeitpunkt der Verrechnung lautete.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control CV Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2616021550 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the customer or vendor number.</source>
+          <target state="translated">Gibt die Debitor- oder Kreditornummer an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control CV No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description for this settlement entry.</source>
+          <target state="translated">Gibt eine Beschreibung für diesen Verrechnungssatz an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2072706994 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Indicates whether all lines of the document have been fully settled.</source>
+          <target state="translated">Gibt an, ob alle Zeilen des Dokuments vollständig verrechnet wurden.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Document Fully Settled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2480638018 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the line number within the settled document.</source>
+          <target state="translated">Gibt die Zeilennummer innerhalb des verrechneten Belegs an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Document Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 486908828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the document number of the settled invoice or credit memo.</source>
+          <target state="translated">Gibt die Belegnummer der verrechneten Rechnung oder Gutschrift an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2363328873 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the document type (Invoice or Credit Memo) of the settled document.</source>
+          <target state="translated">Gibt die Belegart (Rechnung oder Gutschrift) des verrechneten Belegs an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Document Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 883711285 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the unique sequential entry number.</source>
+          <target state="translated">Gibt die eindeutige fortlaufende Eintragsnummer an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 63418190 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the G/L account name as it was at the time of settlement.</source>
+          <target state="translated">Gibt den Namen des Sachkontos an, wie er zum Zeitpunkt der Verrechnung lautete.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control G/L Account Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3852983238 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the G/L account number associated with this settlement.</source>
+          <target state="translated">Gibt die mit dieser Verrechnung verbundene Sachkontonummer an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control G/L Account No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 1303377601 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Global Dimension 1 code (e.g. cost center).</source>
+          <target state="translated">Gibt den Wert des Codes der globalen Dimension 1 an (z. B. Kostenstelle).</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Global Dimension 1 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 1337243520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Global Dimension 2 code.</source>
+          <target state="translated">Gibt den Wert des Codes für die globale Dimension 2 an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Global Dimension 2 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3899186015 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the grant number associated with this settlement.</source>
+          <target state="translated">Gibt die mit dieser Verrechnung verbundene Fördermittelbescheid Nr. an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Grant Number - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 1113794585 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Indicates whether the invoice line has been fully settled across all payments.</source>
+          <target state="translated">Gibt an, ob die Rechnungsposition über alle Zahlungen hinweg vollständig verrechnet wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Line Fully Settled - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 653858365 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the non-deductible VAT amount for this invoice line at the time of settlement.</source>
+          <target state="translated">Gibt den nicht abzugsfähigen Mehrwertsteuerbetrag für diese Rechnungsposition zum Zeitpunkt der Verrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Non-Deductible VAT Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2243277051 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the original invoice/credit memo line amount (incl. VAT) at the time of settlement.</source>
+          <target state="translated">Gibt den ursprünglichen Betrag der Rechnungs-/Gutschriftsposition (inkl. MwSt.) zum Zeitpunkt der Verrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Orig. Line Amt Incl. VAT (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 95167516 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the original invoice/credit memo line amount (excl. VAT) at the time of settlement.</source>
+          <target state="translated">Gibt den ursprünglichen Betrag der Rechnungs-/Gutschriftsposition (ohne MwSt.) zum Zeitpunkt der Verrechnung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Original Line Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3513440339 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the payment reference text from the bank statement.</source>
+          <target state="translated">Gibt den Verwendungszweck aus dem Kontoauszug an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Payment Reference - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 960536736 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether this entry is a reversal of a previous settlement.</source>
+          <target state="translated">Gibt an, ob es sich bei diesem Eintrag um eine Stornierung einer früheren Verrechnung handelt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Reversal Entry - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3744289816 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether this entry has been reversed by a later entry.</source>
+          <target state="translated">Gibt an, ob dieser Eintrag durch einen späteren Eintrag storniert wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Reversed - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3473559222 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the net settled amount in local currency. Reversal entries carry opposite signs.</source>
+          <target state="translated">Gibt den Nettoausgleichsbetrag in Landeswährung an. Stornobuchungen weisen das entgegengesetzte Vorzeichen auf.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Settlement Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 2265093089 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the settled amount including VAT in local currency.</source>
+          <target state="translated">Gibt den verrechneten Betrag einschließlich MwSt. in der Landeswährung an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Settlement Amt Incl. VAT (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 317985459 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the date on which the settlement was recorded.</source>
+          <target state="translated">Gibt das Datum an, an dem die Verrechnung verbucht wurde.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Settlement Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 1984046811 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the entry type. Normal = standard settlement; Unallocated = payment amount not yet linked to an invoice line.</source>
+          <target state="translated">Gibt den Eintragstyp an. Normal = Standardverrechnung; Nicht zugeordnet = Zahlungsbetrag noch nicht mit einer Rechnungsposition verknüpft.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Settlement Entry Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Control 3773776616 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether this entry originates from a Sales or Purchase transaction.</source>
+          <target state="translated">Gibt an, ob dieser Eintrag aus einem Verkaufs- oder Einkaufsvorgang stammt.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Control Transaction Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 1317439246 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deletes all existing test entries (Assignment ID starting with TST-) and recreates the 8 standard Power BI test scenarios.</source>
+          <target state="translated">Löscht alle vorhandenen Test-Einträge (Auftrags-ID beginnt mit TST-) und erstellt die 8 Standard-Power-BI-Testszenarien neu.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action CreateTestData - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 1317439246 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create Test Data</source>
+          <target state="translated">Testdaten erstellen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action CreateTestData - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 337628313 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deletes all test settlement entries (Assignment ID starting with TST-).</source>
+          <target state="translated">Löscht alle Testverrechnungposten (Zuordnungs-ID beginnt mit TST-).</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DeleteTestData - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 337628313 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delete Test Data</source>
+          <target state="translated">Testdaten löschen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DeleteTestData - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 632153598 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Documentation</source>
+          <target state="translated">Dokumentation</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action Documentation - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 1362466869 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opens the API reference documentation for the settlement entries OData API.</source>
+          <target state="translated">Öffnet die API-Referenzdokumentation für die OData-API der Verrechnungsposten.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DocApiReference - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 1362466869 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>API Reference</source>
+          <target state="translated">API-Referenz</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DocApiReference - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 3940071736 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opens the technical developer and partner guide.</source>
+          <target state="translated">Öffnet den technischen Leitfaden für Entwickler und Partner.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DocDeveloperGuide - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 3940071736 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Developer Guide</source>
+          <target state="translated">Entwicklerhandbuch</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DocDeveloperGuide - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 3430741381 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opens the user guide for the TXL Payment Cameralistic extension.</source>
+          <target state="translated">Öffnet das Benutzerhandbuch für die Erweiterung „TXL Payment Cameralistic“.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DocUserGuide - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4059156445 - Action 3430741381 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>User Guide</source>
+          <target state="translated">Benutzerhandbuch</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Settlement Entry List - Action DocUserGuide - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 3087582600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Specifies the bank statement document number of the most recent settlement. Cleared if all settlements for this line have been reversed.</source>
+          <target state="translated">Gibt die Belegnummer des Kontoauszugs für die neueste Verrechnung an. Wird zurückgesetzt, wenn alle Ausgleichsvorgänge für diese Zeile storniert wurden.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control Latest Bank Doc. No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnummer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 4122707638 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Specifies the date of the most recent payment settlement for this invoice line.</source>
+          <target state="translated">Gibt das Datum der neuesten Verrechnung für diese Rechnungsposition an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control Latest Settlement Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Latest Payment Date</source>
+          <target state="translated">Neuester Zahlungstermin</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 3840466586 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Specifies the payment status of this invoice line: Open (no payments), Partial (partly paid), or Paid (fully settled).</source>
+          <target state="translated">Gibt den Zahlungsstatus dieser Rechnungsposition an: Offen (keine Zahlungen), Teilweise bezahlt (teilweise beglichen) oder Bezahlt (vollständig beglichen).</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control PaymentStatus - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 3840466586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Payment Status</source>
+          <target state="translated">Zahlungsstatus</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control PaymentStatus - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 2783956936 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Specifies the total net settled amount (excl. VAT) for this invoice line across all payments.</source>
+          <target state="translated">Gibt den gesamten Netto-Ausgleichsbetrag (ohne MwSt.) für diese Rechnungsposition über alle Zahlungen hinweg an.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control Settled Amt (LCY) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 993022139 - Control 2783956936 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2202291288">
+          <source>Settled Amount</source>
+          <target state="translated">Verrechneter Betrag</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Grant Mgmt Posted Inv. Subform - Control Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 67438450 - Field 2848094594 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 518488723">
+          <source>Applied to Invoice Line No.</source>
+          <target state="translated">Angew. Rechnungszeile Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchCrMemoLine TableExt - Field Applied to Invoice Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 67438450 - Field 2491212764 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 518488723">
+          <source>Applied to Invoice No.</source>
+          <target state="translated">Angew. Rechnung Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchCrMemoLine TableExt - Field Applied to Invoice No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 67438450 - Field 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 518488723">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnummer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchCrMemoLine TableExt - Field Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 67438450 - Field 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 518488723">
+          <source>Latest Settlement Date</source>
+          <target state="translated">Neueste Verrechnung Datum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchCrMemoLine TableExt - Field Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 67438450 - Field 1286866511 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 518488723">
+          <source>Outstanding Amount (LCY)</source>
+          <target state="translated">Ausstehender Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchCrMemoLine TableExt - Field Outstanding Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 67438450 - Field 2783956936 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 518488723">
+          <source>Settled Amount (LCY)</source>
+          <target state="translated">Verrechneter Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchCrMemoLine TableExt - Field Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4247344664 - Field 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2575310733">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnummer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchInvLine TableExt - Field Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4247344664 - Field 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2575310733">
+          <source>Latest Settlement Date</source>
+          <target state="translated">Neueste Verrechnung Datum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchInvLine TableExt - Field Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4247344664 - Field 1286866511 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2575310733">
+          <source>Outstanding Amount (LCY)</source>
+          <target state="translated">Ausstehender Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchInvLine TableExt - Field Outstanding Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 4247344664 - Field 2783956936 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2575310733">
+          <source>Settled Amount (LCY)</source>
+          <target state="translated">Verrechneter Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension PurchInvLine TableExt - Field Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3733100422 - Field 2848094594 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3059602325">
+          <source>Applied to Invoice Line No.</source>
+          <target state="translated">Angew. Rechnungszeile Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesCrMemoLine TableExt - Field Applied to Invoice Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3733100422 - Field 2491212764 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3059602325">
+          <source>Applied to Invoice No.</source>
+          <target state="translated">Angew. Rechnung Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesCrMemoLine TableExt - Field Applied to Invoice No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3733100422 - Field 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3059602325">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnummer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesCrMemoLine TableExt - Field Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3733100422 - Field 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3059602325">
+          <source>Latest Settlement Date</source>
+          <target state="translated">Neueste Verrechnung Datum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesCrMemoLine TableExt - Field Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3733100422 - Field 1286866511 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3059602325">
+          <source>Outstanding Amount (LCY)</source>
+          <target state="translated">Ausstehender Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesCrMemoLine TableExt - Field Outstanding Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3733100422 - Field 2783956936 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3059602325">
+          <source>Settled Amount (LCY)</source>
+          <target state="translated">Verrechneter Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesCrMemoLine TableExt - Field Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3727921580 - Field 3087582600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2079186865">
+          <source>Latest Bank Doc. No.</source>
+          <target state="translated">Neueste Bankbelegnummer</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesInvoiceLine TableExt - Field Latest Bank Doc. No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3727921580 - Field 4122707638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2079186865">
+          <source>Latest Settlement Date</source>
+          <target state="translated">Neueste Verrechnung Datum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesInvoiceLine TableExt - Field Latest Settlement Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3727921580 - Field 1286866511 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2079186865">
+          <source>Outstanding Amount (LCY)</source>
+          <target state="translated">Ausstehender Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesInvoiceLine TableExt - Field Outstanding Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3727921580 - Field 2783956936 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2079186865">
+          <source>Settled Amount (LCY)</source>
+          <target state="translated">Verrechneter Betrag (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesInvoiceLine TableExt - Field Settled Amt (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3727921580 - Field 1279339451 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 2079186865">
+          <source>Settled Amount Incl. VAT (LCY)</source>
+          <target state="translated">Verr. Betrag inkl. MwSt. (MW)</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension SalesInvoiceLine TableExt - Field Settled Amt Incl. VAT (LCY) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1984046811 - EnumValue 221910773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Normal</source>
+          <target state="translated">Normal</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Entry Type - EnumValue Normal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1984046811 - EnumValue 2135070884 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reversal</source>
+          <target state="translated">Storno</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Entry Type - EnumValue Reversal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1984046811 - EnumValue 1217635526 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unallocated</source>
+          <target state="translated">Nicht Zugeordnet</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Entry Type - EnumValue Unallocated - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3029441893 - EnumValue 4259830144 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <target state="translated">Offen</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Payment Status - EnumValue Open - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3029441893 - EnumValue 789473408 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Paid</source>
+          <target state="translated">Bezahlt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Payment Status - EnumValue Paid - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3029441893 - EnumValue 1281489413 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Partial</source>
+          <target state="translated">Teilweise</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Payment Status - EnumValue Partial - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3099609547 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source/>
+          <target state="needs-translation"/>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Transaction Type - EnumValue   - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3099609547 - EnumValue 395510365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase</source>
+          <target state="translated">Einkauf</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Transaction Type - EnumValue Purchase - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 3099609547 - EnumValue 1406942772 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sales</source>
+          <target state="translated">Verkauf</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Settlement Transaction Type - EnumValue Sales - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 2591587468 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bank Account Ledger Entries</source>
+          <target state="translated">Bankposten</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Query Bank Account Ledger Entries - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source/>
+          <target state="needs-translation"/>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue   - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 1994964448 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Customer</source>
+          <target state="translated">Debitor</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue Customer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 4274826855 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>G/L Account</source>
+          <target state="translated">Sachkonto</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue G/L Account - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1400000384 - EnumValue 1936001480 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor</source>
+          <target state="translated">Kreditor</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Source Ledger Entry Type - EnumValue Vendor - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1567633909 - Method 3724757915 - NamedType 3160015003" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Found %1 records of %2.</source>
+          <target state="translated">%1 Datensätze von %2 gefunden.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Vendor Ledger Entries - Method GetBankLedgerEntry - NamedType ErrorTooManyRecords</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1567633909 - Method 1665861916 - NamedType 133460928" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Too many %1 found to continue processing.</source>
+          <target state="translated">Es wurden zu viele %1 gefunden, um die Verarbeitung fortzusetzen.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Vendor Ledger Entries - Method OnRun - NamedType ErrTooManyRecords</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1567633909 - Method 1665861916 - NamedType 3838565358" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No %1 found to continue processing.</source>
+          <target state="translated">Keine %1 gefunden, um die Bearbeitung fortzusetzen.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Vendor Ledger Entries - Method OnRun - NamedType ErrNoRecords</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 3102773586 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Bank Document No.</source>
+          <target state="translated">Bank Beleg Nr.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Bank Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 1675438334 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Bank Posting Date</source>
+          <target state="translated">Bank Buchungsdatum</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Bank Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 789473408 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Paid</source>
+          <target state="translated">Bezahlt</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Paid - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2650982278 - Field 510685278 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 406314583">
+          <source>Payment Cancelled</source>
+          <target state="translated">Zlg. Ausgl. aufgehoben</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension VendorLedgerEntry TableExt - Field Pmt Cancelled - Property Caption</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

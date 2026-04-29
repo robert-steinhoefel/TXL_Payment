@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>TXL Payment &ndash; User Documentation</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="txl-payment--user-documentation">TXL Payment – User Documentation</h1>
+<h2 id="overview">Overview</h2>
+<p>The TXL Payment extension adds cameralistic payment settlement tracking to Microsoft Dynamics 365 Business Central. Instead of recording payments only at the document level, every payment is broken down to the individual invoice or credit memo line. This gives finance teams a precise, line-by-line view of what has been paid, when, and from which bank transaction – without replacing Business Central's standard application logic.</p>
+<blockquote>
+<p><strong>Current scope:</strong> This extension covers the <strong>sales (accounts receivable) side only.</strong> Settlement entries are created for posted sales invoices and sales credit memos.</p>
+</blockquote>
+<p>The extension adds two main pages you will work with:</p>
+<ul>
+<li><strong>Settlement Entries</strong> – a permanent, read-only audit log of every payment allocation event</li>
+<li><strong>Payment Allocation Worksheet</strong> – a modal dialogue that appears when a partial payment requires manual distribution across lines</li>
+</ul>
+<hr>
+<h2 id="settlement-entries">Settlement Entries</h2>
+<h3 id="what-the-page-shows">What the page shows</h3>
+<p>The Settlement Entries page lists every settlement record created by the extension. Each row represents the allocation of a payment (or credit memo application, or reversal) to one specific line of a posted sales invoice or sales credit memo. Only sales-side documents appear here in the current version.</p>
+<p><strong>Key columns visible by default:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entry Type</td>
+<td>Whether this is a <em>Normal</em> settlement, an <em>Unallocated</em> amount (overpayment remainder), or a <em>Reversal</em></td>
+</tr>
+<tr>
+<td>Transaction Type</td>
+<td><em>Sales</em> or <em>Purchase</em> – which side of the ledger the settlement belongs to. In the current version, only <em>Sales</em> entries are created.</td>
+</tr>
+<tr>
+<td>Document Type</td>
+<td><em>Invoice</em> or <em>Credit Memo</em></td>
+</tr>
+<tr>
+<td>Document No.</td>
+<td>The posted invoice or credit memo number</td>
+</tr>
+<tr>
+<td>Customer No.</td>
+<td>The customer at the time of settlement</td>
+</tr>
+<tr>
+<td>Customer Name</td>
+<td>Snapshot of the customer name at the time of settlement</td>
+</tr>
+<tr>
+<td>Settlement Date</td>
+<td>The posting date of the payment that triggered the settlement</td>
+</tr>
+<tr>
+<td>Settlement Amount (LCY)</td>
+<td>The net amount settled on this line, <em>excluding</em> VAT</td>
+</tr>
+<tr>
+<td>Original Line Amount (LCY)</td>
+<td>Snapshot of the invoice line amount (excl. VAT) at the moment of settlement</td>
+</tr>
+<tr>
+<td>Original Line Amount Incl. VAT (LCY)</td>
+<td>Snapshot of the invoice line amount <em>including</em> VAT</td>
+</tr>
+<tr>
+<td>Non-Deductible VAT Amount (LCY)</td>
+<td>Non-deductible VAT portion of this line at settlement time</td>
+</tr>
+<tr>
+<td>Reversal Entry</td>
+<td>Ticked if this entry was created to reverse a prior settlement</td>
+</tr>
+<tr>
+<td>Reversed</td>
+<td>Ticked if this original entry has already been reversed</td>
+</tr>
+<tr>
+<td>Bank Statement Document No.</td>
+<td>Reference to the bank statement document that carried the payment</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Free-text description of the settlement</td>
+</tr>
+</tbody>
+</table>
+<p>Additional columns (hidden by default, can be made visible via <em>Choose Columns</em>):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assignment ID</td>
+<td>Groups all settlement entries belonging to the same payment event. Format: <code>{Customer No.}-{YYMMDD}-{SeqNo}</code>, e.g. <code>CUST001-260312-001</code></td>
+</tr>
+<tr>
+<td>Settlement Amount Incl. VAT (LCY)</td>
+<td>Settled amount including VAT</td>
+</tr>
+<tr>
+<td>Cash Discount Amount (LCY)</td>
+<td>Cash discount granted on this settlement (excl. VAT)</td>
+</tr>
+<tr>
+<td>Cash Discount Amount Incl. VAT (LCY)</td>
+<td>Cash discount including VAT</td>
+</tr>
+<tr>
+<td>Line Fully Settled</td>
+<td>Indicates that this specific invoice line has been fully paid</td>
+</tr>
+<tr>
+<td>Document Fully Settled</td>
+<td>Indicates that all lines of the document have been fully paid</td>
+</tr>
+<tr>
+<td>G/L Account No. / Name</td>
+<td>The revenue or expense account from the invoice line</td>
+</tr>
+<tr>
+<td>Grant Number</td>
+<td>Grant reference for public-sector grant accounting</td>
+</tr>
+<tr>
+<td>Created By / Created Date/Time</td>
+<td>Audit information about who triggered the creation</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="how-settlement-entries-are-created">How settlement entries are created</h3>
+<p>Settlement entries are created automatically by the extension whenever Business Central applies a payment to an invoice. You do not create them manually. There are three scenarios:</p>
+<h4 id="full-settlement">Full settlement</h4>
+<p>When a payment exactly covers (or slightly over-pays) an invoice so that the invoice becomes fully closed, the extension distributes the payment across all invoice lines proportionally. For each line, one settlement entry is written.</p>
+<p><em>Proportional distribution</em> means: each line receives a share of the total payment equal to its share of the total invoice amount. The last line absorbs any rounding differences.</p>
+<p>If the invoice was closed with a <strong>cash discount</strong>, the discount amount is recorded in the <code>Cash Discount Amount</code> fields of the relevant settlement entry. The discount is only populated when a single payment closes the invoice; if multiple payments were made beforehand, the discount cannot be unambiguously attributed to one payment and is left at zero.</p>
+<h4 id="partial-payment">Partial payment</h4>
+<p>When a payment covers only part of an invoice (the invoice remains open after posting), the extension prompts the user with the <strong>Payment Allocation Worksheet</strong> before the payment is posted. See the section below for full details. After the user confirms the allocation, one settlement entry is created per line that received an allocation amount.</p>
+<h4 id="credit-memo-application">Credit memo application</h4>
+<p>When a credit memo is applied against an invoice, the extension treats the credit application the same way as a payment: it creates settlement entries for each invoice line covered by the credit, reflecting the reduction in the outstanding balance.</p>
+<h4 id="overpayment-unallocated-entry">Overpayment (Unallocated entry)</h4>
+<p>If a payment exceeds the total invoice amount, the excess is captured as an <strong>Unallocated</strong> settlement entry. This entry has no document number – the empty document number in the list is the visual indicator that this amount has not yet been attributed to a specific line. The entry shares the same Assignment ID as the other settlement entries for that payment event and can be consumed when a subsequent application is made.</p>
+<h4 id="reversal-unapplication">Reversal (Unapplication)</h4>
+<p>When a payment application is reversed in Business Central (via <em>Unapply Customer Ledger Entries</em>), the extension automatically creates a reversal settlement entry for each original entry affected. Reversal entries carry opposite signs to the originals, so that summing all entries for a document line always yields the correct net outstanding amount. The original entries are flagged <code>Reversed = true</code> and the reversal entries are flagged <code>Reversal Entry = true</code>. Both always remain in the list; no entries are ever deleted.</p>
+<hr>
+<h3 id="reading-the-settlement-entries-list">Reading the Settlement Entries list</h3>
+<p>A few practical points when reading the list:</p>
+<ul>
+<li><strong>Entries with a blank Document No.</strong> are Unallocated entries (overpayment surplus). They are normal and expected when a customer pays slightly more than the invoice total.</li>
+<li><strong>Negative amounts</strong> are reversals. They cancel out the positive amounts from the original settlement. The net of all entries for a given document line equals the currently outstanding balance reduction.</li>
+<li><strong>Multiple entries for the same invoice</strong> are normal. One row appears for every line of the invoice, and another set of rows for each subsequent partial payment.</li>
+<li>The <strong>Assignment ID</strong> ties together all entries from one payment event. You can filter or group by this column to see every line affected by a single bank transfer.</li>
+</ul>
+<hr>
+<h2 id="payment-allocation-worksheet">Payment Allocation Worksheet</h2>
+<h3 id="when-it-appears">When it appears</h3>
+<p>The Payment Allocation Worksheet opens automatically – as a modal dialogue – immediately before a partial payment is posted. The system detects that the payment amount is less than the invoice's remaining open balance and interrupts the posting to ask you how the payment should be distributed across the individual invoice lines.</p>
+<p>This happens in two places:</p>
+<ul>
+<li>When posting a <strong>General Journal</strong> batch that contains a payment applied to a sales invoice</li>
+<li>When using <strong>Apply Customer Ledger Entries</strong> to manually apply a posted payment to a posted sales invoice</li>
+</ul>
+<p>If you cancel the worksheet, the entire payment posting is rolled back. Nothing is posted until you confirm a valid allocation.</p>
+<h3 id="layout-of-the-worksheet">Layout of the worksheet</h3>
+<p><strong>Header area:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Customer No.</td>
+<td>The customer the invoice belongs to</td>
+</tr>
+<tr>
+<td>Customer Name</td>
+<td>Name of the customer</td>
+</tr>
+<tr>
+<td>Document No.</td>
+<td>The invoice being partially paid</td>
+</tr>
+<tr>
+<td>Payment Amount Incl. VAT (LCY)</td>
+<td>The full amount of the incoming payment, including VAT</td>
+</tr>
+<tr>
+<td>Total Allocated</td>
+<td>Running total of what you have allocated across the lines so far</td>
+</tr>
+<tr>
+<td>Remaining to Allocate</td>
+<td>Difference between Payment Amount and Total Allocated – must reach zero before you can confirm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Line area (one row per invoice line):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Line No.</td>
+<td>Line number from the original invoice</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Description from the invoice line</td>
+</tr>
+<tr>
+<td>G/L Account No.</td>
+<td>Revenue account of the line</td>
+</tr>
+<tr>
+<td>Original Amount (LCY)</td>
+<td>Invoice line amount excl. VAT</td>
+</tr>
+<tr>
+<td>Original Amount Incl. VAT (LCY)</td>
+<td>Invoice line amount incl. VAT</td>
+</tr>
+<tr>
+<td>Already Settled Amount (LCY)</td>
+<td>Amount already paid on this line from previous partial payments (zero on first payment)</td>
+</tr>
+<tr>
+<td>Allocated Amount Incl. VAT (LCY)</td>
+<td><strong>The field you edit.</strong> Enter how much of this payment should be applied to this line, including VAT</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entering-a-manual-allocation">Entering a manual allocation</h3>
+<ol>
+<li>Review the <strong>Original Amount Incl. VAT</strong> and <strong>Already Settled Amount</strong> columns to understand what is still outstanding per line.</li>
+<li>In the <strong>Allocated Amount Incl. VAT (LCY)</strong> column, enter the amount you wish to apply to each line.</li>
+<li>Watch the <strong>Remaining to Allocate</strong> figure in the header. It must reach exactly zero (or within rounding tolerance) before you can confirm.</li>
+<li>Choose <strong>Apply Allocation</strong> to confirm and continue with posting.</li>
+</ol>
+<p>The system internally back-calculates the net amount (excl. VAT) from the gross amount you enter, using the VAT ratio of the original invoice line.</p>
+<h3 id="distribute-proportionally">Distribute Proportionally</h3>
+<p>If you do not want to allocate manually, choose <strong>Distribute Proportionally</strong>. The system calculates the remaining outstanding balance per line (original amount minus already settled) and distributes the payment in the same proportions. The last line absorbs any rounding difference. You can use this as a starting point and then adjust individual lines before confirming.</p>
+<h3 id="cancelling">Cancelling</h3>
+<p>Choosing <strong>Cancel</strong> discards all entered amounts and rolls back the entire payment application. The journal line or the manual application is abandoned; nothing is posted. You can return to the journal or application page and correct the amounts before trying again.</p>
+<hr>
+<h2 id="status-indicators-on-invoice-lines">Status indicators on invoice lines</h2>
+<p>The extension adds a payment status indicator to posted sales invoice lines. The status is derived dynamically from the net settlement amounts:</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Open</strong></td>
+<td>No settlement entries exist for this line, or all settlements have been reversed</td>
+</tr>
+<tr>
+<td><strong>Partial</strong></td>
+<td>Some settlement entries exist but the outstanding balance has not yet been reduced to zero</td>
+</tr>
+<tr>
+<td><strong>Paid</strong></td>
+<td>The sum of all settlement amounts equals the line amount (within a tolerance of 0.01 LCY)</td>
+</tr>
+</tbody>
+</table>
+<p>The status is displayed in colour: green for <em>Paid</em>, amber for <em>Partial</em>, and default (no colour) for <em>Open</em>.</p>
+<p>The <strong>Outstanding Amount (LCY)</strong> field on each invoice line shows the numeric balance remaining, calculated as: <em>Original Line Amount – Total Net Settled Amount</em>.</p>
+<hr>
+<h2 id="assignment-id">Assignment ID</h2>
+<p>Every payment event is assigned a unique <strong>Assignment ID</strong> in the format <code>{Customer No.}-{YYMMDD}-{SeqNo}</code>, for example <code>CUST001-260312-001</code>. All settlement entries created by a single payment – whether across multiple invoice lines or including an Unallocated entry – share the same Assignment ID.</p>
+<p>Use the Assignment ID to:</p>
+<ul>
+<li>Group all settlement rows for one bank transfer</li>
+<li>Trace which invoice lines were covered by a specific payment in the Power BI reports</li>
+<li>Understand whether an Unallocated entry belongs to the same bank transfer as a group of normal settlements</li>
+</ul>
+<hr>
+<h2 id="frequently-asked-questions">Frequently asked questions</h2>
+<p><strong>Why does an invoice line show &quot;Partial&quot; even though I entered a full payment?</strong>
+The system calculates status from the net of all settlement entries, including reversals. If a previous settlement was reversed, the net balance is lower than expected. Check the Settlement Entries list filtered by the invoice number to see all entries and reversals.</p>
+<p><strong>Can I edit settlement entries?</strong>
+No. Settlement entries are an immutable audit log. If a settlement is incorrect, the payment application must be reversed in Business Central using the standard unapplication function. The extension will then automatically create the corresponding reversal settlement entries.</p>
+<p><strong>Why is the Bank Statement Document No. empty on some entries?</strong>
+This field is only populated when the system can trace the payment back to a specific bank account ledger entry at the time of settlement creation. If a settlement is created through a manual CLE application that is not directly linked to a bank account posting, the field may be empty.</p>
+<p><strong>What happens if I close the Payment Allocation Worksheet without allocating all amounts?</strong>
+The <strong>Apply Allocation</strong> action is only enabled when the Remaining to Allocate field reaches zero. If you close the window with the Cancel button instead, the posting is fully rolled back.</p>
+<p><strong>Can two payments be allocated in the same journal batch?</strong>
+Yes. The worksheet opens once for each partial application detected in the batch. Each one must be confirmed before posting proceeds.</p>
+
+            
+            
+        </body>
+        </html>
